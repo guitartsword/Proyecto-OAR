@@ -14,11 +14,14 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dialogcampo.cpp
+    dialogcampo.cpp \
+    dialogmodificarcampo.cpp
 
 HEADERS  += mainwindow.h \
     dialogcampo.h \
-    Campo.h
+    Campo.h \
+    dialogmodificarcampo.h
 
 FORMS    += mainwindow.ui \
-    dialogcampo.ui
+    dialogcampo.ui \
+    dialogmodificarcampo.ui

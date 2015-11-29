@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "Campo.h"
 #include "dialogcampo.h"
+#include "dialogmodificarcampo.h"
 #include <iostream>
 #include <QFile>
 #include <QString>
@@ -14,7 +15,6 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    borrar_campo(false),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -59,11 +59,30 @@ void MainWindow::on_sectionClicked ( int logicalIndex ){
 
 void MainWindow::on_actionBorrar_triggered()
 {
-    QMessageBox Box;
-    Box.setText("Haga click en el campo que desea borrar");
-    Box.exec();
-    borrar_campo=true;
+    QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+    if(!selected.isEmpty()){
+        int x=ui->Tabla_Principal->currentColumn();
+        campos->erase(campos->begin()+x);
+        ui->Tabla_Principal->removeColumn(ui->Tabla_Principal->currentColumn());
+    }else{
+        QMessageBox Box;
+        Box.setText("¡No se ha seleccionado ninguna columna!");
+        Box.exec();
+    }
 }
 
 
 
+
+void MainWindow::on_actionModificar_2_triggered()
+{
+    QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+    if(!selected.isEmpty()){
+        DialogModificarCampo dialog(this->campos,ui->Tabla_Principal,this);
+        dialog.exec();
+    }else{
+        QMessageBox Box;
+        Box.setText("¡No se ha seleccionado ninguna columna!");
+        Box.exec();
+    }
+}

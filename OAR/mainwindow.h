@@ -14,7 +14,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     vector<FieldDefenition>* campos;
-    bool borrar_campo;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -31,6 +30,8 @@ private slots:
     void on_actionBorrar_triggered();
 
 
+
+    void on_actionModificar_2_triggered();
 
 private:
     Ui::MainWindow *ui;

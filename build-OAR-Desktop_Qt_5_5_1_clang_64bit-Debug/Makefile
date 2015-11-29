@@ -50,13 +50,17 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
-		../OAR/dialogcampo.cpp moc_mainwindow.cpp \
-		moc_dialogcampo.cpp
+		../OAR/dialogcampo.cpp \
+		../OAR/dialogmodificarcampo.cpp moc_mainwindow.cpp \
+		moc_dialogcampo.cpp \
+		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
 		dialogcampo.o \
+		dialogmodificarcampo.o \
 		moc_mainwindow.o \
-		moc_dialogcampo.o
+		moc_dialogcampo.o \
+		moc_dialogmodificarcampo.o
 DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/qdevice.pri \
 		../../../Qt/5.5/clang_64/mkspecs/features/device_config.prf \
@@ -201,9 +205,11 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/lex.prf \
 		../OAR/OAR.pro ../OAR/mainwindow.h \
 		../OAR/dialogcampo.h \
-		../OAR/Campo.h ../OAR/main.cpp \
+		../OAR/Campo.h \
+		../OAR/dialogmodificarcampo.h ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
-		../OAR/dialogcampo.cpp
+		../OAR/dialogcampo.cpp \
+		../OAR/dialogmodificarcampo.cpp
 QMAKE_TARGET  = OAR
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = OAR.app/Contents/MacOS/OAR
@@ -241,7 +247,7 @@ first: all
 
 ####### Build rules
 
-$(TARGET): ui_mainwindow.h ui_dialogcampo.h $(OBJECTS)  
+$(TARGET): ui_mainwindow.h ui_dialogcampo.h ui_dialogmodificarcampo.h $(OBJECTS)  
 	@test -d OAR.app/Contents/MacOS/ || mkdir -p OAR.app/Contents/MacOS/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -567,9 +573,9 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/Campo.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/Campo.h ../OAR/dialogmodificarcampo.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -595,9 +601,9 @@ compiler_objective_c_make_all:
 compiler_objective_c_clean:
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialogcampo.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 moc_mainwindow.cpp: ../OAR/Campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -614,16 +620,24 @@ moc_dialogcampo.cpp: ../OAR/Campo.h \
 		../OAR/dialogcampo.h
 	/Users/Brenda/Qt/5.5/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/Brenda/Qt/5.5/clang_64/mkspecs/macx-clang -I'/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR' -I/Users/Brenda/Qt/5.5/clang_64/lib/QtWidgets.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtGui.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtCore.framework/Headers -I. -F/Users/Brenda/Qt/5.5/clang_64/lib ../OAR/dialogcampo.h -o moc_dialogcampo.cpp
 
+moc_dialogmodificarcampo.cpp: ../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		../OAR/dialogmodificarcampo.h
+	/Users/Brenda/Qt/5.5/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/Brenda/Qt/5.5/clang_64/mkspecs/macx-clang -I'/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR' -I/Users/Brenda/Qt/5.5/clang_64/lib/QtWidgets.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtGui.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtCore.framework/Headers -I. -F/Users/Brenda/Qt/5.5/clang_64/lib ../OAR/dialogmodificarcampo.h -o moc_dialogmodificarcampo.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_mainwindow.h ui_dialogcampo.h
+compiler_uic_make_all: ui_mainwindow.h ui_dialogcampo.h ui_dialogmodificarcampo.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_mainwindow.h ui_dialogcampo.h
+	-$(DEL_FILE) ui_mainwindow.h ui_dialogcampo.h ui_dialogmodificarcampo.h
 ui_mainwindow.h: ../OAR/mainwindow.ui
 	/Users/Brenda/Qt/5.5/clang_64/bin/uic ../OAR/mainwindow.ui -o ui_mainwindow.h
 
 ui_dialogcampo.h: ../OAR/dialogcampo.ui
 	/Users/Brenda/Qt/5.5/clang_64/bin/uic ../OAR/dialogcampo.ui -o ui_dialogcampo.h
+
+ui_dialogmodificarcampo.h: ../OAR/dialogmodificarcampo.ui
+	/Users/Brenda/Qt/5.5/clang_64/bin/uic ../OAR/dialogmodificarcampo.ui -o ui_dialogmodificarcampo.h
 
 compiler_rez_source_make_all:
 compiler_rez_source_clean:
@@ -686,11 +700,20 @@ dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogcampo.o ../OAR/dialogcampo.cpp
 
+dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarcampo.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
+		ui_dialogmodificarcampo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogmodificarcampo.o ../OAR/dialogmodificarcampo.cpp
+
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
 
 moc_dialogcampo.o: moc_dialogcampo.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogcampo.o moc_dialogcampo.cpp
+
+moc_dialogmodificarcampo.o: moc_dialogmodificarcampo.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_dialogmodificarcampo.o moc_dialogmodificarcampo.cpp
 
 ####### Install
 
