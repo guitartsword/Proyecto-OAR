@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "dialogcampo.h"
 #include "Campo.h"
+#include "dialogcampo.h"
 #include <iostream>
 #include <QFile>
 #include <QString>
@@ -19,11 +19,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->Tabla_Principal->setDisabled(true);
+    campos = new vector<FieldDefenition>();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete campos;
 }
 
 

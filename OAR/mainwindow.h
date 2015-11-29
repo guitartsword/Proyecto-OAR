@@ -13,7 +13,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    vector<FieldDefenition*> campos;
+    vector<FieldDefenition>* campos;
     bool borrar_campo;
 
 public:

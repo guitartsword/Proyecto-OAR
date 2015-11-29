@@ -17,11 +17,11 @@ DialogCampo::DialogCampo(QWidget* parent):
     ui->setupUi(this);
 }
 
-DialogCampo::DialogCampo(vector<FieldDefenition*> campos,QTableWidget* tabla, QWidget* parent):
+DialogCampo::DialogCampo(vector<FieldDefenition>* campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
-    ui(new Ui::DialogCampo)
+    ui(new Ui::DialogCampo),
+    campos(campos)
 {
-    this->campos=campos;
     this->tabla=tabla;
     ui->setupUi(this);
 }
@@ -32,10 +32,10 @@ DialogCampo::~DialogCampo()
 }
 
 bool DialogCampo::busquedaLlave(){
-    if(campos.size()>0){
+    if(campos->size()>0){
         bool exists=false;
-        for(int i=0;i<campos.size();i++){
-            if(campos.at(i)->key){
+        for(int i=0;i<campos->size();i++){
+            if(campos->at(i).key){
                 exists=true;
             }
         }
@@ -53,30 +53,27 @@ void DialogCampo::on_CampoNuevo_clicked()
     bool llave=ui->RB_CampoLlave->isChecked();
     QMessageBox Box;
 
-    FieldDefenition* temp;
+    FieldDefenition temp;
     if(nombre!=""){
         if(longitud>0){
             try{
                 cout<<busquedaLlave();
                 if(( llave!=busquedaLlave() || (!llave && !busquedaLlave()))){
                     if(tipo=="CHAR"){
-                        memcpy(temp->name, nombre.toStdString().c_str() ,30);
-                        temp->type=CHAR;
-                        temp->size=longitud;
-                        temp->key=llave;
-                        cout<<"CHAR"<<endl;
+                        memcpy(temp.name, nombre.toStdString().c_str() ,30);
+                        temp.type=CHAR;
+                        temp.size=longitud;
+                        temp.key=llave;
                     }else if(tipo=="INTF"){
-                        memcpy(temp->name, nombre.toStdString().c_str() ,30);
-                        temp->type=INTF;
-                        temp->size=longitud;
-                        temp->key=llave;
-                        cout<<"INTF"<<endl;
+                        memcpy(temp.name, nombre.toStdString().c_str() ,30);
+                        temp.type=INTF;
+                        temp.size=longitud;
+                        temp.key=llave;
                     }else{
-                        memcpy(temp->name, nombre.toStdString().c_str() ,30);
-                        temp->type=DEC;
-                        temp->size_dec=longitud;
-                        temp->key=llave;
-                        cout<<"DEC"<<endl;
+                        memcpy(temp.name, nombre.toStdString().c_str() ,30);
+                        temp.type=DEC;
+                        temp.size=longitud;
+                        temp.key=llave;
                     }
                     if(llave){
                         this->tabla->setColumnCount(this->tabla->columnCount()+1);
@@ -85,7 +82,7 @@ void DialogCampo::on_CampoNuevo_clicked()
                         this->tabla->setColumnCount(this->tabla->columnCount()+1);
                         this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre));
                     }
-                    //campos.push_back(temp);
+                    campos->push_back(temp);
                     this->setVisible(false);
                 }else{
                     Box.setText("¡La llave ya existe!");
@@ -102,5 +99,5 @@ void DialogCampo::on_CampoNuevo_clicked()
         Box.setText("¡El nombre no puede estar vacio!");
         Box.exec();
     }
-
+    cout << campos->at(campos->size()-1).name << endl;
 }
