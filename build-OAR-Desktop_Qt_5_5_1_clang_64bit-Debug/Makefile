@@ -598,12 +598,16 @@ compiler_rcc_clean:
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialogcampo.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp
-moc_mainwindow.cpp: ../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
+moc_mainwindow.cpp: ../OAR/Campo.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		../OAR/mainwindow.h
 	/Users/Brenda/Qt/5.5/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/Brenda/Qt/5.5/clang_64/mkspecs/macx-clang -I'/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR' -I/Users/Brenda/Qt/5.5/clang_64/lib/QtWidgets.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtGui.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtCore.framework/Headers -I. -F/Users/Brenda/Qt/5.5/clang_64/lib ../OAR/mainwindow.h -o moc_mainwindow.cpp
 
-moc_dialogcampo.cpp: ../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
+moc_dialogcampo.cpp: ../OAR/Campo.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
@@ -634,22 +638,25 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 ####### Compile
 
 main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
+		../OAR/Campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../OAR/main.cpp
 
 mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
+		../OAR/Campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		ui_mainwindow.h \
 		../OAR/dialogcampo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
-		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
-		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
-		../OAR/Campo.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QFile \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QString \
@@ -659,17 +666,24 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
-		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../OAR/mainwindow.cpp
 
 dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
+		../OAR/Campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qtablewidget.h \
 		ui_dialogcampo.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QString \
-		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qstring.h
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qstring.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QHeaderView \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogcampo.o ../OAR/dialogcampo.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

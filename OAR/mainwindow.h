@@ -13,7 +13,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    vector<FieldDefenition> campos;
+    vector<FieldDefenition*> campos;
     bool borrar_campo;
 
 public:
@@ -21,13 +21,16 @@ public:
     ~MainWindow();
 
 private slots:
+
     void on_actionNuevo_triggered();
 
     void on_CrearCampo_triggered();
 
+    void on_sectionClicked ( int logicalIndex );
+
     void on_actionBorrar_triggered();
 
-    void on_Tabla_Principal_cellClicked(int row, int column);
+
 
 private:
     Ui::MainWindow *ui;

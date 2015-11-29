@@ -26,6 +26,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::on_actionNuevo_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
@@ -34,6 +35,7 @@ void MainWindow::on_actionNuevo_triggered()
         qDebug() << "Failed to create:" << datafile.errorString();
     datafile.flush();
     datafile.close();
+    ui->Tabla_Principal->setRowCount(1);
 }
 
 void MainWindow::on_CrearCampo_triggered()
@@ -49,6 +51,10 @@ void MainWindow::on_CrearCampo_triggered()
 
 }
 
+void MainWindow::on_sectionClicked ( int logicalIndex ){
+    cout<<"HOLA";
+}
+
 void MainWindow::on_actionBorrar_triggered()
 {
     QMessageBox Box;
@@ -58,12 +64,4 @@ void MainWindow::on_actionBorrar_triggered()
 }
 
 
-
-/*if(borrar_campo){
-    cout<<"entre";
-    QString cosa=ui->Tabla_Principal->currentItem()->text();
-    char name[30];
-    memcpy(name, cosa.toStdString().c_str() ,30);
-    cout<<name;
-}*/
 

@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[8];
-    char stringdata0[129];
+    QByteArrayData data[7];
+    char stringdata0[118];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,17 +33,14 @@ QT_MOC_LITERAL(0, 0, 10), // "MainWindow"
 QT_MOC_LITERAL(1, 11, 24), // "on_actionNuevo_triggered"
 QT_MOC_LITERAL(2, 36, 0), // ""
 QT_MOC_LITERAL(3, 37, 23), // "on_CrearCampo_triggered"
-QT_MOC_LITERAL(4, 61, 25), // "on_actionBorrar_triggered"
-QT_MOC_LITERAL(5, 87, 30), // "on_Tabla_Principal_cellClicked"
-QT_MOC_LITERAL(6, 118, 3), // "row"
-QT_MOC_LITERAL(7, 122, 6) // "column"
+QT_MOC_LITERAL(4, 61, 17), // "on_sectionClicked"
+QT_MOC_LITERAL(5, 79, 12), // "logicalIndex"
+QT_MOC_LITERAL(6, 92, 25) // "on_actionBorrar_triggered"
 
     },
     "MainWindow\0on_actionNuevo_triggered\0"
-    "\0on_CrearCampo_triggered\0"
-    "on_actionBorrar_triggered\0"
-    "on_Tabla_Principal_cellClicked\0row\0"
-    "column"
+    "\0on_CrearCampo_triggered\0on_sectionClicked\0"
+    "logicalIndex\0on_actionBorrar_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -63,14 +60,14 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: name, argc, parameters, tag, flags
        1,    0,   34,    2, 0x08 /* Private */,
        3,    0,   35,    2, 0x08 /* Private */,
-       4,    0,   36,    2, 0x08 /* Private */,
-       5,    2,   37,    2, 0x08 /* Private */,
+       4,    1,   36,    2, 0x08 /* Private */,
+       6,    0,   39,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,    5,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int, QMetaType::Int,    6,    7,
 
        0        // eod
 };
@@ -83,8 +80,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->on_actionNuevo_triggered(); break;
         case 1: _t->on_CrearCampo_triggered(); break;
-        case 2: _t->on_actionBorrar_triggered(); break;
-        case 3: _t->on_Tabla_Principal_cellClicked((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 2: _t->on_sectionClicked((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 3: _t->on_actionBorrar_triggered(); break;
         default: ;
         }
     }
