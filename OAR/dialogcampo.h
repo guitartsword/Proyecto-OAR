@@ -1,7 +1,10 @@
 #ifndef DIALOGCAMPO_H
 #define DIALOGCAMPO_H
-
+#include "Campo.h"
 #include <QDialog>
+#include <QTableWidget>
+#include <vector>
+using namespace std;
 
 namespace Ui {
 class DialogCampo;
@@ -9,10 +12,13 @@ class DialogCampo;
 
 class DialogCampo : public QDialog
 {
+    QTableWidget* tabla;
+    vector<FieldDefenition> campos;
     Q_OBJECT
 
 public:
     explicit DialogCampo(QWidget *parent = 0);
+    explicit DialogCampo(vector<FieldDefenition>&, QTableWidget*, QWidget *parent = 0);
     ~DialogCampo();
 
 private slots:
@@ -20,6 +26,7 @@ private slots:
 
 private:
     Ui::DialogCampo *ui;
+    bool busquedaLlave();
 };
 
 #endif // DIALOGCAMPO_H

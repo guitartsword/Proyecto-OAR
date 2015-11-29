@@ -76,9 +76,9 @@ public:
         DialogCampo->setWindowTitle(QApplication::translate("DialogCampo", "Dialog", 0));
         CB_CampoTipo->clear();
         CB_CampoTipo->insertItems(0, QStringList()
-         << QApplication::translate("DialogCampo", "Char", 0)
-         << QApplication::translate("DialogCampo", "Int", 0)
-         << QApplication::translate("DialogCampo", "Dec", 0)
+         << QApplication::translate("DialogCampo", "CHAR", 0)
+         << QApplication::translate("DialogCampo", "INTF", 0)
+         << QApplication::translate("DialogCampo", "DEC", 0)
         );
         CampoNuevo->setText(QApplication::translate("DialogCampo", "Aceptar", 0));
         label->setText(QApplication::translate("DialogCampo", "Nombre del Campo", 0));

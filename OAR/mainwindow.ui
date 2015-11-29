@@ -6,22 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>461</width>
-    <height>420</height>
+    <width>845</width>
+    <height>613</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QTableView" name="Tabla_Principal">
+   <widget class="QTableWidget" name="Tabla_Principal">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>1</y>
-      <width>451</width>
-      <height>361</height>
+      <x>10</x>
+      <y>60</y>
+      <width>821</width>
+      <height>491</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>131</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Agregar Registro</string>
     </property>
    </widget>
   </widget>
@@ -30,7 +43,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>461</width>
+     <width>845</width>
      <height>22</height>
     </rect>
    </property>
@@ -49,6 +62,8 @@
      <string>Campo</string>
     </property>
     <addaction name="CrearCampo"/>
+    <addaction name="actionBorrar"/>
+    <addaction name="actionModificar_2"/>
    </widget>
    <widget class="QMenu" name="menuRegistros">
     <property name="title">
@@ -112,6 +127,16 @@
   <action name="actionCargar">
    <property name="text">
     <string>Cargar </string>
+   </property>
+  </action>
+  <action name="actionBorrar">
+   <property name="text">
+    <string>Borrar</string>
+   </property>
+  </action>
+  <action name="actionModificar_2">
+   <property name="text">
+    <string>Modificar</string>
    </property>
   </action>
  </widget>

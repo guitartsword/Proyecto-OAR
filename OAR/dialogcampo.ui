@@ -24,17 +24,17 @@
    </property>
    <item>
     <property name="text">
-     <string>Char</string>
+     <string>CHAR</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Int</string>
+     <string>INTF</string>
     </property>
    </item>
    <item>
     <property name="text">
-     <string>Dec</string>
+     <string>DEC</string>
     </property>
    </item>
   </widget>

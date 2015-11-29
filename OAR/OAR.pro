@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     dialogcampo.cpp
 
 HEADERS  += mainwindow.h \
-    dialogcampo.h
+    dialogcampo.h \
+    Campo.h
 
 FORMS    += mainwindow.ui \
     dialogcampo.ui

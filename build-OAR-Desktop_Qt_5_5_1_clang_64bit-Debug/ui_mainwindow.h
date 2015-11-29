@@ -17,8 +17,9 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTableView>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -36,8 +37,11 @@ public:
     QAction *actionListar;
     QAction *actionModificar;
     QAction *actionCargar;
+    QAction *actionBorrar;
+    QAction *actionModificar_2;
     QWidget *centralWidget;
-    QTableView *Tabla_Principal;
+    QTableWidget *Tabla_Principal;
+    QPushButton *pushButton;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QMenu *menuCampo;
@@ -49,7 +53,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(461, 420);
+        MainWindow->resize(845, 613);
         actionNuevo = new QAction(MainWindow);
         actionNuevo->setObjectName(QStringLiteral("actionNuevo"));
         actionGuardar = new QAction(MainWindow);
@@ -68,15 +72,22 @@ public:
         actionModificar->setObjectName(QStringLiteral("actionModificar"));
         actionCargar = new QAction(MainWindow);
         actionCargar->setObjectName(QStringLiteral("actionCargar"));
+        actionBorrar = new QAction(MainWindow);
+        actionBorrar->setObjectName(QStringLiteral("actionBorrar"));
+        actionModificar_2 = new QAction(MainWindow);
+        actionModificar_2->setObjectName(QStringLiteral("actionModificar_2"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        Tabla_Principal = new QTableView(centralWidget);
+        Tabla_Principal = new QTableWidget(centralWidget);
         Tabla_Principal->setObjectName(QStringLiteral("Tabla_Principal"));
-        Tabla_Principal->setGeometry(QRect(5, 1, 451, 361));
+        Tabla_Principal->setGeometry(QRect(10, 60, 821, 491));
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(10, 10, 131, 32));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 461, 22));
+        menuBar->setGeometry(QRect(0, 0, 845, 22));
         menuArchivo = new QMenu(menuBar);
         menuArchivo->setObjectName(QStringLiteral("menuArchivo"));
         menuCampo = new QMenu(menuBar);
@@ -100,6 +111,8 @@ public:
         menuArchivo->addAction(actionCerrar);
         menuArchivo->addAction(actionSalir);
         menuCampo->addAction(CrearCampo);
+        menuCampo->addAction(actionBorrar);
+        menuCampo->addAction(actionModificar_2);
         menuRegistros->addAction(actionCargar);
 
         retranslateUi(MainWindow);
@@ -119,6 +132,9 @@ public:
         actionListar->setText(QApplication::translate("MainWindow", "Listar", 0));
         actionModificar->setText(QApplication::translate("MainWindow", "Modificar", 0));
         actionCargar->setText(QApplication::translate("MainWindow", "Cargar ", 0));
+        actionBorrar->setText(QApplication::translate("MainWindow", "Borrar", 0));
+        actionModificar_2->setText(QApplication::translate("MainWindow", "Modificar", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "Agregar Registro", 0));
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));
         menuRegistros->setTitle(QApplication::translate("MainWindow", "Registros", 0));
