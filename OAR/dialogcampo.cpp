@@ -57,7 +57,6 @@ void DialogCampo::on_CampoNuevo_clicked()
     if(nombre!=""){
         if(longitud>0){
             try{
-                cout<<busquedaLlave();
                 if(( llave!=busquedaLlave() || (!llave && !busquedaLlave()))){
                     if(tipo=="CHAR"){
                         memcpy(temp.name, nombre.toStdString().c_str() ,30);
@@ -99,5 +98,4 @@ void DialogCampo::on_CampoNuevo_clicked()
         Box.setText("¡El nombre no puede estar vacio!");
         Box.exec();
     }
-    cout << campos->at(campos->size()-1).name << endl;
 }
