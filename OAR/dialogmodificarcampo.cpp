@@ -36,13 +36,13 @@ bool DialogModificarCampo::busquedaLlave(){
     }
 }
 
-DialogModificarCampo::DialogModificarCampo(vector<FieldDefenition>* campos,QTableWidget* tabla, QWidget* parent):
+DialogModificarCampo::DialogModificarCampo(vector<FieldDefinition>* campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
     ui(new Ui::DialogModificarCampo),
     campos(campos)
 {
     this->tabla=tabla;
-    FieldDefenition temp=campos->at(tabla->currentColumn());
+    FieldDefinition temp=campos->at(tabla->currentColumn());
     ui->setupUi(this);
     ui->T_ModificarNombre->setText(temp.name);
     ui->SB_ModificarLongitud->setValue(temp.size);
@@ -67,7 +67,7 @@ void DialogModificarCampo::on_ModificarCampo_clicked()
     int longitud=ui->SB_ModificarLongitud->value();
     bool llave=ui->RB_ModificarLlave->isChecked();
     QMessageBox Box;
-    FieldDefenition* temp= &(campos->at(tabla->currentColumn()));
+    FieldDefinition* temp= &(campos->at(tabla->currentColumn()));
     bool llave_antigua=temp->key;
     if(nombre!=""){
         if(longitud>0){

@@ -13,13 +13,15 @@
 #include <QMessageBox>
 using namespace std;
 
+bool isKeyRepeated(FieldDefinition&);
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->Tabla_Principal->setDisabled(true);
-    campos = new vector<FieldDefenition>();
+    campos = new vector<FieldDefinition>();
 }
 
 MainWindow::~MainWindow()
@@ -81,10 +83,73 @@ void MainWindow::on_updateField_triggered()
 
 void MainWindow::on_addRecord_triggered()
 {
-
+    if(ui->Tabla_Principal->columnCount()<1){
+        QMessageBox Box;
+        Box.setText("¡Se necesita al menos un campo!");
+        Box.exec();
+    }else if(ui->Tabla_Principal->rowCount()>15){
+        QMessageBox Box;
+        Box.setText("¡Solo puede ver 15 registros por pagina");
+        Box.exec();
+    }else
+        ui->Tabla_Principal->setRowCount(ui->Tabla_Principal->rowCount()+1);
 }
+
+void MainWindow::on_delRecord_triggered()
+{
+    QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+    if(!selected.isEmpty() && ui->Tabla_Principal->rowCount()>1)
+        ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
+}
+
 
 void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 {
+    cout<<"Entra"<<endl;
+    QString text = item->text();
+    /*
+    cout<<"item Changed: "<< text.toStdString() << endl;
+    cout<<"Size: " << text.size() << endl;
+    cout<<"campos size: " << campos->size() << endl;
+    cout<<"item Column value: " << item->column() << endl;
+    for(int i = 0; i < campos->size(); i++){
+        cout << "campos->at(" << i << ") == " << campos->at(i).name << endl;
+    }
+    */
+    if(text.size() > campos->at(item->column()).size){
 
+        text.resize(campos->at(item->column()).size);
+    }
+    bool valid;
+    switch(campos->at(item->column()).type){
+        case INTF:
+            text.toInt(&valid);
+            break;
+        case DEC:
+            text.toDouble(&valid);
+            break;
+        default:
+            valid = true;
+    }
+    cout <<"IS VALID? = "<< valid << endl;
+    if(!valid || isKeyRepeated(campos->at(item->column())))
+        text = "";
+    item->setText(text);
+
+}
+bool isKeyRepeated(FieldDefinition &campo){
+    if(!campo.key){
+        return false;
+    }
+    /****************************************
+     *
+     *
+     *
+    //VALIDAR LA REPETICION DE REGISTROS
+     *
+     *
+     *
+     *
+    ****************************************/
+    return false;
 }

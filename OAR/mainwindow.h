@@ -13,7 +13,7 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    vector<FieldDefenition>* campos;
+    vector<FieldDefinition>* campos;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -32,6 +32,8 @@ private slots:
     void on_addRecord_triggered();
 
     void on_Tabla_Principal_itemChanged(QTableWidgetItem*);
+
+    void on_delRecord_triggered();
 
 private:
     Ui::MainWindow *ui;

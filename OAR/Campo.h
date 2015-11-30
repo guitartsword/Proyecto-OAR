@@ -1,7 +1,7 @@
 #pragma once
 enum FieldType{CHAR, INTF, DEC};
 
-struct FieldDefenition{
+struct FieldDefinition{
     char name[30];
     FieldType type;
     int size;

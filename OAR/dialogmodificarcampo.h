@@ -19,11 +19,11 @@ class DialogModificarCampo : public QDialog
 {
     Q_OBJECT
     QTableWidget* tabla;
-    vector<FieldDefenition>* campos;
+    vector<FieldDefinition>* campos;
 
 public:
     explicit DialogModificarCampo(QWidget *parent = 0);
-    explicit DialogModificarCampo(vector<FieldDefenition>*, QTableWidget*, QWidget *parent = 0);
+    explicit DialogModificarCampo(vector<FieldDefinition>*, QTableWidget*, QWidget *parent = 0);
     ~DialogModificarCampo();
 
 private slots:
