@@ -29,6 +29,10 @@ private slots:
 
     void on_updateField_triggered();
 
+    void on_addRecord_triggered();
+
+    void on_Tabla_Principal_itemChanged(QTableWidgetItem*);
+
 private:
     Ui::MainWindow *ui;
 };

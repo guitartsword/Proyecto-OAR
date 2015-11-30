@@ -24,19 +24,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>131</width>
-      <height>32</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Agregar Registro</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -68,7 +55,11 @@
     <property name="title">
      <string>Registros</string>
     </property>
-    <addaction name="importRecord"/>
+    <addaction name="importFiles"/>
+    <addaction name="separator"/>
+    <addaction name="addRecord"/>
+    <addaction name="updateRecord"/>
+    <addaction name="delRecord"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuCampo"/>
@@ -108,7 +99,7 @@
     <string>Crear</string>
    </property>
   </action>
-  <action name="importRecord">
+  <action name="importFiles">
    <property name="text">
     <string>Cargar </string>
    </property>
@@ -121,6 +112,21 @@
   <action name="updateField">
    <property name="text">
     <string>Modificar</string>
+   </property>
+  </action>
+  <action name="addRecord">
+   <property name="text">
+    <string>Agregar</string>
+   </property>
+  </action>
+  <action name="updateRecord">
+   <property name="text">
+    <string>Modificar</string>
+   </property>
+  </action>
+  <action name="delRecord">
+   <property name="text">
+    <string>Eliminar</string>
    </property>
   </action>
  </widget>

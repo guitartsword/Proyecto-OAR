@@ -50,7 +50,6 @@ void MainWindow::on_addField_triggered()
         Box.setText("¡Debe crear un nuevo archivo para agregar campos!");
         Box.exec();
     }
-
 }
 
 void MainWindow::on_delField_triggered()
@@ -67,9 +66,6 @@ void MainWindow::on_delField_triggered()
     }
 }
 
-
-
-
 void MainWindow::on_updateField_triggered()
 {
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
@@ -81,4 +77,14 @@ void MainWindow::on_updateField_triggered()
         Box.setText("¡No se ha seleccionado ninguna columna!");
         Box.exec();
     }
+}
+
+void MainWindow::on_addRecord_triggered()
+{
+
+}
+
+void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
+{
+
 }

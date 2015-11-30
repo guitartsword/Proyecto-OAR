@@ -17,7 +17,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QToolBar>
@@ -33,12 +32,14 @@ public:
     QAction *closeFile;
     QAction *exitProgram;
     QAction *addField;
-    QAction *importRecord;
+    QAction *importFiles;
     QAction *delField;
     QAction *updateField;
+    QAction *addRecord;
+    QAction *updateRecord;
+    QAction *delRecord;
     QWidget *centralWidget;
     QTableWidget *Tabla_Principal;
-    QPushButton *pushButton;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QMenu *menuCampo;
@@ -61,20 +62,23 @@ public:
         exitProgram->setObjectName(QStringLiteral("exitProgram"));
         addField = new QAction(MainWindow);
         addField->setObjectName(QStringLiteral("addField"));
-        importRecord = new QAction(MainWindow);
-        importRecord->setObjectName(QStringLiteral("importRecord"));
+        importFiles = new QAction(MainWindow);
+        importFiles->setObjectName(QStringLiteral("importFiles"));
         delField = new QAction(MainWindow);
         delField->setObjectName(QStringLiteral("delField"));
         updateField = new QAction(MainWindow);
         updateField->setObjectName(QStringLiteral("updateField"));
+        addRecord = new QAction(MainWindow);
+        addRecord->setObjectName(QStringLiteral("addRecord"));
+        updateRecord = new QAction(MainWindow);
+        updateRecord->setObjectName(QStringLiteral("updateRecord"));
+        delRecord = new QAction(MainWindow);
+        delRecord->setObjectName(QStringLiteral("delRecord"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         Tabla_Principal = new QTableWidget(centralWidget);
         Tabla_Principal->setObjectName(QStringLiteral("Tabla_Principal"));
         Tabla_Principal->setGeometry(QRect(10, 60, 821, 491));
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(10, 10, 131, 32));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -103,7 +107,11 @@ public:
         menuCampo->addAction(addField);
         menuCampo->addAction(delField);
         menuCampo->addAction(updateField);
-        menuRegistros->addAction(importRecord);
+        menuRegistros->addAction(importFiles);
+        menuRegistros->addSeparator();
+        menuRegistros->addAction(addRecord);
+        menuRegistros->addAction(updateRecord);
+        menuRegistros->addAction(delRecord);
 
         retranslateUi(MainWindow);
 
@@ -118,10 +126,12 @@ public:
         closeFile->setText(QApplication::translate("MainWindow", "Cerrar", 0));
         exitProgram->setText(QApplication::translate("MainWindow", "Salir", 0));
         addField->setText(QApplication::translate("MainWindow", "Crear", 0));
-        importRecord->setText(QApplication::translate("MainWindow", "Cargar ", 0));
+        importFiles->setText(QApplication::translate("MainWindow", "Cargar ", 0));
         delField->setText(QApplication::translate("MainWindow", "Borrar", 0));
         updateField->setText(QApplication::translate("MainWindow", "Modificar", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Agregar Registro", 0));
+        addRecord->setText(QApplication::translate("MainWindow", "Agregar", 0));
+        updateRecord->setText(QApplication::translate("MainWindow", "Modificar", 0));
+        delRecord->setText(QApplication::translate("MainWindow", "Eliminar", 0));
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));
         menuRegistros->setTitle(QApplication::translate("MainWindow", "Registros", 0));
