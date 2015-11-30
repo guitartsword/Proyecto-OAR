@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_actionNuevo_triggered()
+void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
     QFile datafile("../../../Data.OAR");
@@ -40,7 +40,7 @@ void MainWindow::on_actionNuevo_triggered()
     ui->Tabla_Principal->setRowCount(1);
 }
 
-void MainWindow::on_CrearCampo_triggered()
+void MainWindow::on_addField_triggered()
 {
     if(ui->Tabla_Principal->isEnabled()){
         DialogCampo dialog(this->campos,ui->Tabla_Principal,this);
@@ -50,14 +50,9 @@ void MainWindow::on_CrearCampo_triggered()
         Box.setText("¡Debe crear un nuevo archivo para agregar campos!");
         Box.exec();
     }
-
 }
 
-void MainWindow::on_sectionClicked ( int logicalIndex ){
-    cout<<"HOLA";
-}
-
-void MainWindow::on_actionBorrar_triggered()
+void MainWindow::on_delField_triggered()
 {
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty()){
@@ -70,12 +65,9 @@ void MainWindow::on_actionBorrar_triggered()
         Box.exec();
     }
 }
-
-
-
-
-void MainWindow::on_actionModificar_2_triggered()
+void MainWindow::on_updateField_triggered()
 {
+    cout << "Probando accion" << endl;
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty()){
         DialogModificarCampo dialog(this->campos,ui->Tabla_Principal,this);
@@ -85,4 +77,14 @@ void MainWindow::on_actionModificar_2_triggered()
         Box.setText("¡No se ha seleccionado ninguna columna!");
         Box.exec();
     }
+}
+
+void MainWindow::on_addRecord_triggered()
+{
+
+}
+
+void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
+{
+    cout<<"item Changed"<< endl;
 }

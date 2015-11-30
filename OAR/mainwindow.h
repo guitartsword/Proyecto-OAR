@@ -21,17 +21,17 @@ public:
 
 private slots:
 
-    void on_actionNuevo_triggered();
+    void on_newFile_triggered();
 
-    void on_CrearCampo_triggered();
+    void on_addField_triggered();
 
-    void on_sectionClicked ( int logicalIndex );
+    void on_delField_triggered();
 
-    void on_actionBorrar_triggered();
+    void on_updateField_triggered();
 
+    void on_addRecord_triggered();
 
-
-    void on_actionModificar_2_triggered();
+    void on_Tabla_Principal_itemChanged(QTableWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
