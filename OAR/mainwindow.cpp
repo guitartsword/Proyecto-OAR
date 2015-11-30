@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_actionNuevo_triggered()
+void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
     QFile datafile("../../../Data.OAR");
@@ -40,7 +40,7 @@ void MainWindow::on_actionNuevo_triggered()
     ui->Tabla_Principal->setRowCount(1);
 }
 
-void MainWindow::on_CrearCampo_triggered()
+void MainWindow::on_addField_triggered()
 {
     if(ui->Tabla_Principal->isEnabled()){
         DialogCampo dialog(this->campos,ui->Tabla_Principal,this);
@@ -53,11 +53,7 @@ void MainWindow::on_CrearCampo_triggered()
 
 }
 
-void MainWindow::on_sectionClicked ( int logicalIndex ){
-    cout<<"HOLA";
-}
-
-void MainWindow::on_actionBorrar_triggered()
+void MainWindow::on_delField_triggered()
 {
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty()){
@@ -74,7 +70,7 @@ void MainWindow::on_actionBorrar_triggered()
 
 
 
-void MainWindow::on_actionModificar_2_triggered()
+void MainWindow::on_updateField_triggered()
 {
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty()){

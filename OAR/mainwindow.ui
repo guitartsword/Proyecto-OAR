@@ -44,32 +44,31 @@
      <x>0</x>
      <y>0</y>
      <width>845</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuArchivo">
     <property name="title">
      <string>Archivo</string>
     </property>
-    <addaction name="actionNuevo"/>
-    <addaction name="actionGuardar"/>
-    <addaction name="actionSalvar"/>
-    <addaction name="actionCerrar"/>
-    <addaction name="actionSalir"/>
+    <addaction name="newFile"/>
+    <addaction name="saveFile"/>
+    <addaction name="closeFile"/>
+    <addaction name="exitProgram"/>
    </widget>
    <widget class="QMenu" name="menuCampo">
     <property name="title">
      <string>Campo</string>
     </property>
-    <addaction name="CrearCampo"/>
-    <addaction name="actionBorrar"/>
-    <addaction name="actionModificar_2"/>
+    <addaction name="addField"/>
+    <addaction name="delField"/>
+    <addaction name="updateField"/>
    </widget>
    <widget class="QMenu" name="menuRegistros">
     <property name="title">
      <string>Registros</string>
     </property>
-    <addaction name="actionCargar"/>
+    <addaction name="importRecord"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuCampo"/>
@@ -84,57 +83,42 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionNuevo">
+  <action name="newFile">
    <property name="text">
     <string>Nuevo</string>
    </property>
   </action>
-  <action name="actionGuardar">
+  <action name="saveFile">
    <property name="text">
     <string>Guardar</string>
    </property>
   </action>
-  <action name="actionSalvar">
-   <property name="text">
-    <string>Salvar</string>
-   </property>
-  </action>
-  <action name="actionCerrar">
+  <action name="closeFile">
    <property name="text">
     <string>Cerrar</string>
    </property>
   </action>
-  <action name="actionSalir">
+  <action name="exitProgram">
    <property name="text">
     <string>Salir</string>
    </property>
   </action>
-  <action name="CrearCampo">
+  <action name="addField">
    <property name="text">
     <string>Crear</string>
    </property>
   </action>
-  <action name="actionListar">
-   <property name="text">
-    <string>Listar</string>
-   </property>
-  </action>
-  <action name="actionModificar">
-   <property name="text">
-    <string>Modificar</string>
-   </property>
-  </action>
-  <action name="actionCargar">
+  <action name="importRecord">
    <property name="text">
     <string>Cargar </string>
    </property>
   </action>
-  <action name="actionBorrar">
+  <action name="delField">
    <property name="text">
     <string>Borrar</string>
    </property>
   </action>
-  <action name="actionModificar_2">
+  <action name="updateField">
    <property name="text">
     <string>Modificar</string>
    </property>

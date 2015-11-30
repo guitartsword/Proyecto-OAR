@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[7];
-    char stringdata[119];
+    QByteArrayData data[6];
+    char stringdata[103];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -30,16 +30,15 @@ struct qt_meta_stringdata_MainWindow_t {
 static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
     {
 QT_MOC_LITERAL(0, 0, 10),
-QT_MOC_LITERAL(1, 11, 24),
-QT_MOC_LITERAL(2, 36, 0),
-QT_MOC_LITERAL(3, 37, 23),
-QT_MOC_LITERAL(4, 61, 17),
-QT_MOC_LITERAL(5, 79, 12),
-QT_MOC_LITERAL(6, 92, 25)
+QT_MOC_LITERAL(1, 11, 20),
+QT_MOC_LITERAL(2, 32, 0),
+QT_MOC_LITERAL(3, 33, 21),
+QT_MOC_LITERAL(4, 55, 21),
+QT_MOC_LITERAL(5, 77, 24)
     },
-    "MainWindow\0on_actionNuevo_triggered\0"
-    "\0on_CrearCampo_triggered\0on_sectionClicked\0"
-    "logicalIndex\0on_actionBorrar_triggered\0"
+    "MainWindow\0on_newFile_triggered\0\0"
+    "on_addField_triggered\0on_delField_triggered\0"
+    "on_updateField_triggered\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,13 +58,13 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: name, argc, parameters, tag, flags
        1,    0,   34,    2, 0x08,
        3,    0,   35,    2, 0x08,
-       4,    1,   36,    2, 0x08,
-       6,    0,   39,    2, 0x08,
+       4,    0,   36,    2, 0x08,
+       5,    0,   37,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,    5,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -76,13 +75,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     if (_c == QMetaObject::InvokeMetaMethod) {
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
-        case 0: _t->on_actionNuevo_triggered(); break;
-        case 1: _t->on_CrearCampo_triggered(); break;
-        case 2: _t->on_sectionClicked((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 3: _t->on_actionBorrar_triggered(); break;
+        case 0: _t->on_newFile_triggered(); break;
+        case 1: _t->on_addField_triggered(); break;
+        case 2: _t->on_delField_triggered(); break;
+        case 3: _t->on_updateField_triggered(); break;
         default: ;
         }
     }
+    Q_UNUSED(_a);
 }
 
 const QMetaObject MainWindow::staticMetaObject = {
