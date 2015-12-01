@@ -38,19 +38,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
-
-    fstream file("./Data.OAR",fstream::out);
-    File x(file, "prueba");
-    char* data = "Hola mundo";
-    file.write(data,10);
+    File x("../../../Data.OAR", "prueba");
     /*QFile datafile("../../../Data.OAR");
     if (!datafile.open(QIODevice::WriteOnly | QIODevice::Text))
         qDebug() << "Failed to create:" << datafile.errorString();
     datafile.flush();
     datafile.close();
     */
-    file.close();
-    ui->Tabla_Principal->setRowCount(1);
 }
 
 int MainWindow::Availability(){
@@ -127,7 +121,6 @@ void MainWindow::on_delRecord_triggered()
 void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 {
     //Se va usar el avail list
-    cout<<"Entra"<<endl;
     QString text = item->text();
     /*
     cout<<"item Changed: "<< text.toStdString() << endl;
@@ -138,6 +131,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
         cout << "campos->at(" << i << ") == " << campos->at(i).name << endl;
     }
     */
+
     if(text.size() > campos->at(item->column()).size){
 
         text.resize(campos->at(item->column()).size);

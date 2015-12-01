@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "Campo.h"
-//#include "file.h"
+#include "file.h"
 #include <QMainWindow>
 #include <vector>
 #include <QTableWidget>
