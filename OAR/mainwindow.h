@@ -14,6 +14,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     vector<FieldDefinition>* campos;
+    int Avail_offset;
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -22,6 +23,8 @@ public:
 private slots:
 
     void on_newFile_triggered();
+
+    int Availability();
 
     void on_addField_triggered();
 

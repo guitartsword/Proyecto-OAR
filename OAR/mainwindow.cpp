@@ -17,6 +17,7 @@ bool isKeyRepeated(FieldDefinition&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+    Avail_offset(-1),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -40,6 +41,15 @@ void MainWindow::on_newFile_triggered()
     datafile.flush();
     datafile.close();
     ui->Tabla_Principal->setRowCount(1);
+}
+
+int MainWindow::Availability(){
+    if(Avail_offset==-1){
+        return -1;
+    }else{
+        //Buscar en el archivo con el offset del avail
+        //retornar la posicion
+    }
 }
 
 void MainWindow::on_addField_triggered()
@@ -93,6 +103,7 @@ void MainWindow::on_addRecord_triggered()
         Box.exec();
     }else
         ui->Tabla_Principal->setRowCount(ui->Tabla_Principal->rowCount()+1);
+
 }
 
 void MainWindow::on_delRecord_triggered()
@@ -105,6 +116,7 @@ void MainWindow::on_delRecord_triggered()
 
 void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 {
+    //Se va usar el avail list
     cout<<"Entra"<<endl;
     QString text = item->text();
     /*
@@ -137,6 +149,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
     item->setText(text);
 
 }
+
 bool isKeyRepeated(FieldDefinition &campo){
     if(!campo.key){
         return false;
@@ -152,4 +165,7 @@ bool isKeyRepeated(FieldDefinition &campo){
      *
     ****************************************/
     return false;
+}
+string FieldDefinitionSringt(){
+
 }

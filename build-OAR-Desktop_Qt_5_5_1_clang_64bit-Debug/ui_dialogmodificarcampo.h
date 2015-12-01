@@ -47,7 +47,7 @@ public:
         T_ModificarNombre->setGeometry(QRect(20, 80, 331, 21));
         label = new QLabel(DialogModificarCampo);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(20, 10, 191, 31));
+        label->setGeometry(QRect(20, 10, 231, 31));
         QFont font;
         font.setPointSize(24);
         label->setFont(font);
