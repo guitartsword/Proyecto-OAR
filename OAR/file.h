@@ -1,13 +1,13 @@
 #pragma once
-#include <fstream>
 #include <string>
+#include <fstream>
 using namespace std;
 class File
 {
-    fstream File;
+    fstream file;
     string nombre;
 public:
-    File(fstream, string);
+    File(string, string);
     void addRecord(string);
     void updateFile();
     void deleteRecord(int);

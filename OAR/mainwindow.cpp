@@ -3,6 +3,7 @@
 #include "Campo.h"
 #include "dialogcampo.h"
 #include "dialogmodificarcampo.h"
+#include "file.h"
 #include <iostream>
 #include <QFile>
 #include <QString>
@@ -11,6 +12,8 @@
 #include <QFileDialog>
 #include <vector>
 #include <QMessageBox>
+#include <fstream>
+
 using namespace std;
 
 bool isKeyRepeated(FieldDefinition&);
@@ -35,11 +38,18 @@ MainWindow::~MainWindow()
 void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
-    QFile datafile("../../../Data.OAR");
+
+    fstream file("./Data.OAR",fstream::out);
+    File x(file, "prueba");
+    char* data = "Hola mundo";
+    file.write(data,10);
+    /*QFile datafile("../../../Data.OAR");
     if (!datafile.open(QIODevice::WriteOnly | QIODevice::Text))
         qDebug() << "Failed to create:" << datafile.errorString();
     datafile.flush();
     datafile.close();
+    */
+    file.close();
     ui->Tabla_Principal->setRowCount(1);
 }
 
@@ -166,6 +176,11 @@ bool isKeyRepeated(FieldDefinition &campo){
     ****************************************/
     return false;
 }
-string FieldDefinitionSringt(){
+string FieldDefinitionString(){
+
+}
+
+void MainWindow::on_saveFile_triggered()
+{
 
 }

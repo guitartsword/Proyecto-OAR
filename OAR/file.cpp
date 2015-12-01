@@ -1,10 +1,12 @@
 #include "file.h"
+#include <fstream>
+#include <string>
+using namespace std;
 
-File::File(fstream file, string nombre):
-    File(file),
-    Nombre(nombre)
+File::File(string filepath, string nombre):
+    nombre(nombre)
 {
-
+    file.open(filepath.c_str());
 }
 
 void File::addRecord(string){
@@ -18,4 +20,3 @@ void File::updateFile(){
 void File::deleteRecord(int){
     //Borrar Registro del archivo
 }
-

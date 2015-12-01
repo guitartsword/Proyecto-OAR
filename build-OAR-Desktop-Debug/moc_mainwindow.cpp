@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[10];
-    char stringdata[198];
+    QByteArrayData data[12];
+    char stringdata[233];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -32,20 +32,23 @@ static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_MainWindow = {
 QT_MOC_LITERAL(0, 0, 10),
 QT_MOC_LITERAL(1, 11, 20),
 QT_MOC_LITERAL(2, 32, 0),
-QT_MOC_LITERAL(3, 33, 21),
-QT_MOC_LITERAL(4, 55, 21),
-QT_MOC_LITERAL(5, 77, 24),
-QT_MOC_LITERAL(6, 102, 22),
-QT_MOC_LITERAL(7, 125, 30),
-QT_MOC_LITERAL(8, 156, 17),
-QT_MOC_LITERAL(9, 174, 22)
+QT_MOC_LITERAL(3, 33, 12),
+QT_MOC_LITERAL(4, 46, 21),
+QT_MOC_LITERAL(5, 68, 21),
+QT_MOC_LITERAL(6, 90, 24),
+QT_MOC_LITERAL(7, 115, 22),
+QT_MOC_LITERAL(8, 138, 30),
+QT_MOC_LITERAL(9, 169, 17),
+QT_MOC_LITERAL(10, 187, 22),
+QT_MOC_LITERAL(11, 210, 21)
     },
     "MainWindow\0on_newFile_triggered\0\0"
-    "on_addField_triggered\0on_delField_triggered\0"
-    "on_updateField_triggered\0"
+    "Availability\0on_addField_triggered\0"
+    "on_delField_triggered\0on_updateField_triggered\0"
     "on_addRecord_triggered\0"
     "on_Tabla_Principal_itemChanged\0"
     "QTableWidgetItem*\0on_delRecord_triggered\0"
+    "on_saveFile_triggered\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,7 +58,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -63,21 +66,25 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   49,    2, 0x08,
-       3,    0,   50,    2, 0x08,
-       4,    0,   51,    2, 0x08,
-       5,    0,   52,    2, 0x08,
-       6,    0,   53,    2, 0x08,
-       7,    1,   54,    2, 0x08,
-       9,    0,   57,    2, 0x08,
+       1,    0,   59,    2, 0x08,
+       3,    0,   60,    2, 0x08,
+       4,    0,   61,    2, 0x08,
+       5,    0,   62,    2, 0x08,
+       6,    0,   63,    2, 0x08,
+       7,    0,   64,    2, 0x08,
+       8,    1,   65,    2, 0x08,
+      10,    0,   68,    2, 0x08,
+      11,    0,   69,    2, 0x08,
 
  // slots: parameters
     QMetaType::Void,
+    QMetaType::Int,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 8,    2,
+    QMetaType::Void, 0x80000000 | 9,    2,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -89,12 +96,15 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         switch (_id) {
         case 0: _t->on_newFile_triggered(); break;
-        case 1: _t->on_addField_triggered(); break;
-        case 2: _t->on_delField_triggered(); break;
-        case 3: _t->on_updateField_triggered(); break;
-        case 4: _t->on_addRecord_triggered(); break;
-        case 5: _t->on_Tabla_Principal_itemChanged((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
-        case 6: _t->on_delRecord_triggered(); break;
+        case 1: { int _r = _t->Availability();
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 2: _t->on_addField_triggered(); break;
+        case 3: _t->on_delField_triggered(); break;
+        case 4: _t->on_updateField_triggered(); break;
+        case 5: _t->on_addRecord_triggered(); break;
+        case 6: _t->on_Tabla_Principal_itemChanged((*reinterpret_cast< QTableWidgetItem*(*)>(_a[1]))); break;
+        case 7: _t->on_delRecord_triggered(); break;
+        case 8: _t->on_saveFile_triggered(); break;
         default: ;
         }
     }
@@ -125,13 +135,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 9)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }

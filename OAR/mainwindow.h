@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include "Campo.h"
+//#include "file.h"
 #include <QMainWindow>
 #include <vector>
 #include <QTableWidget>
@@ -15,7 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     vector<FieldDefinition>* campos;
     int Avail_offset;
-
+//    vector<File>* Files;
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -37,6 +38,8 @@ private slots:
     void on_Tabla_Principal_itemChanged(QTableWidgetItem*);
 
     void on_delRecord_triggered();
+
+    void on_saveFile_triggered();
 
 private:
     Ui::MainWindow *ui;
