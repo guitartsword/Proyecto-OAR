@@ -9,7 +9,7 @@ File::File(string filepath, string nombre):
 {
     cout<<filepath;
     file.open(filepath.c_str());
-    file.close();
+
 }
 
 void File::addRecord(string){
