@@ -13,6 +13,8 @@
 #include <vector>
 #include <QMessageBox>
 #include <fstream>
+#include <string>
+
 
 using namespace std;
 
@@ -38,13 +40,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
-    File x("../../../Data.OAR", "prueba");
-    /*QFile datafile("../../../Data.OAR");
-    if (!datafile.open(QIODevice::WriteOnly | QIODevice::Text))
-        qDebug() << "Failed to create:" << datafile.errorString();
-    datafile.flush();
-    datafile.close();
-    */
+    QFileDialog dialog;
+    QString pathExport = dialog.getSaveFileName(this, tr("Nombre del Archivo"),
+                                         "/home/jana/untitled.OAR",
+                                         tr("Registros (*.OAR)"));
+    string text = pathExport.toUtf8().constData();
+    File x(text, "prueba");
 }
 
 int MainWindow::Availability(){
