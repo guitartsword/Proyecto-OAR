@@ -16,13 +16,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     dialogcampo.cpp \
     dialogmodificarcampo.cpp \
-    file.cpp
+    file.cpp \
+    record.cpp \
+    campo.cpp
 
 HEADERS  += mainwindow.h \
     dialogcampo.h \
-    Campo.h \
     dialogmodificarcampo.h \
-    file.h
+    file.h \
+    record.h \
+    campo.h
 
 FORMS    += mainwindow.ui \
     dialogcampo.ui \

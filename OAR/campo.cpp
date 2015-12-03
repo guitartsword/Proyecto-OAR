@@ -1,7 +1,6 @@
-#include "Campo.h"
+#include "campo.h"
 
 Campo::Campo()
 {
 
 }
-

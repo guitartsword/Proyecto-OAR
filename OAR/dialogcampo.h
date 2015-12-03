@@ -1,6 +1,6 @@
 #ifndef DIALOGCAMPO_H
 #define DIALOGCAMPO_H
-#include "Campo.h"
+#include "campo.h"
 #include <QDialog>
 #include <QTableWidget>
 #include <vector>
@@ -13,12 +13,12 @@ class DialogCampo;
 class DialogCampo : public QDialog
 {
     QTableWidget* tabla;
-    vector<FieldDefinition>* campos;
+    vector<Campo>* campos;
     Q_OBJECT
 
 public:
     explicit DialogCampo(QWidget *parent = 0);
-    explicit DialogCampo(vector<FieldDefinition>*, QTableWidget*, QWidget *parent = 0);
+    explicit DialogCampo(vector<Campo>*, QTableWidget*, QWidget *parent = 0);
     ~DialogCampo();
 
 private slots:

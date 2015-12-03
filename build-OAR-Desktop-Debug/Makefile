@@ -49,7 +49,9 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
-		../OAR/file.cpp moc_mainwindow.cpp \
+		../OAR/file.cpp \
+		../OAR/record.cpp \
+		../OAR/campo.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -57,6 +59,8 @@ OBJECTS       = main.o \
 		dialogcampo.o \
 		dialogmodificarcampo.o \
 		file.o \
+		record.o \
+		campo.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -348,7 +352,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/OAR1.0.0 || mkdir -p .tmp/OAR1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/Campo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
 
 
 clean:compiler_clean 
@@ -374,7 +378,7 @@ compiler_rcc_clean:
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
-moc_mainwindow.cpp: ../OAR/Campo.h \
+moc_mainwindow.cpp: ../OAR/file.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -507,8 +511,7 @@ moc_mainwindow.cpp: ../OAR/Campo.h \
 		../OAR/mainwindow.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../OAR/mainwindow.h -o moc_mainwindow.cpp
 
-moc_dialogcampo.cpp: ../OAR/Campo.h \
-		/usr/include/qt5/QtWidgets/QDialog \
+moc_dialogcampo.cpp: /usr/include/qt5/QtWidgets/QDialog \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
 		/usr/include/qt5/QtGui/qwindowdefs.h \
@@ -640,8 +643,7 @@ moc_dialogcampo.cpp: ../OAR/Campo.h \
 		../OAR/dialogcampo.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) $(INCPATH) -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../OAR/dialogcampo.h -o moc_dialogcampo.cpp
 
-moc_dialogmodificarcampo.cpp: ../OAR/Campo.h \
-		/usr/include/qt5/QtWidgets/QDialog \
+moc_dialogmodificarcampo.cpp: /usr/include/qt5/QtWidgets/QDialog \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
 		/usr/include/qt5/QtGui/qwindowdefs.h \
@@ -803,7 +805,7 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 ####### Compile
 
 main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
-		../OAR/Campo.h \
+		../OAR/file.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -943,7 +945,7 @@ main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../OAR/main.cpp
 
 mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
-		../OAR/Campo.h \
+		../OAR/file.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -1105,18 +1107,23 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		/usr/include/qt5/QtCore/QString \
 		/usr/include/qt5/QtWidgets/QMessageBox \
 		/usr/include/qt5/QtWidgets/qmessagebox.h \
-		../OAR/file.h \
 		/usr/include/qt5/QtCore/QFile \
 		/usr/include/qt5/QtCore/QTextStream \
 		/usr/include/qt5/QtCore/QDebug \
 		/usr/include/qt5/QtWidgets/QFileDialog \
 		/usr/include/qt5/QtWidgets/qfiledialog.h \
 		/usr/include/qt5/QtCore/qdir.h \
-		/usr/include/qt5/QtCore/qfileinfo.h
+		/usr/include/qt5/QtCore/qfileinfo.h \
+		/usr/include/qt5/QtWidgets/QInputDialog \
+		/usr/include/qt5/QtWidgets/qinputdialog.h \
+		/usr/include/qt5/QtWidgets/qlineedit.h \
+		/usr/include/qt5/QtGui/qtextcursor.h \
+		/usr/include/qt5/QtGui/qtextformat.h \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/qtextoption.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../OAR/mainwindow.cpp
 
 dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
-		../OAR/Campo.h \
 		/usr/include/qt5/QtWidgets/QDialog \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -1285,7 +1292,6 @@ dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogcampo.o ../OAR/dialogcampo.cpp
 
 dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarcampo.h \
-		../OAR/Campo.h \
 		/usr/include/qt5/QtWidgets/QDialog \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -1456,6 +1462,12 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 
 file.o: ../OAR/file.cpp ../OAR/file.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
+
+record.o: ../OAR/record.cpp ../OAR/record.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o record.o ../OAR/record.cpp
+
+campo.o: ../OAR/campo.cpp ../OAR/campo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

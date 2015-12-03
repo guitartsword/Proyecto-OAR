@@ -38,6 +38,7 @@ public:
     QAction *addRecord;
     QAction *updateRecord;
     QAction *delRecord;
+    QAction *saveRecord;
     QWidget *centralWidget;
     QTableWidget *Tabla_Principal;
     QMenuBar *menuBar;
@@ -74,6 +75,8 @@ public:
         updateRecord->setObjectName(QStringLiteral("updateRecord"));
         delRecord = new QAction(MainWindow);
         delRecord->setObjectName(QStringLiteral("delRecord"));
+        saveRecord = new QAction(MainWindow);
+        saveRecord->setObjectName(QStringLiteral("saveRecord"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         Tabla_Principal = new QTableWidget(centralWidget);
@@ -112,6 +115,7 @@ public:
         menuRegistros->addAction(addRecord);
         menuRegistros->addAction(updateRecord);
         menuRegistros->addAction(delRecord);
+        menuRegistros->addAction(saveRecord);
 
         retranslateUi(MainWindow);
 
@@ -132,6 +136,7 @@ public:
         addRecord->setText(QApplication::translate("MainWindow", "Agregar", 0));
         updateRecord->setText(QApplication::translate("MainWindow", "Modificar", 0));
         delRecord->setText(QApplication::translate("MainWindow", "Eliminar", 0));
+        saveRecord->setText(QApplication::translate("MainWindow", "Guardar", 0));
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));
         menuRegistros->setTitle(QApplication::translate("MainWindow", "Registros", 0));

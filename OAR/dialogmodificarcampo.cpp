@@ -1,6 +1,6 @@
 #include "dialogmodificarcampo.h"
 #include "ui_dialogmodificarcampo.h"
-#include "Campo.h"
+#include "campo.h"
 #include <QString>
 #include <iostream>
 #include <QTableWidget>
@@ -36,13 +36,13 @@ bool DialogModificarCampo::busquedaLlave(){
     }
 }
 
-DialogModificarCampo::DialogModificarCampo(vector<FieldDefinition>* campos,QTableWidget* tabla, QWidget* parent):
+DialogModificarCampo::DialogModificarCampo(vector<Campo>* campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
     ui(new Ui::DialogModificarCampo),
     campos(campos)
 {
     this->tabla=tabla;
-    FieldDefinition temp=campos->at(tabla->currentColumn());
+    Campo temp=campos->at(tabla->currentColumn());
     ui->setupUi(this);
     ui->T_ModificarNombre->setText(temp.name);
     ui->SB_ModificarLongitud->setValue(temp.size);
@@ -67,7 +67,7 @@ void DialogModificarCampo::on_ModificarCampo_clicked()
     int longitud=ui->SB_ModificarLongitud->value();
     bool llave=ui->RB_ModificarLlave->isChecked();
     QMessageBox Box;
-    FieldDefinition* temp= &(campos->at(tabla->currentColumn()));
+    Campo* temp= &(campos->at(tabla->currentColumn()));
     bool llave_antigua=temp->key;
     if(nombre!=""){
         if(longitud>0){

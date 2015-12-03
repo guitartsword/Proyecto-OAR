@@ -1,6 +1,6 @@
 #include "dialogcampo.h"
 #include "ui_dialogcampo.h"
-#include "Campo.h"
+#include "campo.h"
 #include <QString>
 #include <iostream>
 #include <QTableWidget>
@@ -17,7 +17,7 @@ DialogCampo::DialogCampo(QWidget* parent):
     ui->setupUi(this);
 }
 
-DialogCampo::DialogCampo(vector<FieldDefinition>* campos,QTableWidget* tabla, QWidget* parent):
+DialogCampo::DialogCampo(vector<Campo>* campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
     ui(new Ui::DialogCampo),
     campos(campos)
@@ -53,7 +53,7 @@ void DialogCampo::on_CampoNuevo_clicked()
     bool llave=ui->RB_CampoLlave->isChecked();
     QMessageBox Box;
 
-    FieldDefinition temp;
+    Campo temp;
     if(nombre!=""){
         if(longitud>0){
             try{

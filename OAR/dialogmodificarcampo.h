@@ -1,6 +1,6 @@
 #ifndef DIALOGMODIFICARCAMPO_H
 #define DIALOGMODIFICARCAMPO_H
-#include "Campo.h"
+#include "campo.h"
 
 #include <QDialog>
 #include <QString>
@@ -19,11 +19,11 @@ class DialogModificarCampo : public QDialog
 {
     Q_OBJECT
     QTableWidget* tabla;
-    vector<FieldDefinition>* campos;
+    vector<Campo>* campos;
 
 public:
     explicit DialogModificarCampo(QWidget *parent = 0);
-    explicit DialogModificarCampo(vector<FieldDefinition>*, QTableWidget*, QWidget *parent = 0);
+    explicit DialogModificarCampo(vector<Campo>*, QTableWidget*, QWidget *parent = 0);
     ~DialogModificarCampo();
 
 private slots:

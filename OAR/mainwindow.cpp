@@ -1,9 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "Campo.h"
+#include "campo.h"
 #include "dialogcampo.h"
 #include "dialogmodificarcampo.h"
 #include "file.h"
+
 #include <iostream>
 #include <QFile>
 #include <QString>
@@ -12,22 +13,25 @@
 #include <QFileDialog>
 #include <vector>
 #include <QMessageBox>
+#include <QInputDialog>
 #include <fstream>
 #include <string>
 
 
 using namespace std;
 
-bool isKeyRepeated(FieldDefinition&);
+bool isKeyRepeated(Campo&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     Avail_offset(-1),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    campos(new vector<Campo>()),
+    registro(campos)
 {
+    cout << "HERE" << endl;
     ui->setupUi(this);
     ui->Tabla_Principal->setDisabled(true);
-    campos = new vector<FieldDefinition>();
 }
 
 MainWindow::~MainWindow()
@@ -41,11 +45,16 @@ void MainWindow::on_newFile_triggered()
 {
     ui->Tabla_Principal->setEnabled(true);
     QFileDialog dialog;
-    QString pathExport = dialog.getSaveFileName(this, tr("Nombre del Archivo"),
-                                         "/home/jana/untitled.OAR",
-                                         tr("Registros (*.OAR)"));
-    string text = pathExport.toUtf8().constData();
-    File x(text, "prueba");
+    /*QString pathExport = dialog.getSaveFileName(this, tr("Nombre del Archivo"),
+                                         "/home",
+                                         tr("Registros (*.OAR)"));*/
+    //string text = pathExport.toUtf8().constData();
+    QString filename = "";
+    filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese el nombre del nuevo archivo:");
+    string text = filename.toStdString();
+    if(filename != ""){
+        main = new File(text, "prueba");
+    }
 }
 
 int MainWindow::Availability(){
@@ -155,7 +164,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 
 }
 
-bool isKeyRepeated(FieldDefinition &campo){
+bool isKeyRepeated(Campo &campo){
     if(!campo.key){
         return false;
     }
@@ -171,11 +180,23 @@ bool isKeyRepeated(FieldDefinition &campo){
     ****************************************/
     return false;
 }
-string FieldDefinitionString(){
+string CampoString(){
 
 }
 
 void MainWindow::on_saveFile_triggered()
 {
+    main->saveHeader(campos);
+}
 
+void MainWindow::on_saveRecord_triggered()
+{
+    registro.setCampos(campos);
+    for(int i = 0; i < ui->Tabla_Principal->columnCount(); i++){
+        cout <<"guardando"<<i<<endl;
+        QTableWidgetItem* temp = ui->Tabla_Principal->itemAt(ui->Tabla_Principal->currentRow(), i);
+        char* tempstr;
+        strcpy(tempstr, temp->text().toStdString().c_str());
+        registro.setData(i,tempstr);
+    }
 }

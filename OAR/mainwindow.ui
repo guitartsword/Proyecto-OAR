@@ -60,6 +60,7 @@
     <addaction name="addRecord"/>
     <addaction name="updateRecord"/>
     <addaction name="delRecord"/>
+    <addaction name="saveRecord"/>
    </widget>
    <addaction name="menuArchivo"/>
    <addaction name="menuCampo"/>
@@ -127,6 +128,11 @@
   <action name="delRecord">
    <property name="text">
     <string>Eliminar</string>
+   </property>
+  </action>
+  <action name="saveRecord">
+   <property name="text">
+    <string>Guardar</string>
    </property>
   </action>
  </widget>
