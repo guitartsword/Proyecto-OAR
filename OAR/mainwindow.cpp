@@ -24,7 +24,7 @@ bool isKeyRepeated(Campo&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    Avail_offset(-1),
+    Avail_offset(0),
     ui(new Ui::MainWindow),
     campos(new vector<Campo>()),
     registro(campos)
@@ -53,13 +53,13 @@ void MainWindow::on_newFile_triggered()
     filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese el nombre del nuevo archivo:");
     string text = filename.toStdString();
     if(filename != ""){
-        main = new File(text, "prueba");
+        output = new File(text, "prueba");
     }
 }
 
 int MainWindow::Availability(){
-    if(Avail_offset==-1){
-        return -1;
+    if(Avail_offset==0){
+        return 0;
     }else{
         //Buscar en el archivo con el offset del avail
         //retornar la posicion
@@ -186,7 +186,7 @@ string CampoString(){
 
 void MainWindow::on_saveFile_triggered()
 {
-    main->saveHeader(campos);
+    output->saveHeader(campos);
 }
 
 void MainWindow::on_saveRecord_triggered()

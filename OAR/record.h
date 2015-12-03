@@ -2,7 +2,9 @@
 #include "campo.h"
 #include <vector>
 #include <string>
+#include <fstream>
 
+using std::ofstream;
 using std::string;
 using std::vector;
 
@@ -17,4 +19,5 @@ public:
     void setData(int, char*);
     void setData(char**);
     const string toString()const;
+    friend ofstream& operator<<(ofstream&, const Record&);
 };

@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
     vector<Campo>* campos;
     int Avail_offset;
     Record registro;
-    File* main;
+    File* output;
 //    vector<File>* Files;
 public:
     explicit MainWindow(QWidget *parent = 0);
