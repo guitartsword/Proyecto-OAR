@@ -52,7 +52,9 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
-		../OAR/file.cpp moc_mainwindow.cpp \
+		../OAR/file.cpp \
+		../OAR/record.cpp \
+		../OAR/campo.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -60,6 +62,8 @@ OBJECTS       = main.o \
 		dialogcampo.o \
 		dialogmodificarcampo.o \
 		file.o \
+		record.o \
+		campo.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -184,6 +188,7 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		../OAR/.qmake.stash \
 		../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -206,13 +211,16 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/lex.prf \
 		../OAR/OAR.pro ../OAR/mainwindow.h \
 		../OAR/dialogcampo.h \
-		../OAR/Campo.h \
 		../OAR/dialogmodificarcampo.h \
-		../OAR/file.h ../OAR/main.cpp \
+		../OAR/file.h \
+		../OAR/record.h \
+		../OAR/campo.h ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
-		../OAR/file.cpp
+		../OAR/file.cpp \
+		../OAR/record.cpp \
+		../OAR/campo.cpp
 QMAKE_TARGET  = OAR
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = OAR.app/Contents/MacOS/OAR
@@ -375,6 +383,7 @@ Makefile: ../OAR/OAR.pro ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf 
 		../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -521,6 +530,7 @@ Makefile: ../OAR/OAR.pro ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf 
 ../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -574,8 +584,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/Campo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -605,7 +615,9 @@ compiler_rcc_clean:
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
-moc_mainwindow.cpp: ../OAR/Campo.h \
+moc_mainwindow.cpp: ../OAR/campo.h \
+		../OAR/file.h \
+		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -613,7 +625,7 @@ moc_mainwindow.cpp: ../OAR/Campo.h \
 		../OAR/mainwindow.h
 	/Users/Brenda/Qt/5.5/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/Brenda/Qt/5.5/clang_64/mkspecs/macx-clang -I'/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR' -I/Users/Brenda/Qt/5.5/clang_64/lib/QtWidgets.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtGui.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtCore.framework/Headers -I. -F/Users/Brenda/Qt/5.5/clang_64/lib ../OAR/mainwindow.h -o moc_mainwindow.cpp
 
-moc_dialogcampo.cpp: ../OAR/Campo.h \
+moc_dialogcampo.cpp: ../OAR/campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -621,7 +633,7 @@ moc_dialogcampo.cpp: ../OAR/Campo.h \
 		../OAR/dialogcampo.h
 	/Users/Brenda/Qt/5.5/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/Brenda/Qt/5.5/clang_64/mkspecs/macx-clang -I'/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR' -I/Users/Brenda/Qt/5.5/clang_64/lib/QtWidgets.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtGui.framework/Headers -I/Users/Brenda/Qt/5.5/clang_64/lib/QtCore.framework/Headers -I. -F/Users/Brenda/Qt/5.5/clang_64/lib ../OAR/dialogcampo.h -o moc_dialogcampo.cpp
 
-moc_dialogmodificarcampo.cpp: ../OAR/Campo.h \
+moc_dialogmodificarcampo.cpp: ../OAR/campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QString \
@@ -662,7 +674,9 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 ####### Compile
 
 main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
-		../OAR/Campo.h \
+		../OAR/campo.h \
+		../OAR/file.h \
+		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -672,7 +686,9 @@ main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../OAR/main.cpp
 
 mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
-		../OAR/Campo.h \
+		../OAR/campo.h \
+		../OAR/file.h \
+		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -688,7 +704,6 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qheaderview.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMessageBox \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
-		../OAR/file.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QFile \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qfile.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QTextStream \
@@ -696,11 +711,13 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QFileDialog \
-		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qfiledialog.h \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QInputDialog \
+		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qinputdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../OAR/mainwindow.cpp
 
 dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
-		../OAR/Campo.h \
+		../OAR/campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -715,7 +732,7 @@ dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogcampo.o ../OAR/dialogcampo.cpp
 
 dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarcampo.h \
-		../OAR/Campo.h \
+		../OAR/campo.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QDialog \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qdialog.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QString \
@@ -731,8 +748,16 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogmodificarcampo.o ../OAR/dialogmodificarcampo.cpp
 
-file.o: ../OAR/file.cpp ../OAR/file.h
+file.o: ../OAR/file.cpp ../OAR/file.h \
+		../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
+
+record.o: ../OAR/record.cpp ../OAR/record.h \
+		../OAR/campo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o record.o ../OAR/record.cpp
+
+campo.o: ../OAR/campo.cpp ../OAR/campo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

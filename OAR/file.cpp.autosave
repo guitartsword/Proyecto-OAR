@@ -89,9 +89,9 @@ void File::saveHeader(vector<Campo>* campos){
 
 void File::addRecord(string record, int offset){
     //Escribir Registro del disco en una posicion especifica
+    file.flush();
     file.seekp(header_size + offset,ios::beg);
     file.write(record.c_str(),record.size());
-    file.flush();
 }
 
 void File::appendRecord(string record){

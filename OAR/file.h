@@ -14,9 +14,11 @@ class File
 public:
     File(string, string, bool);
     ~File();
-    void addRecord(string);
+    void addRecord(string, int);
     void updateFile();
     void deleteRecord(int);
     void saveHeader(vector<Campo>*);
-    void calcHeaderSize();
+    void reCalcHeaderSize();
+    void appendRecord(string);
+    int getRRN();
 };

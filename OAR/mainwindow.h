@@ -18,8 +18,8 @@ class MainWindow : public QMainWindow
     vector<Campo>* campos;
     int Avail_offset;
     Record registro;
-    File* output;
-//    vector<File>* Files;
+    File* flie;
+    bool escritura;//Se utiliza para escribir solo una vez el header
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

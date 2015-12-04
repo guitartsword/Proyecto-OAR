@@ -236,8 +236,7 @@ void MainWindow::on_saveRecord_triggered()
                 ss<<left<<setw(campos->at(i).size) << temp.toStdString();
             }
             //Se mira el Avail List
-            int Avail = 0;
-            //int Avail = file->getRRN();
+            int Avail = file->getRRN();
             cout << ss.str() << endl;
             if(Avail==0){
                 file->appendRecord(ss.str());
