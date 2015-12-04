@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
     int Avail_offset;
     Record registro;
     File* main;
-//    vector<File>* Files;
+    bool escritura;//Se utiliza para escribir solo una vez el header
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

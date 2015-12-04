@@ -86,8 +86,12 @@ void File::saveHeader(vector<Campo>* campos){
     file.flush();
 }
 
-void File::addRecord(string){
-    //Escribir Registro del disco
+void File::addRecord(string record, int num_registro_disponible){
+    //Escribir Registro del disco en una posicion especifica
+}
+
+void File::appendRecord(string record){
+    //Escribir append un registro
 }
 
 void File::updateFile(){

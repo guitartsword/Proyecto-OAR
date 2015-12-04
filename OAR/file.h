@@ -12,8 +12,9 @@ class File
 public:
     File(string, string);
     ~File();
-    void addRecord(string);
+    void addRecord(string, int);
     void updateFile();
     void deleteRecord(int);
     void saveHeader(vector<Campo>*);
+    void appendRecord(string);
 };
