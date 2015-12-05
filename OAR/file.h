@@ -11,6 +11,7 @@ class File
     fstream file;
     int header_size;
     bool write;
+    string filepath;
 public:
     File(string, string, bool);
     ~File();
@@ -21,4 +22,5 @@ public:
     void reCalcHeaderSize();
     void appendRecord(string);
     int getRRN();
+    int LookforAvail();
 };

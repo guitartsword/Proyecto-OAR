@@ -25,7 +25,6 @@ bool isKeyRepeated(Campo&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    Avail_offset(0),
     ui(new Ui::MainWindow),
     campos(new vector<Campo>()),
     registro(campos)
@@ -236,20 +235,12 @@ void MainWindow::on_saveRecord_triggered()
                 ss<<left<<setw(campos->at(i).size) << temp.toStdString();
             }
             //Se mira el Avail List
-            int Avail = 0;
-            //int Avail = file->getRRN();
+            int Avail = file->LookforAvail();
             cout << ss.str() << endl;
             if(Avail==0){
                 file->appendRecord(ss.str());
             }else{
-                int record_offset = 0;
-                for(int i = 0; i < campos->size(); i++){
-                    if(campos->at(i).type != DEC)
-                        record_offset+=campos->at(i).size;
-                    else
-                        record_offset+=campos->at(i).size_dec;
-                }
-                file->addRecord(ss.str(), Avail*record_offset);
+                file->addRecord(ss.str(), Avail);
             }
             ui->addRecord->setEnabled(true);
             ui->saveRecord->setEnabled(false);

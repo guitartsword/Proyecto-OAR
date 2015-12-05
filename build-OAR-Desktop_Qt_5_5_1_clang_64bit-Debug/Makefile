@@ -54,7 +54,9 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
-		../OAR/campo.cpp moc_mainwindow.cpp \
+		../OAR/campo.cpp \
+		../OAR/arbolb.cpp \
+		../OAR/nodo.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -64,6 +66,8 @@ OBJECTS       = main.o \
 		file.o \
 		record.o \
 		campo.o \
+		arbolb.o \
+		nodo.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -214,13 +218,17 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/dialogmodificarcampo.h \
 		../OAR/file.h \
 		../OAR/record.h \
-		../OAR/campo.h ../OAR/main.cpp \
+		../OAR/campo.h \
+		../OAR/arbolb.h \
+		../OAR/nodo.h ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
-		../OAR/campo.cpp
+		../OAR/campo.cpp \
+		../OAR/arbolb.cpp \
+		../OAR/nodo.cpp
 QMAKE_TARGET  = OAR
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = OAR.app/Contents/MacOS/OAR
@@ -584,8 +592,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/arbolb.h ../OAR/nodo.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/arbolb.cpp ../OAR/nodo.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -749,7 +757,9 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogmodificarcampo.o ../OAR/dialogmodificarcampo.cpp
 
 file.o: ../OAR/file.cpp ../OAR/file.h \
-		../OAR/campo.h
+		../OAR/campo.h \
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
 
 record.o: ../OAR/record.cpp ../OAR/record.h \
@@ -758,6 +768,12 @@ record.o: ../OAR/record.cpp ../OAR/record.h \
 
 campo.o: ../OAR/campo.cpp ../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
+
+arbolb.o: ../OAR/arbolb.cpp ../OAR/arbolb.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arbolb.o ../OAR/arbolb.cpp
+
+nodo.o: ../OAR/nodo.cpp ../OAR/nodo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nodo.o ../OAR/nodo.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

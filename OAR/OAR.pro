@@ -18,14 +18,18 @@ SOURCES += main.cpp\
     dialogmodificarcampo.cpp \
     file.cpp \
     record.cpp \
-    campo.cpp
+    campo.cpp \
+    arbolb.cpp \
+    nodo.cpp
 
 HEADERS  += mainwindow.h \
     dialogcampo.h \
     dialogmodificarcampo.h \
     file.h \
     record.h \
-    campo.h
+    campo.h \
+    arbolb.h \
+    nodo.h
 
 FORMS    += mainwindow.ui \
     dialogcampo.ui \

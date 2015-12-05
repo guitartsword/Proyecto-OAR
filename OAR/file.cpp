@@ -5,13 +5,15 @@
 #include <cstring>
 #include <vector>
 #include <iomanip>
+#include <QDebug>
 #include "campo.h"
 using namespace std;
 
 
-File::File(string filepath, string nombre, bool write):
+File::File(string filepaths, string nombre, bool write):
     nombre(nombre),
-    write(write)
+    write(write),
+    filepath(filepaths)
 {
     if(filepath.length() < 4)
         filepath += ".OAR";
@@ -78,7 +80,7 @@ void File::saveHeader(vector<Campo>* campos){
         file.write(buffer, 1);
     }
     //AVAILIST
-    unsigned int availList = 0;
+    unsigned int availList =0;
     file.write(reinterpret_cast<const char *>(&availList),3);
     delete[] buffer;
     file.flush();
@@ -89,7 +91,7 @@ void File::saveHeader(vector<Campo>* campos){
 
 void File::addRecord(string record, int offset){
     //Escribir Registro del disco en una posicion especifica
-    file.seekp(header_size + offset,ios::beg);
+    file.seekp(header_size+ ((offset-1)*record.size()),ios::beg);
     file.write(record.c_str(),record.size());
     file.flush();
 }
@@ -124,4 +126,30 @@ int File::getRRN(){
     int RRN;
     file.read(reinterpret_cast<char *>(&RRN),3);
     return RRN;
+}
+
+int File::LookforAvail(){
+    qDebug() << filepath.c_str();
+    ifstream filet(filepath.c_str(), ios::binary);
+    if(filet.is_open()){
+        int key = 6;
+        filet.seekg(header_size-3, ios::beg);
+        filet.read((char *) &key, 3);
+        qDebug() <<key;
+        if(key=0){
+            return 0;
+        }else{
+            int temp;
+            file.seekg(header_size+((key-1)*getRRN())+1,ios::beg);
+            file.read(reinterpret_cast<char *>(&temp),3);
+            //se escribira el nuevo header
+            ofstream out(filepath.c_str(), ios::binary);
+            out.seekp(header_size-3,ios::beg);
+            unsigned int newAvail =temp;
+            out.write(reinterpret_cast<const char *>(&newAvail),3);
+            out.close();
+            return key;
+        }
+        filet.close();
+    }
 }
