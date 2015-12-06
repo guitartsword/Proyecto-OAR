@@ -45,8 +45,15 @@ private slots:
 
     void on_saveRecord_triggered();
 
+    void on_closeFile_triggered();
+
+    void on_exitProgram_triggered();
+
+    void on_importFiles_triggered();
+
 private:
     Ui::MainWindow *ui;
+    void closeEvent (QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

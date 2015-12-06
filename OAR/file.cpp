@@ -10,7 +10,7 @@
 using namespace std;
 
 
-File::File(string filepaths, string nombre, bool write):
+File::File(string filepaths, string nombre, bool openfile):
     nombre(nombre),
     write(write),
     filepath(filepaths)
@@ -20,15 +20,19 @@ File::File(string filepaths, string nombre, bool write):
     else if(filepath.substr(filepath.length()-4,filepath.length()) != ".OAR")
         filepath += ".OAR";
     cout<<filepath.c_str()<<endl;
-    if(write)
-        file.open(filepath.c_str(), ios::out);
-    else{
-        file.open(filepath.c_str(), ios::in);
+    output.open(filepath.c_str(), ios::out | ios::app);
+    input.open(filepath.c_str(), ios::in);
+    if(openfile){
+        output.seekp(0,output.end);
+        cout <<"File size: "<< output.tellp() << endl;
+        output.seekp(0,output.beg);
         reCalcHeaderSize();
+        cout <<"headerSize: "<< header_size<<endl;
     }
 }
 File::~File(){
-    file.close();
+    input.close();
+    output.close();
 }
 void File::saveHeader(vector<Campo>* campos){
     char* buffer;
@@ -49,59 +53,59 @@ void File::saveHeader(vector<Campo>* campos){
 
     //Se guarda el tamaño del nombre
     buffer[0] = nombre.size();
-    file.write(buffer,1);
+    output.write(buffer,1);
 
     //El nombre del archivo de registros
     buffer = new char[nombre.size()];
     strcpy(buffer, nombre.c_str());
-    file.write(buffer, nombre.size());
+    output.write(buffer, nombre.size());
 
     //Cantidad de campos
     buffer[0] = campos->size();
-    file.write(buffer, 1);
+    output.write(buffer, 1);
 
     for(unsigned int i = 0; i < campos->size(); i++){
         //Nombre del campo
         strcpy(buffer, campos->at(i).name);
         buffer[30] = '\0';
-        file.write(buffer, 30);
+        output.write(buffer, 30);
         header_size+=30;
         //TIPO
         buffer[0] =  campos->at(i).type;
-        file.write(buffer, 1);
+        output.write(buffer, 1);
         //Tamaño del campo
         if(campos->at(i).type != DEC)
             buffer[0] =  campos->at(i).size;
         else
             buffer[0] =  campos->at(i).size_dec;
-        file.write(buffer, 1);
+        output.write(buffer, 1);
         //ES LLAVE PRIMARIA?
         buffer[0] =  campos->at(i).key;
-        file.write(buffer, 1);
+        output.write(buffer, 1);
     }
     //AVAILIST
     unsigned int availList =0;
-    file.write(reinterpret_cast<const char *>(&availList),3);
+    output.write(reinterpret_cast<const char *>(&availList),3);
     delete[] buffer;
-    file.flush();
-
+    output.flush();
+    qDebug() << "Header_size in file is: " << output.tellp();
     header_size = 5 + nombre.size() + campos->size()*33;
+    qDebug() << "Header_size in should be: " << header_size;
 }
 
 
-void File::addRecord(string record, int offset){
+void File::addRecord(string record, int RRN){
     //Escribir Registro del disco en una posicion especifica
-    file.seekp(header_size+ ((offset-1)*record.size()),ios::beg);
-    file.write(record.c_str(),record.size());
-    file.flush();
+    output.flush();
+    output.seekp(header_size + ((RRN-1)*record.size()),ios::beg);
+    output.write(record.c_str(),record.size());
 }
 
 void File::appendRecord(string record){
     //Escribir append un registro
-    file.flush();
-    file.seekp(0,ios::end);
-    cout << record.c_str() << " also file is open: " << file.is_open() << endl;
-    file << record.c_str();
+    output.flush();
+    output.seekp(0,output.end);
+    output.write(record.c_str(),record.size());
 }
 
 void File::updateFile(){
@@ -114,42 +118,53 @@ void File::deleteRecord(int){
 
 void File::reCalcHeaderSize(){
     header_size = 5;
-    int defined_size;
-    file.read(reinterpret_cast<char *>(&defined_size),1);
+    int defined_size = 0;
+    input.seekg(0,input.beg);
+    input.read(reinterpret_cast<char*>(&defined_size),1);
     header_size+=defined_size;
-    file.seekg(defined_size+1);
-    file.read(reinterpret_cast<char *>(&defined_size),1);
+    cout << header_size << endl;
+    input.seekg(defined_size+1,input.beg);
+    defined_size = 0;
+    input.read(reinterpret_cast<char*>(&defined_size),1);
     header_size+= defined_size*33;
+    cout << header_size << endl << endl;
 }
 int File::getRRN(){
-    file.seekg(header_size-3);
-    int RRN;
-    file.read(reinterpret_cast<char *>(&RRN),3);
+    input.seekg(header_size-3,ios::beg);
+    int RRN = 0;
+    input.read(reinterpret_cast<char *>(&RRN),3);
+    cout << "RRN: "<< RRN << endl;
     return RRN;
 }
+bool File::isOpen()const{
+    return output.is_open() || input.is_open();
+}
+int File::recordCount(){
+    output.flush();
+    input.seekg(0,input.end);
+    int fileSize = input.tellg();
+    int recordsSize = fileSize - header_size;
+    return (recordsSize/recordSize());
+}
 
-int File::LookforAvail(){
-    qDebug() << filepath.c_str();
-    ifstream filet(filepath.c_str(), ios::binary);
-    if(filet.is_open()){
-        int key = 6;
-        filet.seekg(header_size-3, ios::beg);
-        filet.read((char *) &key, 3);
-        qDebug() <<key;
-        if(key=0){
-            return 0;
-        }else{
-            int temp;
-            file.seekg(header_size+((key-1)*getRRN())+1,ios::beg);
-            file.read(reinterpret_cast<char *>(&temp),3);
-            //se escribira el nuevo header
-            ofstream out(filepath.c_str(), ios::binary);
-            out.seekp(header_size-3,ios::beg);
-            unsigned int newAvail =temp;
-            out.write(reinterpret_cast<const char *>(&newAvail),3);
-            out.close();
-            return key;
-        }
-        filet.close();
+int File::recordSize(){
+    int offset = 1, recordSize = 0;
+    int defined_size = 0;
+
+    input.seekg(0,input.beg);
+    input.read(reinterpret_cast<char*>(&defined_size),1);
+    offset+=defined_size;
+
+    defined_size = 0;
+    input.seekg(offset,input.beg);
+    input.read(reinterpret_cast<char*>(&defined_size),1);
+    offset+=32;
+    for(int i = 0; i < defined_size; i++){
+        int fieldSize = 0;
+        input.seekg(offset,input.beg);
+        input.read(reinterpret_cast<char*>(&fieldSize),1);
+        recordSize+=fieldSize;
+        offset+=33;
     }
+    return recordSize;
 }

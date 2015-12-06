@@ -8,10 +8,11 @@ using namespace std;
 class File
 {
     string nombre;
-    fstream file;
+    fstream output, input;
     int header_size;
     bool write;
     string filepath;
+    int recordSize();
 public:
     File(string, string, bool);
     ~File();
@@ -23,4 +24,6 @@ public:
     void appendRecord(string);
     int getRRN();
     int LookforAvail();
+    bool isOpen()const;
+    int recordCount();
 };

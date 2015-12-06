@@ -15,6 +15,7 @@
 #include <vector>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QCloseEvent>
 #include <fstream>
 #include <string>
 
@@ -27,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     campos(new vector<Campo>()),
-    registro(campos)
+    registro(campos),
+    file(NULL)
 {
     ui->setupUi(this);
     ui->saveFile->setEnabled(false);
@@ -42,7 +44,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
     escritura=true;
-
 }
 
 MainWindow::~MainWindow()
@@ -56,12 +57,14 @@ void MainWindow::on_newFile_triggered()
 {
     try{
         ui->Tabla_Principal->setEnabled(true);
-        QFileDialog dialog;
         QString filename = "";
         filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese el nombre del nuevo archivo:");
         string text = filename.toStdString();
         if(filename != ""){
-            file = new File(text, text, true);
+            if(file == NULL || file->isOpen()){
+                delete file;
+            }
+            file = new File(text, text, false);
         }
         ui->addField->setEnabled(true);
         ui->delField->setEnabled(true);
@@ -69,6 +72,7 @@ void MainWindow::on_newFile_triggered()
         ui->closeFile->setEnabled(true);
         ui->importFiles->setEnabled(false);
         ui->newFile->setEnabled(false);
+        ui->Tabla_Principal->setRowCount(1);
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
     }
@@ -235,12 +239,12 @@ void MainWindow::on_saveRecord_triggered()
                 ss<<left<<setw(campos->at(i).size) << temp.toStdString();
             }
             //Se mira el Avail List
-            int Avail = file->LookforAvail();
+            int RRN = file->getRRN();
             cout << ss.str() << endl;
-            if(Avail==0){
+            if(RRN==0){
                 file->appendRecord(ss.str());
             }else{
-                file->addRecord(ss.str(), Avail);
+                file->addRecord(ss.str(), RRN);
             }
             ui->addRecord->setEnabled(true);
             ui->saveRecord->setEnabled(false);
@@ -259,4 +263,48 @@ void MainWindow::on_saveRecord_triggered()
     }catch(...){
         qDebug() << "Error al agregar registro" << endl;
     }
+}
+
+void MainWindow::on_closeFile_triggered()
+{
+    delete file;
+    ui->setupUi(this);
+    ui->saveFile->setEnabled(false);
+    ui->addField->setEnabled(false);
+    ui->addRecord->setEnabled(false);
+    ui->delField->setEnabled(false);
+    ui->delRecord->setEnabled(false);
+    ui->updateField->setEnabled(false);
+    ui->updateRecord->setEnabled(false);
+    ui->closeFile->setEnabled(false);
+    ui->Tabla_Principal->setRowCount(0);
+    ui->Tabla_Principal->setDisabled(true);
+    ui->saveRecord->setEnabled(false);
+}
+
+void MainWindow::on_exitProgram_triggered()
+{
+    delete file;
+    QApplication::quit();
+}
+void MainWindow::closeEvent (QCloseEvent *event)
+{
+    delete file;
+    event->accept();
+}
+
+void MainWindow::on_importFiles_triggered()
+{
+    QFileDialog dialog;
+    this->ui->Tabla_Principal->setEnabled(true);
+    QString pathExport = dialog.getOpenFileName(this, tr("Cargar Archivo"),
+                                         "",
+                                         tr("Registros (*.OAR)"));
+    string text = pathExport.toStdString();
+    if(file == NULL || file->isOpen()){
+        delete file;
+    }
+    file = new File(text, text, true);
+    int recordCount = file->recordCount();
+    qDebug() << recordCount << endl;
 }
