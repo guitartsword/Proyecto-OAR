@@ -30,6 +30,8 @@ private slots:
 
     int Availability();
 
+    int lookIndex(int);
+
     void on_addField_triggered();
 
     void on_delField_triggered();

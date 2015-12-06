@@ -62,6 +62,11 @@ bool MainWindow::llaveExist(){
     return exist;
 }
 
+int MainWindow::lookIndex(int key){
+    int rrn=-1;
+    return rrn;
+}
+
 void MainWindow::on_newFile_triggered()
 {
     try{
@@ -156,6 +161,11 @@ void MainWindow::on_delRecord_triggered()
 {
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty() && ui->Tabla_Principal->rowCount()>1)
+        //Buscar offset en el indice
+        int rrn=lookIndex(0);//hay que agarrar la llave de la tabla
+        //Marcar como borrado en el Archivo y se Actualiza el Avail List
+        file->deleteRecord(rrn);
+
         ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
 }
 

@@ -114,8 +114,29 @@ void File::updateFile(){
     //Actualizar Registro del disco
 }
 
-void File::deleteRecord(int){
+void File::deleteRecord(int rrn){
+    output.flush();
     //Borrar Registro del archivo
+    int avail= getRRN();
+    char* buffer=new char[2];
+    buffer[0]='*';
+    if(avail==0){
+        //Se marca con asterisco-cero en el registro borrado.
+        buffer[1]=0;
+    }else{
+        //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
+        buffer[1]=avail;
+    }
+    //Se escribe la nueva head del Avail List
+    output.seekp(header_size+((rrn-1)*recordSize()),ios::beg);
+    output.write(buffer,2);
+    output.flush();
+
+    //Se escribe en el Avail List el nuevo rrn
+    unsigned int recordRNN= rrn;
+    output.seekp(header_size-3,ios::beg);
+    output.write(reinterpret_cast<const char *>(&recordRNN),3);
+    output.flush();
 }
 
 void File::reCalcHeaderSize(){
