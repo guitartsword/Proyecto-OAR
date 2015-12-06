@@ -128,14 +128,12 @@ void File::deleteRecord(int rrn){
         buffer[1]=avail;
     }
     //Se escribe la nueva head del Avail List
-    output.seekp(header_size+((rrn-1)*recordSize()),ios::beg);
+    output.seekp(header_size+((rrn-1)*recordSize()),output.beg);
     output.write(buffer,2);
     output.flush();
-
     //Se escribe en el Avail List el nuevo rrn
-    unsigned int recordRNN= rrn;
-    output.seekp(header_size-3,ios::beg);
-    output.write(reinterpret_cast<const char *>(&recordRNN),3);
+    output.seekp(header_size-3,output.beg);
+    output.write(reinterpret_cast<const char *>(&rrn),3);
     output.flush();
 }
 
@@ -225,6 +223,8 @@ vector<Campo>& File::getCampos(){
 }
 string File::getRecord(int ID){
     //RECORDAR HACERLO DESPUES
+
+    //Retornar un arreglo de strings;
     return "AUN NO HAY NADA";
 }
 void File::updateAvail(int key){
