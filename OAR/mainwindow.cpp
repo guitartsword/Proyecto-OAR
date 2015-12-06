@@ -27,8 +27,6 @@ bool isKeyRepeated(Campo&);
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    campos(new vector<Campo>()),
-    registro(campos),
     file(NULL)
 {
     ui->setupUi(this);
@@ -49,13 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete campos;
 }
 
 bool MainWindow::llaveExist(){
     bool exist=false;
-    for(int i=0;i<campos->size();i++){
-        if(campos->at(i).key){
+    for(int i=0;i<campos.size();i++){
+        if(campos.at(i).key){
             exist=true;
         }
     }
@@ -117,7 +114,7 @@ void MainWindow::on_delField_triggered()
     QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!selected.isEmpty()){
         int x=ui->Tabla_Principal->currentColumn();
-        campos->erase(campos->begin()+x);
+        campos.erase(campos.begin()+x);
         ui->Tabla_Principal->removeColumn(ui->Tabla_Principal->currentColumn());
     }else{
         QMessageBox Box;
@@ -174,11 +171,11 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 {
     if(ui->updateRecord->isEnabled()){
         QString text = item->text();
-        if(text.size() > campos->at(item->column()).size){
-            text.resize(campos->at(item->column()).size);
+        if(text.size() > campos.at(item->column()).size){
+            text.resize(campos.at(item->column()).size);
         }
         bool valid;
-        switch(campos->at(item->column()).type){
+        switch(campos.at(item->column()).type){
         case INTF:
             text.toInt(&valid);
             break;
@@ -189,7 +186,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
             valid = true;
         }
         cout <<"IS VALID? = "<< valid << endl;
-        if(!valid || isKeyRepeated(campos->at(item->column())))
+        if(!valid || isKeyRepeated(campos.at(item->column())))
             text = "";
         item->setText(text);
     }else{
@@ -224,7 +221,7 @@ void MainWindow::on_saveFile_triggered()
     try{
         if(llaveExist()){
         if(ui->Tabla_Principal->isEnabled()){
-            if(escritura && campos->size()>0){
+            if(escritura && campos.size()>0){
                 QMessageBox::StandardButton reply;
                 reply = QMessageBox::question(this, "Guardar", "Al guardar no podra agregar mas campos. ¿Esta seguro que desea guardar?",
                                               QMessageBox::Yes |QMessageBox::No);
@@ -255,13 +252,13 @@ void MainWindow::on_saveRecord_triggered()
 {
     try{
         //Si existen campos
-        if(campos->size()>0){
+        if(campos.size()>0){
             cout<<"entre"<<endl;
             stringstream ss;
             for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
                 QString temp;
                 temp=ui->Tabla_Principal->item(ui->Tabla_Principal->rowCount()-1,i)->text();
-                ss<<left<<setw(campos->at(i).size) << temp.toStdString();
+                ss<<left<<setw(campos.at(i).size) << temp.toStdString();
             }
             //Se mira el Avail List
             int RRN = file->getRRN();
@@ -320,6 +317,7 @@ void MainWindow::closeEvent (QCloseEvent *event)
 
 void MainWindow::on_importFiles_triggered()
 {
+
     QFileDialog dialog;
     this->ui->Tabla_Principal->setEnabled(true);
     QString pathExport = dialog.getOpenFileName(this, tr("Cargar Archivo"),
@@ -330,6 +328,13 @@ void MainWindow::on_importFiles_triggered()
         delete file;
     }
     file = new File(text, text, true);
+    campos = file->getCampos();
     int recordCount = file->recordCount();
     qDebug() << recordCount << endl;
+    cout << campos.at(0).name << endl;
+    for(int i = 0; i < recordCount; i++){
+        file->getRecord(i);
+
+    }
+    qDebug() << "Finished on_importFiles_triggered() function";
 }

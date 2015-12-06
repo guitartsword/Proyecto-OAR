@@ -17,7 +17,7 @@ DialogCampo::DialogCampo(QWidget* parent):
     ui->setupUi(this);
 }
 
-DialogCampo::DialogCampo(vector<Campo>* campos,QTableWidget* tabla, QWidget* parent):
+DialogCampo::DialogCampo(vector<Campo>& campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
     ui(new Ui::DialogCampo),
     campos(campos)
@@ -32,10 +32,10 @@ DialogCampo::~DialogCampo()
 }
 
 bool DialogCampo::busquedaLlave(){
-    if(campos->size()>0){
+    if(campos.size()>0){
         bool exists=false;
-        for(int i=0;i<campos->size();i++){
-            if(campos->at(i).key){
+        for(int i=0;i<campos.size();i++){
+            if(campos.at(i).key){
                 exists=true;
             }
         }
@@ -81,7 +81,7 @@ void DialogCampo::on_CampoNuevo_clicked()
                         this->tabla->setColumnCount(this->tabla->columnCount()+1);
                         this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre));
                     }
-                    campos->push_back(temp);
+                    campos.push_back(temp);
                     this->setVisible(false);
                 }else{
                     Box.setText("¡La llave ya existe!");
