@@ -12,6 +12,7 @@ class File
     int header_size;
     bool write;
     string filepath;
+    vector<Campo> campos;
     int recordSize();
 public:
     File(string, string, bool);
@@ -19,11 +20,13 @@ public:
     void addRecord(string, int);
     void updateFile();
     void deleteRecord(int);
-    void saveHeader(vector<Campo>*);
+    void saveHeader(vector<Campo>&);
     void reCalcHeaderSize();
     void appendRecord(string);
     int getRRN();
     int LookforAvail();
     bool isOpen()const;
     int recordCount();
+    string getRecord(int);
+    vector<Campo>& getCampos();
 };

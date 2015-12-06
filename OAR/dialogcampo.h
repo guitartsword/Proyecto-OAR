@@ -13,12 +13,12 @@ class DialogCampo;
 class DialogCampo : public QDialog
 {
     QTableWidget* tabla;
-    vector<Campo>* campos;
+    vector<Campo> campos;
     Q_OBJECT
 
 public:
     explicit DialogCampo(QWidget *parent = 0);
-    explicit DialogCampo(vector<Campo>*, QTableWidget*, QWidget *parent = 0);
+    explicit DialogCampo(vector<Campo>&, QTableWidget*, QWidget *parent = 0);
     ~DialogCampo();
 
 private slots:

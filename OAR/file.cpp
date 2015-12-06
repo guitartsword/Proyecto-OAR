@@ -34,12 +34,12 @@ File::~File(){
     input.close();
     output.close();
 }
-void File::saveHeader(vector<Campo>* campos){
+void File::saveHeader(vector<Campo> &campos){
     char* buffer;
     header_size = 0;
     /*
         buffer_size += 1 + nombre.size();//El tamaño del nombre 1byte + El nombre                         30    +  1  +     1   +       1
-        buffer_size += 1 + campos->size() * (33); //1byte por cantidad de campos + cantidad de campos * (Nombre + tipo + tamaño + llave primaria)
+        buffer_size += 1 + campos.size() * (33); //1byte por cantidad de campos + cantidad de campos * (Nombre + tipo + tamaño + llave primaria)
         buffer_size += 3; // Bytes en el Availist
 
      * HEADER_SIZE = 1byte + valor obtenido del primer byte
@@ -61,26 +61,26 @@ void File::saveHeader(vector<Campo>* campos){
     output.write(buffer, nombre.size());
 
     //Cantidad de campos
-    buffer[0] = campos->size();
+    buffer[0] = campos.size();
     output.write(buffer, 1);
 
-    for(unsigned int i = 0; i < campos->size(); i++){
+    for(unsigned int i = 0; i < campos.size(); i++){
         //Nombre del campo
-        strcpy(buffer, campos->at(i).name);
+        strcpy(buffer, campos.at(i).name);
         buffer[30] = '\0';
         output.write(buffer, 30);
         header_size+=30;
         //TIPO
-        buffer[0] =  campos->at(i).type;
+        buffer[0] =  campos.at(i).type;
         output.write(buffer, 1);
         //Tamaño del campo
-        if(campos->at(i).type != DEC)
-            buffer[0] =  campos->at(i).size;
+        if(campos.at(i).type != DEC)
+            buffer[0] =  campos.at(i).size;
         else
-            buffer[0] =  campos->at(i).size_dec;
+            buffer[0] =  campos.at(i).size_dec;
         output.write(buffer, 1);
         //ES LLAVE PRIMARIA?
-        buffer[0] =  campos->at(i).key;
+        buffer[0] =  campos.at(i).key;
         output.write(buffer, 1);
     }
     //AVAILIST
@@ -89,7 +89,7 @@ void File::saveHeader(vector<Campo>* campos){
     delete[] buffer;
     output.flush();
     qDebug() << "Header_size in file is: " << output.tellp();
-    header_size = 5 + nombre.size() + campos->size()*33;
+    header_size = 5 + nombre.size() + campos.size()*33;
     qDebug() << "Header_size in should be: " << header_size;
 }
 
@@ -167,4 +167,40 @@ int File::recordSize(){
         offset+=33;
     }
     return recordSize;
+}
+vector<Campo>& File::getCampos(){
+    output.flush();
+    int defined_size = 0;
+    input.seekg(0,input.beg);
+    input.read(reinterpret_cast<char*>(&defined_size),1);
+    int offset=defined_size+1;
+
+    defined_size = 0;
+    input.seekg(offset,input.beg);
+    input.read(reinterpret_cast<char*>(&defined_size),1);
+    campos.clear();
+    for(int i = 0; i < defined_size; i++){
+        char* name;
+        input.read(name, 30);
+        FieldType type;
+        input.read(reinterpret_cast<char* >(&type),1);
+        int size = 0;
+        input.read(reinterpret_cast<char*>(&size), 1);
+        bool key = 0;
+        input.read(reinterpret_cast<char*>(&key), 1);
+        Campo temp;
+        strcpy(temp.name, name);
+        temp.type = type;
+        if(temp.type == DEC)
+            temp.size_dec = size;
+        else
+            temp.size = size;
+        temp.key = key;
+        campos.push_back(temp);
+    }
+    return campos;
+}
+string File::getRecord(int ID){
+    //RECORDAR HACERLO DESPUES
+    return "AUN NO HAY NADA";
 }

@@ -6,27 +6,27 @@
 //using std::string;
 using namespace std;
 
-Record::Record(vector<Campo>* campos)
+Record::Record(vector<Campo>& campos)
 {
     data = new vector<char*>();
     this->campos = campos;
-    data->resize(campos->size());
+    data->resize(campos.size());
 }
 Record::~Record(){
     data->~vector();
 }
-void Record::setCampos(vector<Campo>* campos){
+void Record::setCampos(vector<Campo>& campos){
     this->campos = campos;
     data = new vector<char*>();
-    data->resize(campos->size());
+    data->resize(campos.size());
 }
 
 void Record::setData(int campo, char* text){
     int size;
-    if(campos->at(campo).type != DEC)
-        size = campos->at(campo).size;
+    if(campos.at(campo).type != DEC)
+        size = campos.at(campo).size;
     else
-        size = campos->at(campo).size_dec;
+        size = campos.at(campo).size_dec;
     if(strlen(text) <= size){
         cout << "CAMPO: = " << campo << endl;
         data->at(campo) = text;
@@ -34,7 +34,7 @@ void Record::setData(int campo, char* text){
     }
 }
 void Record::setData(char* rawdata[]){
-    for(int i = 0; i < campos->size(); i++){
+    for(int i = 0; i < campos.size(); i++){
         data->at(i) = rawdata[i];
     }
 }
