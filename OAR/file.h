@@ -14,6 +14,7 @@ class File
     string filepath;
     vector<Campo> campos;
     int recordSize();
+    void updateAvail(int);
 public:
     File(string, string, bool);
     ~File();

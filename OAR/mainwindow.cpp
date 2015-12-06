@@ -49,11 +49,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+bool MainWindow::llaveExist(){
+    bool exist=false;
+    for(int i=0;i<campos.size();i++){
+        if(campos.at(i).key){
+            exist=true;
+        }
+    }
+    return exist;
+}
 
 void MainWindow::on_newFile_triggered()
 {
     try{
-        ui->Tabla_Principal->setEnabled(true);
         QString filename = "";
         filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese el nombre del nuevo archivo:");
         string text = filename.toStdString();
@@ -62,14 +70,15 @@ void MainWindow::on_newFile_triggered()
                 delete file;
             }
             file = new File(text, text, false);
+            ui->addField->setEnabled(true);
+            ui->delField->setEnabled(true);
+            ui->updateField->setEnabled(true);
+            ui->closeFile->setEnabled(true);
+            ui->importFiles->setEnabled(false);
+            ui->newFile->setEnabled(false);
+            ui->Tabla_Principal->setRowCount(1);
+            ui->Tabla_Principal->setEnabled(true);
         }
-        ui->addField->setEnabled(true);
-        ui->delField->setEnabled(true);
-        ui->updateField->setEnabled(true);
-        ui->closeFile->setEnabled(true);
-        ui->importFiles->setEnabled(false);
-        ui->newFile->setEnabled(false);
-        ui->Tabla_Principal->setRowCount(1);
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
     }
@@ -200,6 +209,7 @@ string CampoString(){
 void MainWindow::on_saveFile_triggered()
 {
     try{
+        if(llaveExist()){
         if(ui->Tabla_Principal->isEnabled()){
             if(escritura && campos.size()>0){
                 QMessageBox::StandardButton reply;
@@ -218,6 +228,11 @@ void MainWindow::on_saveFile_triggered()
                     ui->Tabla_Principal->removeRow(0);
                 }
             }
+        }
+        }else{
+            QMessageBox Box;
+            Box.setText("¡Debe haber un campo llave!");
+            Box.exec();
         }
     }catch(...){
     }
