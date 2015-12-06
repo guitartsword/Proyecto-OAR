@@ -13,6 +13,7 @@ class File
     bool write;
     string filepath;
     int recordSize();
+    void updateAvail(int);
 public:
     File(string, string, bool);
     ~File();

@@ -95,8 +95,10 @@ void File::saveHeader(vector<Campo>* campos){
 
 
 void File::addRecord(string record, int RRN){
-    //Escribir Registro del disco en una posicion especifica
     output.flush();
+    //Actualizar el Avail List
+    updateAvail(RRN);
+    //Escribir Registro del disco en una posicion especifica
     output.seekp(header_size + ((RRN-1)*record.size()),ios::beg);
     output.write(record.c_str(),record.size());
 }
@@ -167,4 +169,16 @@ int File::recordSize(){
         offset+=33;
     }
     return recordSize;
+}
+
+void File::updateAvail(int key){
+    //Se lee lo que hay en el RRN antes de que sea modificado
+    int temp;
+    input.seekg(header_size+((key-1)*recordSize())+1,ios::beg);
+    input.read(reinterpret_cast<char *>(&temp),3);
+    //Se escribe el nuevo header
+    output.seekp(header_size-3,ios::beg);
+    unsigned int newAvail =temp;
+    output.write(reinterpret_cast<const char *>(&newAvail),3);
+    output.flush();
 }
