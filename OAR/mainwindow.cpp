@@ -97,7 +97,7 @@ void MainWindow::on_addField_triggered()
 {
     try{
         if(ui->Tabla_Principal->isEnabled()){
-            DialogCampo dialog(this->campos,ui->Tabla_Principal,this);
+            DialogCampo dialog(&(this->campos),ui->Tabla_Principal,this);
             dialog.exec();
             ui->saveFile->setEnabled(true);
         }else{
@@ -125,14 +125,18 @@ void MainWindow::on_delField_triggered()
 
 void MainWindow::on_updateField_triggered()
 {
-    QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
-    if(!selected.isEmpty()){
-        DialogModificarCampo dialog(this->campos,ui->Tabla_Principal,this);
-        dialog.exec();
-    }else{
-        QMessageBox Box;
-        Box.setText("¡No se ha seleccionado ninguna columna!");
-        Box.exec();
+    try{
+        QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+        if(!selected.isEmpty()){
+            DialogModificarCampo dialog(&(this->campos),ui->Tabla_Principal,this);
+            dialog.exec();
+        }else{
+            QMessageBox Box;
+            Box.setText("¡No se ha seleccionado ninguna columna!");
+            Box.exec();
+        }
+    }catch(...){
+        qDebug()<<"Error al abrir la ventana modificar";
     }
 }
 

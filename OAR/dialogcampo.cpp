@@ -17,7 +17,7 @@ DialogCampo::DialogCampo(QWidget* parent):
     ui->setupUi(this);
 }
 
-DialogCampo::DialogCampo(vector<Campo>& campos,QTableWidget* tabla, QWidget* parent):
+DialogCampo::DialogCampo(vector<Campo>* campos,QTableWidget* tabla, QWidget* parent):
     QDialog(parent),
     ui(new Ui::DialogCampo),
     campos(campos)
@@ -32,10 +32,10 @@ DialogCampo::~DialogCampo()
 }
 
 bool DialogCampo::busquedaLlave(){
-    if(campos.size()>0){
+    if(campos->size()>0){
         bool exists=false;
-        for(int i=0;i<campos.size();i++){
-            if(campos.at(i).key){
+        for(int i=0;i<campos->size();i++){
+            if(campos->at(i).key){
                 exists=true;
             }
         }
@@ -52,37 +52,52 @@ void DialogCampo::on_CampoNuevo_clicked()
     int longitud=ui->SB_CampoLongitud->value();
     bool llave=ui->RB_CampoLlave->isChecked();
     QMessageBox Box;
-
+    bool crear=false;
     Campo temp;
     if(nombre!=""){
         if(longitud>0){
             try{
                 if(( llave!=busquedaLlave() || (!llave && !busquedaLlave()))){
                     if(tipo=="CHAR"){
-                        memcpy(temp.name, nombre.toStdString().c_str() ,30);
-                        temp.type=CHAR;
-                        temp.size=longitud;
-                        temp.key=llave;
+                        if(!llave){
+                            memcpy(temp.name, nombre.toStdString().c_str() ,30);
+                            temp.type=CHAR;
+                            temp.size=longitud;
+                            temp.key=false;
+                            crear=true;
+                        }else{
+                            Box.setText("¡La llave tiene que ser tipo entero!");
+                            Box.exec();
+                        }
                     }else if(tipo=="INTF"){
                         memcpy(temp.name, nombre.toStdString().c_str() ,30);
                         temp.type=INTF;
                         temp.size=longitud;
                         temp.key=llave;
+                        crear=true;
                     }else{
-                        memcpy(temp.name, nombre.toStdString().c_str() ,30);
-                        temp.type=DEC;
-                        temp.size=longitud;
-                        temp.key=llave;
+                        if(!llave){
+                            memcpy(temp.name, nombre.toStdString().c_str() ,30);
+                            temp.type=DEC;
+                            temp.size=longitud;
+                            temp.key=llave;
+                            crear=true;
+                        }else{
+                            Box.setText("¡La llave tiene que ser tipo entero!");
+                            Box.exec();
+                        }
                     }
-                    if(llave){
-                        this->tabla->setColumnCount(this->tabla->columnCount()+1);
-                        this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre+" (Llave) "));
-                    }else{
-                        this->tabla->setColumnCount(this->tabla->columnCount()+1);
-                        this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre));
+                    if(crear){
+                        if(llave){
+                            this->tabla->setColumnCount(this->tabla->columnCount()+1);
+                            this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre+" (Llave) "));
+                        }else{
+                            this->tabla->setColumnCount(this->tabla->columnCount()+1);
+                            this->tabla->setHorizontalHeaderItem(this->tabla->columnCount()-1,new QTableWidgetItem(nombre));
+                        }
+                        campos->push_back(temp);
+                        this->setVisible(false);
                     }
-                    campos.push_back(temp);
-                    this->setVisible(false);
                 }else{
                     Box.setText("¡La llave ya existe!");
                     Box.exec();
