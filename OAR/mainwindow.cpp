@@ -334,11 +334,13 @@ void MainWindow::on_importFiles_triggered()
     file = new File(text, text, true);
     campos = file->getCampos();
     int recordCount = file->recordCount();
-    qDebug() << recordCount << endl;
+    qDebug() << recordCount;
     cout << campos.at(0).name << endl;
     for(int i = 0; i < recordCount; i++){
-        file->getRecord(i);
-
+        char** data = file->getRecord(i);
+        for(int j = 0; j < campos.size(); j++)
+            delete data[j];
+        delete[] data;
     }
     qDebug() << "Finished on_importFiles_triggered() function";
 }

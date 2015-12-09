@@ -15,6 +15,7 @@ class File
     vector<Campo> campos;
     int recordSize();
     void updateAvail(int);
+    int searchIndex(int);//Retorna el offset del indice del registro
 public:
     File(string, string, bool);
     ~File();
@@ -25,9 +26,8 @@ public:
     void reCalcHeaderSize();
     void appendRecord(string);
     int getRRN();
-    int LookforAvail();
     bool isOpen()const;
     int recordCount();
-    string getRecord(int);
+    char** getRecord(int);//retorna los datos del registro
     vector<Campo>& getCampos();
 };

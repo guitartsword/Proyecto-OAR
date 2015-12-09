@@ -84,7 +84,7 @@ void File::saveHeader(vector<Campo> &campos){
         output.write(buffer, 1);
     }
     //AVAILIST
-    unsigned int availList =0;
+    int availList =0;
     output.write(reinterpret_cast<const char *>(&availList),3);
     delete[] buffer;
     output.flush();
@@ -221,12 +221,35 @@ vector<Campo>& File::getCampos(){
     }
     return campos;
 }
-string File::getRecord(int ID){
+char** File::getRecord(int ID){
     //RECORDAR HACERLO DESPUES
-
+    cout << "offset->";
+    int offset = searchIndex(ID);
+    cout << "seekg->";
+    input.seekg(offset, input.beg);
+    cout << "create data->";
+    char** data;
+    data = new char*[campos.size()];
+    cout << "for loop\\n" << endl;
+    for(int i = 0; i < campos.size(); i++){
+        cout << "iteration: " << i << endl;
+        input.seekg(offset,input.beg);
+        data[i] = new char[campos.at(i).size +1];
+        input.read(data[i],campos.at(i).size);
+        data[i][campos.at(i).size] = '\0';
+        offset+=campos.at(i).size;
+        cout << data[i] << endl;
+    }
     //Retornar un arreglo de strings;
-    return "AUN NO HAY NADA";
+    return data;
 }
+int File::searchIndex(int ID){
+    int offset = header_size;
+    //BUSCAR EL OFFSET en los indices Y RETORNAR el RRN
+    //Convertirlo a offset y retornar el offset
+    return offset;
+}
+
 void File::updateAvail(int key){
     //Se lee lo que hay en el RRN antes de que sea modificado
     int temp;
@@ -234,7 +257,6 @@ void File::updateAvail(int key){
     input.read(reinterpret_cast<char *>(&temp),3);
     //Se escribe el nuevo header
     output.seekp(header_size-3,ios::beg);
-    unsigned int newAvail =temp;
-    output.write(reinterpret_cast<const char *>(&newAvail),3);
+    output.write(reinterpret_cast<const char *>(&temp),3);
     output.flush();
 }
