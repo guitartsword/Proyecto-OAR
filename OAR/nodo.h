@@ -1,11 +1,22 @@
-#ifndef NODO_H
-#define NODO_H
+#pragma once
+#include "key.h"
+#include <vector>
 
+using namespace std;
 
-class Nodo
-{
+class Nodo{
+    vector<Key*> keys;
+    vector<int> children;
 public:
+    int page;
+    int father;
     Nodo();
+    Nodo(int page);
+    void addKey(Key*);
+    void addChild(int);
+    bool isAvailableToAdd(int order);
+    bool hasChildren();
+    int getMiddle();
+    Key* getKey(int pos);
+    void deleteKey(int pos);
 };
-
-#endif // NODO_H

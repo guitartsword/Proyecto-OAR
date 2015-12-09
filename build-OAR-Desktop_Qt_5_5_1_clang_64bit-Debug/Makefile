@@ -55,8 +55,9 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
 		../OAR/campo.cpp \
-		../OAR/arbolb.cpp \
-		../OAR/nodo.cpp moc_mainwindow.cpp \
+		../OAR/nodo.cpp \
+		../OAR/key.cpp \
+		../OAR/btree.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -66,8 +67,9 @@ OBJECTS       = main.o \
 		file.o \
 		record.o \
 		campo.o \
-		arbolb.o \
 		nodo.o \
+		key.o \
+		btree.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -192,6 +194,7 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		../OAR/.qmake.stash \
 		../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -218,16 +221,18 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/file.h \
 		../OAR/record.h \
 		../OAR/campo.h \
-		../OAR/arbolb.h \
-		../OAR/nodo.h ../OAR/main.cpp \
+		../OAR/nodo.h \
+		../OAR/key.h \
+		../OAR/btree.h ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
 		../OAR/campo.cpp \
-		../OAR/arbolb.cpp \
-		../OAR/nodo.cpp
+		../OAR/nodo.cpp \
+		../OAR/key.cpp \
+		../OAR/btree.cpp
 QMAKE_TARGET  = OAR
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = OAR.app/Contents/MacOS/OAR
@@ -390,6 +395,7 @@ Makefile: ../OAR/OAR.pro ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf 
 		../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -536,6 +542,7 @@ Makefile: ../OAR/OAR.pro ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf 
 ../../../Qt/5.5/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.5/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/5.5/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.5/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.5/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt/5.5/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -589,8 +596,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/arbolb.h ../OAR/nodo.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/arbolb.cpp ../OAR/nodo.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -752,7 +759,9 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmessagebox.h \
 		ui_dialogmodificarcampo.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QAbstractItemModel \
-		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qabstractitemmodel.h \
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
+		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogmodificarcampo.o ../OAR/dialogmodificarcampo.cpp
 
 file.o: ../OAR/file.cpp ../OAR/file.h \
@@ -768,11 +777,17 @@ record.o: ../OAR/record.cpp ../OAR/record.h \
 campo.o: ../OAR/campo.cpp ../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
 
-arbolb.o: ../OAR/arbolb.cpp ../OAR/arbolb.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o arbolb.o ../OAR/arbolb.cpp
-
-nodo.o: ../OAR/nodo.cpp ../OAR/nodo.h
+nodo.o: ../OAR/nodo.cpp ../OAR/nodo.h \
+		../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nodo.o ../OAR/nodo.cpp
+
+key.o: ../OAR/key.cpp ../OAR/key.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key.o ../OAR/key.cpp
+
+btree.o: ../OAR/btree.cpp ../OAR/btree.h \
+		../OAR/nodo.h \
+		../OAR/key.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o btree.o ../OAR/btree.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
