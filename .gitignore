@@ -27,6 +27,7 @@
 *.out
 *.app
 
-#Files created by program and QT
+#Files created by program and QT and MAC
 *.OAR
 *.user
+.DS_Store
