@@ -16,7 +16,8 @@ public:
     void addChild(int);
     bool isAvailableToAdd(int order);
     bool hasChildren();
-    int getMiddle();
+    Key* getMiddle();
     Key* getKey(int pos);
     void deleteKey(int pos);
+    Nodo Split();
 };

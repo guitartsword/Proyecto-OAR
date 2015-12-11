@@ -30,15 +30,29 @@ bool Nodo::hasChildren(){
     else
         return false;
 }
-
-int Nodo::getMiddle(){
+Key* Nodo::getMiddle(){
+    //Saca la llave que sera promovida
     int middle=round(keys.size()/2);
-    return middle;
+    Key* temp=keys.at(middle);
+    return temp;
 }
 
 Key* Nodo::getKey(int pos){
     return keys.at(pos);
 }
+
 void Nodo::deleteKey(int pos){
     keys.erase(keys.begin()+pos);
+}
+
+Nodo Nodo::Split(){
+    int middle=round(keys.size()/2);
+    Nodo newNode=Nodo();
+    for(int i=0; i<middle;i++){
+        newNode.addKey(keys.at(i));
+    }
+    for(int i=0; i<middle;i++){
+        keys.erase(keys.begin()+i);
+    }
+    return newNode;
 }
