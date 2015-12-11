@@ -20,15 +20,16 @@ File::File(string filepaths, string nombre, bool openfile):
     else if(filepath.substr(filepath.length()-4,filepath.length()) != ".OAR")
         filepath += ".OAR";
     cout<<filepath.c_str()<<endl;
-    output.open(filepath.c_str(), ios::out | ios::app);
     input.open(filepath.c_str(), ios::in);
     if(openfile){
+        output.open(filepath.c_str(), ios::out | ios::in);
         output.seekp(0,output.end);
         cout <<"File size: "<< output.tellp() << endl;
         output.seekp(0,output.beg);
         reCalcHeaderSize();
         cout <<"headerSize: "<< header_size<<endl;
-    }
+    }else
+        output.open(filepath.c_str(), ios::out);
 }
 File::~File(){
     input.close();
@@ -114,7 +115,7 @@ void File::updateFile(){
     //Actualizar Registro del disco
 }
 
-void File::deleteRecord(int rrn){
+void File::deleteRecord(unsigned int rrn){
     output.flush();
     //Borrar Registro del archivo
     unsigned int avail= getRRN();
@@ -260,6 +261,7 @@ long unsigned int File::searchIndex(int ID){
                 if(atoi(data)==ID){
                     delete data;
                     offset += (rrn-1)*recordSize();
+                    //Convertirlo a offset y retornar el offset
                     return offset;
                 }
             }
@@ -267,7 +269,6 @@ long unsigned int File::searchIndex(int ID){
 
         }
     }
-    //Convertirlo a offset y retornar el offset
     return 0;
 }
 

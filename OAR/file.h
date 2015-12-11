@@ -15,13 +15,12 @@ class File
     vector<Campo> campos;
     int recordSize();
     void updateAvail(int);
-    long unsigned int searchIndex(int);//Retorna el offset del indice del registro
 public:
     File(string, string, bool);
     ~File();
     void addRecord(string, int);
     void updateFile();
-    void deleteRecord(int);
+    void deleteRecord(unsigned int);
     void saveHeader(vector<Campo>&);
     void reCalcHeaderSize();
     void appendRecord(string);
@@ -29,5 +28,6 @@ public:
     bool isOpen()const;
     int recordCount();
     char** getRecord(int, bool RRN);//retorna los datos del registro
+    long unsigned int searchIndex(int);//Retorna el offset del indice del registro
     vector<Campo>& getCampos();
 };

@@ -66,8 +66,8 @@ bool MainWindow::llaveExist(){
  *
 */
 
-int MainWindow::lookIndex(int key){
-    int rrn=-1;
+unsigned int MainWindow::lookIndex(unsigned int key){
+    unsigned int rrn=0;
     return rrn;
 }
 
@@ -167,10 +167,19 @@ void MainWindow::on_addRecord_triggered()
 
 void MainWindow::on_delRecord_triggered()
 {
-    QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
-    if(!selected.isEmpty() && ui->Tabla_Principal->rowCount()>1){
-        //Buscar offset en el indice
-        int rrn=lookIndex(0);//hay que agarrar la llave de la tabla
+    int selected;
+    QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+    if(!tableSelection.isEmpty() && ui->Tabla_Principal->rowCount()>1){
+
+        //Obtener el valor de la llave de la tabla
+        for(int i = 0; i < campos.size(); i++){
+            if(campos.at(i).key){
+                selected = ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toInt();
+                break;
+            }
+        }
+        //Buscar offset/RRN en el indice
+        unsigned int rrn = file->searchIndex(selected);
         //Marcar como borrado en el Archivo y se Actualiza el Avail List
         file->deleteRecord(rrn);
         ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
@@ -297,8 +306,10 @@ void MainWindow::on_saveRecord_triggered()
 
 void MainWindow::on_closeFile_triggered()
 {
-    delete file;
+    if(file->isOpen() )
+        delete file;
     ui->setupUi(this);
+    ui->importFiles->setEnabled(true);
     ui->saveFile->setEnabled(false);
     ui->addField->setEnabled(false);
     ui->addRecord->setEnabled(false);

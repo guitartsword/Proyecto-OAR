@@ -91,7 +91,7 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: parameters
     QMetaType::Void,
     QMetaType::Int,
-    QMetaType::Int, QMetaType::Int,    2,
+    QMetaType::UInt, QMetaType::UInt,    2,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -115,8 +115,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->on_newFile_triggered(); break;
         case 1: { int _r = _t->Availability();
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 2: { int _r = _t->lookIndex((*reinterpret_cast< int(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 2: { uint _r = _t->lookIndex((*reinterpret_cast< uint(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< uint*>(_a[0]) = _r; }  break;
         case 3: _t->on_addField_triggered(); break;
         case 4: _t->on_delField_triggered(); break;
         case 5: _t->on_updateField_triggered(); break;
