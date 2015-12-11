@@ -84,7 +84,7 @@ void File::saveHeader(vector<Campo> &campos){
         output.write(buffer, 1);
     }
     //AVAILIST
-    unsigned int availList =0;
+    int availList =0;
     output.write(reinterpret_cast<const char *>(&availList),3);
     delete[] buffer;
     output.flush();
@@ -117,21 +117,17 @@ void File::updateFile(){
 void File::deleteRecord(int rrn){
     output.flush();
     //Borrar Registro del archivo
-    int avail= getRRN();
-    char* buffer=new char[2];
+    unsigned int avail= getRRN();
+    char* buffer=new char[1];
     buffer[0]='*';
-    if(avail==0){
-        //Se marca con asterisco-cero en el registro borrado.
-        buffer[1]=0;
-    }else{
-        //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
-        buffer[1]=avail;
-    }
+    //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
     //Se escribe la nueva head del Avail List
     output.seekp(header_size+((rrn-1)*recordSize()),output.beg);
-    output.write(buffer,2);
+    output.write(buffer,1);
+    output.seekp(header_size+((rrn-1)*recordSize()) + 1, output.beg);
+    output.write(reinterpret_cast<const char*>(&avail), 3);
     output.flush();
-    //Se escribe en el Avail List el nuevo rrn
+    //Se escribe en el Head del Avail List el nuevo rrn
     output.seekp(header_size-3,output.beg);
     output.write(reinterpret_cast<const char *>(&rrn),3);
     output.flush();
@@ -150,9 +146,9 @@ void File::reCalcHeaderSize(){
     header_size+= defined_size*33;
     cout << header_size << endl << endl;
 }
-int File::getRRN(){
+unsigned int File::getRRN(){
     input.seekg(header_size-3,ios::beg);
-    int RRN = 0;
+    unsigned int RRN = 0;
     input.read(reinterpret_cast<char *>(&RRN),3);
     cout << "RRN: "<< RRN << endl;
     return RRN;
@@ -221,12 +217,60 @@ vector<Campo>& File::getCampos(){
     }
     return campos;
 }
-string File::getRecord(int ID){
-    //RECORDAR HACERLO DESPUES
-
+char** File::getRecord(int ID, bool RRN){
+    //Busca la posicion en el archivo
+    int offset;
+    if(RRN)
+        offset = header_size + (ID - 1)*recordSize();
+    else
+        offset = searchIndex(ID);
+    if(offset <= 0){
+        throw "Record Not Found";
+    }
+    input.seekg(offset, input.beg);
+    char** data;
+    data = new char*[campos.size()];
+    //Hace la busqueda en el archivo
+    for(int i = 0; i < campos.size(); i++){
+        input.seekg(offset,input.beg);
+        data[i] = new char[campos.at(i).size +1];
+        input.read(data[i],campos.at(i).size);
+        if(data[0][0] == '*')
+            throw "Record has been deleted";
+        data[i][campos.at(i).size] = '\0';
+        offset+=campos.at(i).size;
+    }
     //Retornar un arreglo de strings;
-    return "AUN NO HAY NADA";
+    return data;
 }
+long unsigned int File::searchIndex(int ID){
+    int offset = header_size;
+    //BUSCAR EL OFFSET en los indices Y RETORNAR el RRN
+    int recordCount = File::recordCount();
+    for(int rrn = 0; rrn < recordCount; rrn++){
+        int searchOffset = header_size+((rrn-1)*recordSize());
+        input.seekg(searchOffset, input.beg);
+        char* data;
+        for(int i = 0; i < campos.size(); i++){
+            if(campos.at(i).key){
+                input.seekg(searchOffset,input.beg);
+                data = new char[campos.at(i).size +1];
+                input.read(data,campos.at(i).size);
+                data[campos.at(i).size] = '\0';
+                if(atoi(data)==ID){
+                    delete data;
+                    offset += (rrn-1)*recordSize();
+                    return offset;
+                }
+            }
+            searchOffset+=campos.at(i).size;
+
+        }
+    }
+    //Convertirlo a offset y retornar el offset
+    return 0;
+}
+
 void File::updateAvail(int key){
     //Se lee lo que hay en el RRN antes de que sea modificado
     int temp;
@@ -234,7 +278,6 @@ void File::updateAvail(int key){
     input.read(reinterpret_cast<char *>(&temp),3);
     //Se escribe el nuevo header
     output.seekp(header_size-3,ios::beg);
-    unsigned int newAvail =temp;
-    output.write(reinterpret_cast<const char *>(&newAvail),3);
+    output.write(reinterpret_cast<const char *>(&temp),3);
     output.flush();
 }

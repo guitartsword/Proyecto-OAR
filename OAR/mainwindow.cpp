@@ -59,6 +59,13 @@ bool MainWindow::llaveExist(){
     return exist;
 }
 
+/*REVISAR ESTA FUNCION, VER DONDE SE USA Y QUE HACE
+ *
+ *
+ *
+ *
+*/
+
 int MainWindow::lookIndex(int key){
     int rrn=-1;
     return rrn;
@@ -216,9 +223,6 @@ bool isKeyRepeated(Campo &campo){
     ****************************************/
     return false;
 }
-string CampoString(){
-
-}
 
 void MainWindow::on_saveFile_triggered()
 {
@@ -333,12 +337,49 @@ void MainWindow::on_importFiles_triggered()
     }
     file = new File(text, text, true);
     campos = file->getCampos();
-    int recordCount = file->recordCount();
-    qDebug() << recordCount << endl;
-    cout << campos.at(0).name << endl;
-    for(int i = 0; i < recordCount; i++){
-        file->getRecord(i);
+    //Necesario habilitar para poder modificar la tabla
+    ui->updateRecord->setEnabled(true);
+    ui->Tabla_Principal->setEnabled(true);
 
+    //Asigna la cantidad de columnas y le pone su nombre respectivo
+    ui->Tabla_Principal->setColumnCount(campos.size());
+    for(int i = 0; i < campos.size(); i++){
+        QString nombre = campos.at(i).name;
+        if(campos.at(i).key){
+            ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre+" (Llave) "));
+        }else{
+            ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre));
+        }
     }
+
+    //Asigna la cantidad de registros en la fila
+    int recordCount = file->recordCount();
+    ui->Tabla_Principal->setRowCount(recordCount);
+    //Escribe el registro en la tabla
+    for(int i = 1; i <= recordCount; i++){
+        char** data;
+        try{
+            data = file->getRecord(i,true);
+
+            for(short j = 0; j < campos.size(); j++){
+                cout << "row = " << i-1;
+                cout << " column = " << j;
+                QString tabletext =data[j];
+                cout << " TEXT = " << tabletext.toStdString() << endl;
+                ui->Tabla_Principal->setItem(i-1, j, new QTableWidgetItem(tabletext));
+                delete data[j];
+            }
+            delete[] data;
+        }catch (char* exception) { cerr << exception; }
+    }
+    ui->closeFile->setEnabled(true);
+    ui->importFiles->setEnabled(false);
+    ui->newFile->setEnabled(false);
+    ui->addRecord->setEnabled(true);
+    ui->delRecord->setEnabled(true);
+    ui->saveFile->setEnabled(false);
+    ui->addField->setEnabled(false);
+    ui->delField->setEnabled(false);
+    ui->updateField->setEnabled(false);
     qDebug() << "Finished on_importFiles_triggered() function";
 }
