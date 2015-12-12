@@ -26,8 +26,7 @@ bool isKeyRepeated(Campo&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    file(NULL)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     ui->saveFile->setEnabled(false);
@@ -307,9 +306,10 @@ void MainWindow::on_saveRecord_triggered()
 
 void MainWindow::on_closeFile_triggered()
 {
-    if(file->isOpen() )
+    if(file->isOpen() || file != NULL){
         delete file;
-    ui->setupUi(this);
+        cout << "dile deleted" << endl;
+    }
     ui->importFiles->setEnabled(true);
     ui->saveFile->setEnabled(false);
     ui->addField->setEnabled(false);
@@ -337,16 +337,15 @@ void MainWindow::closeEvent (QCloseEvent *event)
 
 void MainWindow::on_importFiles_triggered()
 {
-
     QFileDialog dialog;
     this->ui->Tabla_Principal->setEnabled(true);
+
     QString pathExport = dialog.getOpenFileName(this, tr("Cargar Archivo"),
                                          "",
                                          tr("Registros (*.OAR)"));
+
     string text = pathExport.toStdString();
-    if(file == NULL || file->isOpen()){
-        delete file;
-    }
+    cout << "Creating file at path: " << text << endl;
     file = new File(text, text, true);
     campos = file->getCampos();
     //Necesario habilitar para poder modificar la tabla
@@ -373,10 +372,7 @@ void MainWindow::on_importFiles_triggered()
         try{
             data = file->getRecord(i,true);
             for(short j = 0; j < campos.size(); j++){
-                cout << "row = " << i-1;
-                cout << " column = " << j;
                 QString tabletext =data[j];
-                cout << " TEXT = " << tabletext.toStdString() << endl;
                 ui->Tabla_Principal->setItem(i-1, j, new QTableWidgetItem(tabletext));
                 delete data[j];
             }
@@ -396,4 +392,41 @@ void MainWindow::on_importFiles_triggered()
     ui->delField->setEnabled(false);
     ui->updateField->setEnabled(false);
     qDebug() << "Finished on_importFiles_triggered() function";
+}
+
+void MainWindow::on_updateRecord_triggered()
+{
+    QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+    if(!tableSelection.isEmpty()){
+        QString filename = "";
+        filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a borrar:");
+        long int key = filename.toLong();
+        /*for(int i = 0; i < campos.size(); i++){
+            if(campos.at(i).key)
+                key = atoi(ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toStdString().c_str());
+        }*/
+        long unsigned int rrn = file->searchIndex(key);
+        cout << "RRN = " << rrn << endl;
+        cout << "key searched = " << key << endl;
+        if(rrn == 0){
+            QMessageBox Box;
+            Box.setText("¡No se encontro el registro");
+            Box.exec();
+        }else{
+            stringstream ss;
+            for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
+                QString temp;
+                temp=ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text();
+                ss<<left<<setw(campos.at(i).size) << temp.toStdString();
+            }
+            file->addRecord(ss.str(),rrn);
+            QMessageBox Box;
+            Box.setText("¡Se modifico el registro correctamente!");
+            Box.exec();
+        }
+    }else{
+        QMessageBox Box;
+        Box.setText("¡No selecciono ningun registro para modificar!");
+        Box.exec();
+    }
 }

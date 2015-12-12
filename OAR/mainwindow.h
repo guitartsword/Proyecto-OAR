@@ -53,6 +53,8 @@ private slots:
 
     void on_importFiles_triggered();
 
+    void on_updateRecord_triggered();
+
 private:
     Ui::MainWindow *ui;
     void closeEvent (QCloseEvent *event);

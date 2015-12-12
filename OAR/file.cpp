@@ -101,7 +101,7 @@ void File::addRecord(string record, int RRN){
     //Actualizar el Avail List
     updateAvail(RRN);
     //Escribir Registro del disco en una posicion especifica
-    output.seekp(header_size + ((RRN-1)*record.size()),ios::beg);
+    output.seekp(header_size + ((RRN-1)*record.size()),output.beg);
     output.write(record.c_str(),record.size());
 }
 
@@ -149,7 +149,7 @@ void File::reCalcHeaderSize(){
 }
 //OBTIENE EL RRN DEL HEADER
 unsigned int File::getRRN(){
-    input.seekg(header_size-3,ios::beg);
+    input.seekg(header_size-3,input.beg);
     unsigned int RRN = 0;
     input.read(reinterpret_cast<char *>(&RRN),3);
     cout << "RRN: "<< RRN << endl;
@@ -248,7 +248,7 @@ char** File::getRecord(int ID, bool RRN){
     //Retornar un arreglo de strings;
     return data;
 }
-long unsigned int File::searchIndex(int ID){
+long unsigned int File::searchIndex(long int ID){
     //BUSCA EL RRN EN EL INDICE CON LLAVE = ID
     int recordCount = File::recordCount();
     //REALIZA UNA BUSQUEDA SECUENCIAL
@@ -264,7 +264,7 @@ long unsigned int File::searchIndex(int ID){
                 input.read(data,campos.at(i).size);
                 data[campos.at(i).size] = '\0';
                 //SI LA LLAVE ES IGUAL AL DEL REGISTRO RETORNA EL RRN
-                if(atoi(data)==ID){
+                if(atol(data)==ID){
                     delete data;
                     //Retornar el RRN
                     return rrn;
@@ -279,12 +279,17 @@ long unsigned int File::searchIndex(int ID){
 }
 
 void File::updateAvail(int key){
-    //Se lee lo que hay en el RRN antes de que sea modificado
-    int temp;
-    input.seekg(header_size+((key-1)*recordSize())+1,ios::beg);
-    input.read(reinterpret_cast<char *>(&temp),3);
-    //Se escribe el nuevo header
-    output.seekp(header_size-3,ios::beg);
-    output.write(reinterpret_cast<const char *>(&temp),3);
-    output.flush();
+    //Se valida que el reigistro que se esta modificando este borrado o no
+    input.seekg(header_size+(key-1)*recordSize(),input.beg);
+    char isRecordDeleted = input.get();
+    if(isRecordDeleted == '*'){
+        int temp;
+        //Se lee lo que hay en el RRN antes de que sea modificado
+        input.seekg(header_size+((key-1)*recordSize())+1,input.beg);
+        input.read(reinterpret_cast<char *>(&temp),3);
+        //Se escribe el nuevo header
+        output.seekp(header_size-3,output.beg);
+        output.write(reinterpret_cast<const char *>(&temp),3);
+        output.flush();
+    }
 }
