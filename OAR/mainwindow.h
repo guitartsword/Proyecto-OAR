@@ -29,7 +29,7 @@ private slots:
 
     int Availability();
 
-    int lookIndex(int);
+    unsigned int lookIndex(unsigned int);
 
     void on_addField_triggered();
 

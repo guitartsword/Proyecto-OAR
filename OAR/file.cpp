@@ -1,6 +1,7 @@
 #include "file.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <cstring>
 #include <vector>
@@ -20,15 +21,16 @@ File::File(string filepaths, string nombre, bool openfile):
     else if(filepath.substr(filepath.length()-4,filepath.length()) != ".OAR")
         filepath += ".OAR";
     cout<<filepath.c_str()<<endl;
-    output.open(filepath.c_str(), ios::out | ios::app);
     input.open(filepath.c_str(), ios::in);
     if(openfile){
+        output.open(filepath.c_str(), ios::out | ios::in);
         output.seekp(0,output.end);
         cout <<"File size: "<< output.tellp() << endl;
         output.seekp(0,output.beg);
         reCalcHeaderSize();
         cout <<"headerSize: "<< header_size<<endl;
-    }
+    }else
+        output.open(filepath.c_str(), ios::out);
 }
 File::~File(){
     input.close();
@@ -114,19 +116,18 @@ void File::updateFile(){
     //Actualizar Registro del disco
 }
 
-void File::deleteRecord(int rrn){
+void File::deleteRecord(unsigned int rrn){
     output.flush();
     //Borrar Registro del archivo
     unsigned int avail= getRRN();
     char* buffer=new char[1];
     buffer[0]='*';
     //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
-    //Se escribe la nueva head del Avail List
     output.seekp(header_size+((rrn-1)*recordSize()),output.beg);
     output.write(buffer,1);
+    //Se escribe la nueva head del Avail List
     output.seekp(header_size+((rrn-1)*recordSize()) + 1, output.beg);
     output.write(reinterpret_cast<const char*>(&avail), 3);
-    output.flush();
     //Se escribe en el Head del Avail List el nuevo rrn
     output.seekp(header_size-3,output.beg);
     output.write(reinterpret_cast<const char *>(&rrn),3);
@@ -146,6 +147,7 @@ void File::reCalcHeaderSize(){
     header_size+= defined_size*33;
     cout << header_size << endl << endl;
 }
+//OBTIENE EL RRN DEL HEADER
 unsigned int File::getRRN(){
     input.seekg(header_size-3,ios::beg);
     unsigned int RRN = 0;
@@ -221,12 +223,15 @@ char** File::getRecord(int ID, bool RRN){
     //Busca la posicion en el archivo
     int offset;
     if(RRN)
-        offset = header_size + (ID - 1)*recordSize();
+        offset = (ID - 1)*recordSize();
     else
-        offset = searchIndex(ID);
-    if(offset <= 0){
-        throw "Record Not Found";
+        offset = (searchIndex(ID) - 1)*recordSize();
+    if(offset < 0){
+        stringstream toThrow;
+        toThrow << "Record Not Found with ID" << ID;
+        throw toThrow.str().c_str();
     }
+    offset+=header_size;
     input.seekg(offset, input.beg);
     char** data;
     data = new char*[campos.size()];
@@ -244,30 +249,32 @@ char** File::getRecord(int ID, bool RRN){
     return data;
 }
 long unsigned int File::searchIndex(int ID){
-    int offset = header_size;
-    //BUSCAR EL OFFSET en los indices Y RETORNAR el RRN
+    //BUSCA EL RRN EN EL INDICE CON LLAVE = ID
     int recordCount = File::recordCount();
-    for(int rrn = 0; rrn < recordCount; rrn++){
+    //REALIZA UNA BUSQUEDA SECUENCIAL
+    for(int rrn = 1; rrn <= recordCount; rrn++){
         int searchOffset = header_size+((rrn-1)*recordSize());
         input.seekg(searchOffset, input.beg);
         char* data;
+        //LEE CADA CAMPO HASTA ENCONTRAR EL CAMPO QUE CONTENGA LA LLAVE
         for(int i = 0; i < campos.size(); i++){
             if(campos.at(i).key){
                 input.seekg(searchOffset,input.beg);
                 data = new char[campos.at(i).size +1];
                 input.read(data,campos.at(i).size);
                 data[campos.at(i).size] = '\0';
+                //SI LA LLAVE ES IGUAL AL DEL REGISTRO RETORNA EL RRN
                 if(atoi(data)==ID){
                     delete data;
-                    offset += (rrn-1)*recordSize();
-                    return offset;
+                    //Retornar el RRN
+                    return rrn;
                 }
             }
             searchOffset+=campos.at(i).size;
 
         }
     }
-    //Convertirlo a offset y retornar el offset
+    //Si no encuentra la llave en el registro retorna 0
     return 0;
 }
 
