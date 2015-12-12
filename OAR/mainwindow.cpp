@@ -181,6 +181,7 @@ void MainWindow::on_delRecord_triggered()
         //Buscar offset/RRN en el indice
         unsigned int rrn = file->searchIndex(selected);
         //Marcar como borrado en el Archivo y se Actualiza el Avail List
+        cout << "RRN search and to delete = " << rrn << endl;
         file->deleteRecord(rrn);
         ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
     }
@@ -371,7 +372,6 @@ void MainWindow::on_importFiles_triggered()
         char** data;
         try{
             data = file->getRecord(i,true);
-
             for(short j = 0; j < campos.size(); j++){
                 cout << "row = " << i-1;
                 cout << " column = " << j;
@@ -381,7 +381,10 @@ void MainWindow::on_importFiles_triggered()
                 delete data[j];
             }
             delete[] data;
-        }catch (char* exception) { cerr << exception; }
+        }catch (const char* exception) {
+            cerr << exception <<endl;
+            ui->Tabla_Principal->removeRow(i-1);
+        }
     }
     ui->closeFile->setEnabled(true);
     ui->importFiles->setEnabled(false);
