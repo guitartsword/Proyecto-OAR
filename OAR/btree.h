@@ -7,12 +7,20 @@ using namespace std;
 
 class BTree{
     int order;
-    Nodo root;
     vector<int> pages;
+    vector<Nodo> nodos;
+    bool up;
 public:
+	Nodo root;
     BTree();
     BTree(int);
-    void addKey(Nodo, Key*);
+    void Print(Nodo node);
+    void PrintNodes();
+    void addKey(Nodo&, Key);
     void delKey(int);
-    Nodo Promote(Nodo node, Key* key);
+    void Promote(Nodo& node, Key key);
+    Nodo* getNodo(int page);
+    void deleteNode(int page);
+    Nodo* findNode(int page);
+    void sortChildren(Nodo& node);
 };
