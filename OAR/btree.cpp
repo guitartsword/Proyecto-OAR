@@ -122,28 +122,29 @@ int Tree::findKeyRRN(Node* node, int key){
 void Tree::saveTree(Node* node){
 	char* buffer;//3+3+(6*(order-1))+(3*order)
 	//Se escribe el numero de pagina
-	buffer = new char[3];
+	buffer = new char[4];
 	buffer[0]=node->page;
-	output.write(buffer,3);
+	output.write(buffer,4);
 	//Se escribe la cantidad de keys que tiene
-	buffer = new char[3];
+	buffer = new char[4];
     buffer[0]=node->keys.size();
-    output.write(buffer, 3);
+    output.write(buffer, 4);
     //Se escriben las llaves
+    buffer = new char[8*order];
     for (int i = 0; i < node->keys.size(); i++){
-    	buffer = new char[3];
+    	buffer = new char[4];
     	buffer[0]=node->keys[i].key;
-    	output.write(buffer, 3);
+    	output.write(buffer, 4);
 
-    	buffer = new char[3];
+    	buffer = new char[4];
     	buffer[0]=node->keys[i].rrn;
-    	output.write(buffer, 3);
+    	output.write(buffer, 4);
     }
     //Se escribe el numero de hijos
     for(int i = 0; i < node->children.size(); i++){
-    	buffer = new char[3];
-        buffer[0]=node->children[i]->page;
-    	output.write(buffer, 3);
+    	buffer = new char[4];
+    	buffer[0]=node->children[i].page;
+    	output.write(buffer, 4);
     }
 }
 
