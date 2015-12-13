@@ -240,8 +240,12 @@ char** File::getRecord(int ID, bool RRN){
         input.seekg(offset,input.beg);
         data[i] = new char[campos.at(i).size +1];
         input.read(data[i],campos.at(i).size);
-        if(data[0][0] == '*')
+        if(data[0][0] == '*'){
+            for(int j= 0; j < i; j++)
+                delete data[j];
+            delete[] data;
             throw "Record has been deleted";
+        }
         data[i][campos.at(i).size] = '\0';
         offset+=campos.at(i).size;
     }

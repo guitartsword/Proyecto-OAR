@@ -367,16 +367,18 @@ void MainWindow::on_importFiles_triggered()
     int recordCount = file->recordCount();
     ui->Tabla_Principal->setRowCount(recordCount);
     //Escribe el registro en la tabla
+    int tablePos=0;
     for(int i = 1; i <= recordCount; i++){
         char** data;
         try{
             data = file->getRecord(i,true);
             for(short j = 0; j < campos.size(); j++){
                 QString tabletext =data[j];
-                ui->Tabla_Principal->setItem(i-1, j, new QTableWidgetItem(tabletext));
+                ui->Tabla_Principal->setItem(tablePos, j, new QTableWidgetItem(tabletext));
                 delete data[j];
             }
             delete[] data;
+            tablePos++;
         }catch (const char* exception) {
             cerr << exception <<endl;
             ui->Tabla_Principal->removeRow(i-1);
