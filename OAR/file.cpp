@@ -14,7 +14,8 @@ using namespace std;
 File::File(string filepaths, string nombre, bool openfile):
     nombre(nombre),
     write(write),
-    filepath(filepaths)
+    filepath(filepaths),
+    arbol(64)
 {
     if(filepath.length() < 4)
         filepath += ".OAR";
@@ -93,20 +94,26 @@ void File::saveHeader(vector<Campo> &campos){
 }
 
 
-void File::addRecord(string record, int RRN){
+void File::addRecord(int key, string record, int RRN){
     output.flush();
     //Actualizar el Avail List
     updateAvail(RRN);
     //Escribir Registro del disco en una posicion especifica
     output.seekp(header_size + ((RRN-1)*record.size()),output.beg);
     output.write(record.c_str(),record.size());
+    //Agregar Indice al ARBOL B
+    arbol.addKey(arbol.root,Key(key,RRN));
 }
 
-void File::appendRecord(string record){
+void File::appendRecord(int key, string record){
     //Escribir append un registro
     output.flush();
     output.seekp(0,output.end);
     output.write(record.c_str(),record.size());
+    //Agregar Indice al ARBOL B
+    Key temp(key,recordCount());
+    arbol.addKey(arbol.root,temp);
+    arbol.PrintNodes(arbol.root);
 }
 
 void File::updateFile(){
@@ -222,10 +229,17 @@ char** File::getRecord(int ID, bool RRN){
         offset = (searchIndex(ID) - 1)*recordSize();
     if(offset < 0){
         stringstream toThrow;
-        toThrow << "Record Not Found with ID" << ID;
+        toThrow << "Record Not Found with ID " << ID;
+        cout << toThrow.str().c_str() << endl;
         throw toThrow.str().c_str();
     }
+
     offset+=header_size;
+    cout << ":::::::::::::::::::::" << endl;
+    cout << header_size << endl;
+    cout << offset << endl;
+    cout << ":::::::::::::::::::::" << endl;
+
     input.seekg(offset, input.beg);
     char** data;
     data = new char*[campos.size()];
@@ -248,6 +262,7 @@ char** File::getRecord(int ID, bool RRN){
 }
 unsigned int File::searchIndex(int ID){
     //BUSCA EL RRN EN EL INDICE CON LLAVE = ID
+    /*
     int recordCount = File::recordCount();
     //REALIZA UNA BUSQUEDA SECUENCIAL
     for(int rrn = 1; rrn <= recordCount; rrn++){
@@ -272,8 +287,14 @@ unsigned int File::searchIndex(int ID){
 
         }
     }
-    //Si no encuentra la llave en el registro retorna 0
-    return 0;
+    */
+    int rrn = arbol.findKeyRRN(arbol.root,ID);
+    //Si no encuentra la llave en el registro throw error
+    if(rrn == -1){
+        throw "Key not found";
+    }
+    return rrn;
+
 }
 
 void File::updateAvail(int key){

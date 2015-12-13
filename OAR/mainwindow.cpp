@@ -90,7 +90,7 @@ void MainWindow::on_newFile_triggered()
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
             ui->Tabla_Principal->setEnabled(true);
-            ui->searchRecord->setEnabled(true);
+
         }
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
@@ -255,6 +255,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->delField->setEnabled(false);
                     ui->updateField->setEnabled(false);
                     ui->Tabla_Principal->removeRow(0);
+                    ui->searchRecord->setEnabled(true);
                 }
             }
         }
@@ -272,21 +273,27 @@ void MainWindow::on_saveRecord_triggered()
     try{
         //Si existen campos
         if(campos.size()>0){
-            cout<<"entre"<<endl;
+            int key;
             stringstream ss;
             for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
                 QString temp;
                 temp=ui->Tabla_Principal->item(ui->Tabla_Principal->rowCount()-1,i)->text();
                 ss<<left<<setw(campos.at(i).size) << temp.toStdString();
+                if(campos.at(i).key){
+                    key = temp.toInt();
+                }
             }
             //Se mira el Avail List
             int RRN = file->getRRN();
             cout << ss.str() << endl;
             if(RRN==0){
-                file->appendRecord(ss.str());
+                cout << ss.str() << endl;
+                file->appendRecord(key, ss.str());
+                cout << ss.str() << endl;
             }else{
-                file->addRecord(ss.str(), RRN);
+                file->addRecord(key, ss.str(), RRN);
             }
+            cout << "FIN DE ESCRITURA" << endl;
             ui->addRecord->setEnabled(true);
             ui->saveRecord->setEnabled(false);
             /*Actualizar el indice
@@ -325,6 +332,7 @@ void MainWindow::on_closeFile_triggered()
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
+    ui->newFile->setEnabled(true);
 }
 
 void MainWindow::on_exitProgram_triggered()
@@ -420,12 +428,16 @@ void MainWindow::on_updateRecord_triggered()
             Box.exec();
         }else{
             stringstream ss;
+            int key;
             for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
                 QString temp;
                 temp=ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text();
                 ss<<left<<setw(campos.at(i).size) << temp.toStdString();
+                if(campos.at(i).key){
+                    key = temp.toInt();
+                }
             }
-            file->addRecord(ss.str(),rrn);
+            file->addRecord(key, ss.str(),rrn);
             QMessageBox Box;
             Box.setText("¡Se modifico el registro correctamente!");
             Box.exec();
@@ -442,10 +454,19 @@ void MainWindow::on_searchRecord_triggered()
     QString filename = "";
     filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a modificar:");
     int key = filename.toInt();
-    char** record = file->getRecord(file->searchIndex(key), true);
-    ui->Tabla_Principal->setColumnCount(campos.size());
-    ui->Tabla_Principal->setRowCount(1);
-    for(int i = 0; i < campos.size(); i++){
-        ui->Tabla_Principal->setItem(0,i,new QTableWidgetItem(record[i]));
+    try{
+        int rrn = file->searchIndex(key);
+        cout << "RRN" << rrn << endl;
+        char** record = file->getRecord(rrn, true);
+        ui->Tabla_Principal->setColumnCount(campos.size());
+        ui->Tabla_Principal->setRowCount(1);
+        for(int i = 0; i < campos.size(); i++){
+            cout << record[i] << endl;
+            ui->Tabla_Principal->setItem(0,i,new QTableWidgetItem(record[i]));
+        }
+    }catch(...){
+        QMessageBox Box;
+        Box.setText("No se encontro el registro");
+        Box.exec();
     }
 }

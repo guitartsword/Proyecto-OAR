@@ -54,7 +54,8 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/campo.cpp \
 		../OAR/nodo.cpp \
 		../OAR/key.cpp \
-		../OAR/btree.cpp moc_mainwindow.cpp \
+		../OAR/btree.cpp \
+		../OAR/node.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -67,6 +68,7 @@ OBJECTS       = main.o \
 		nodo.o \
 		key.o \
 		btree.o \
+		node.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -358,7 +360,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/OAR1.0.0 || mkdir -p .tmp/OAR1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
 
 
 clean:compiler_clean 
@@ -1571,9 +1573,13 @@ key.o: ../OAR/key.cpp ../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key.o ../OAR/key.cpp
 
 btree.o: ../OAR/btree.cpp ../OAR/btree.h \
-		../OAR/nodo.h \
+		../OAR/node.h \
 		../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o btree.o ../OAR/btree.cpp
+
+node.o: ../OAR/node.cpp ../OAR/node.h \
+		../OAR/key.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../OAR/node.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

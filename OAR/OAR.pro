@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     campo.cpp \
     nodo.cpp \
     key.cpp \
-    btree.cpp
+    btree.cpp \
+    node.cpp
 
 HEADERS  += mainwindow.h \
     dialogcampo.h \
@@ -31,7 +32,8 @@ HEADERS  += mainwindow.h \
     campo.h \
     nodo.h \
     key.h \
-    btree.h
+    btree.h \
+    node.h
 
 FORMS    += mainwindow.ui \
     dialogcampo.ui \
