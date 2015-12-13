@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 {
-    /*
+
     Tree arbol(6);
     Key temp(10,0);
     arbol.addKey(arbol.root, temp);
@@ -87,9 +87,12 @@ int main(int argc, char *argv[])
     temp=Key(8,0);
     arbol.addKey(arbol.root, temp);
 
-    cout<<endl;
-    //arbol.PrintNodes(arbol.root)
-    */
+    temp=Key(80,0);
+    arbol.addKey(arbol.root, temp);
+
+    cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
+    arbol.PrintNodes(arbol.root);
+    cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
     QApplication a(argc, argv);
     MainWindow w;
     w.show();

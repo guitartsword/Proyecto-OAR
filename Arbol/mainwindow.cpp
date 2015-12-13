@@ -9,7 +9,7 @@ using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    btree(5)
+    btree(6)
 {
     ui->setupUi(this);
 }

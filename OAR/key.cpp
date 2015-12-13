@@ -10,12 +10,6 @@ ostream& operator<<(ostream& output, const Key& key){
 	return output;
 }
 
-string Key::toString()const{
-	stringstream ss;
-	ss << key;
-	return ss.str();
-}
-
 bool operator<(const Key &key1, const Key &key2){
     if(key1.key < key2.key)
         return true;

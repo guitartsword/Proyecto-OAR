@@ -4,7 +4,7 @@
 using namespace std;
 
 int main2(int argc, char const *argv[]){
-/*
+
     Tree arbol(6);
 	Key temp(10,0);
 	arbol.addKey(arbol.root, temp);
@@ -87,8 +87,8 @@ int main2(int argc, char const *argv[]){
 	temp=Key(8,0);
 	arbol.addKey(arbol.root, temp);
 
-	cout<<endl;
-*/
-	//arbol.PrintNodes(arbol.root);
+    cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
+    arbol.PrintNodes(arbol.root);
+    cout<<"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"<<endl;
 	return 0;
 }
