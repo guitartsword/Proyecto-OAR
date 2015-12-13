@@ -76,20 +76,9 @@ Node* Node::Split(){
 		middle=(keys.size()/2);
     vector<Key> derecha(keys.begin() + middle + 1, keys.end());
     vector<Key> izquierda(keys.begin(), keys.begin() + middle);
-    cerr << "Middle = " << middle << endl;
-    for(int i = 0; i < derecha.size(); i++){
-        cerr << derecha[i] << ",";
-    }
-    cerr << endl;
-    for(int i = 0; i < izquierda.size(); i++){
-        cerr << izquierda[i] << ",";
-    }
-    cerr << endl;
     Node* left=new Node();
     left->keys=izquierda;
     keys=derecha;
-
-    cout << "CHILDREN SIZE = " << children.size() << endl;
     if(children.size()>0){
         if(children.size()%2==0)
             middle=(children.size()/2)-1;
@@ -98,9 +87,6 @@ Node* Node::Split(){
         vector<Node*> N_derecha;
         vector<Node*> N_izquierda;
         for(int i = 0; i < children.size(); i++){
-            cerr << "CHILDREN" << endl;
-            cerr << children.at(i) << endl;
-            cerr << "CHILDREN" << endl;
         }
         for(int i = 0; i < middle + 1; i++){
             N_izquierda.push_back(children.at(i));
@@ -118,7 +104,6 @@ Node* Node::Split(){
 }
 
 bool operator<(const Node &nodo1, const Node &nodo2){
-    cout << "LAKSDJASDJLKASDLKLKJSDALKJASDLKJASDLJKLAKJDSLKJADSLKJASDLKLKJWSDA" << endl;
     if(nodo1.keys.at(0).key < nodo2.keys.at(0).key)
         return true;
     else

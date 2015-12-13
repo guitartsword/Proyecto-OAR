@@ -12,4 +12,6 @@ public:
 	void addKey(Node* , Key);
 	void Promote(Node* , Key);
 	void PrintNodes(Node*);
+	bool keyExist(Node*, int key);
+	int findKeyRRN(Node* node, int key);
 };

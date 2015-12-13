@@ -49,18 +49,12 @@ void Tree::Promote(Node* nodo, Key key){
         up=true;
         nodo->addKey(key);
 		Key middle=nodo->getMiddle();
-
         Node* izquierda=nodo->Split();
 		izquierda->page=page_count++;
-        //
         izquierda->father=nodo->father;
-        //EDIT
         nodo->father->children.push_back(izquierda);
         nodo->father->sortChildren();
-        //END EDIT
         addKey(nodo->father, middle);
-        izquierda->Print();
-		nodo->Print();
 
 	}
 }
@@ -73,3 +67,48 @@ void Tree::PrintNodes(Node* nodo){
 		}
 	}
 }
+
+bool Tree::keyExist(Node* node, int key){
+	bool exists=false;
+	for (int i = 0; i < node->keys.size(); ++i){
+		if(node->keys.at(i).key==key){
+			exists=true;
+			break;
+		}
+	}
+	if(!exists){
+		for(int i = 0; i < node->children.size(); ++i){
+			exists=keyExist(node->children.at(i), key);
+			if(exists)
+				break;
+		}
+	}
+	return exists;
+}
+
+
+int Tree::findKeyRRN(Node* node, int key){
+	int RRN=-1;
+	for (int i = 0; i < node->keys.size(); ++i){
+		if(node->keys.at(i).key==key){
+			RRN=node->keys.at(i).rrn;
+			break;
+		}
+	}
+	if(RRN==-1){
+		for(int i = 0; i < node->children.size(); ++i){
+			RRN=findKeyRRN(node->children.at(i), key);
+			if(RRN!=-1)
+				break;
+		}
+	}
+	return RRN;
+
+}
+
+
+
+
+
+
+
