@@ -6,6 +6,7 @@ class Tree{
 	int page_count;
 	bool up;
 public:
+    char* nombre;
 	Node* root;
 	Tree(int);
 	void addKey(Node* , Key);
