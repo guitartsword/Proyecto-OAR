@@ -23,6 +23,7 @@ File::File(string filepaths, string nombre, bool openfile):
         filepath += ".OAR";
     cout<<filepath.c_str()<<endl;
     input.open(filepath.c_str(), ios::in);
+    arbol.input.open(filepath + ".TREE", ios::in);
     if(openfile){
         output.open(filepath.c_str(), ios::out | ios::in);
         output.seekp(0,output.end);
@@ -30,8 +31,11 @@ File::File(string filepaths, string nombre, bool openfile):
         output.seekp(0,output.beg);
         reCalcHeaderSize();
         cout <<"headerSize: "<< header_size<<endl;
-    }else
+        arbol.output.open(filepath + ".TREE", ios::out | ios::in);
+    }else{
+        arbol.output.open(filepath + ".TREE", ios::out);
         output.open(filepath.c_str(), ios::out);
+    }
 }
 File::~File(){
     input.close();

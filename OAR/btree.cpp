@@ -16,6 +16,7 @@ Tree::Tree(int order, string nombre):order(order),page_count(0),nombre(nombre){
     up=false;
     nombre+=".TREE";
     output.open(nombre.c_str(), ios::out);
+    input.open(nombre.c_str(), ios::in);
 }
 
 void Tree::addKey(Node* nodo, Key key){

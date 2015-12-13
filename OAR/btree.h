@@ -6,11 +6,12 @@
 using namespace std;
 
 class Tree{
-    fstream output, input;
+
 	int order;
 	int page_count;
 	bool up;
 public:
+    fstream output, input;
     string nombre;
 	Node* root;
 	Tree(int);
