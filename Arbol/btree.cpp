@@ -46,11 +46,11 @@ void Tree::Promote(Node* nodo, Key key){
 		newRoot->children.push_back(nodo);
         root = newRoot;
 	}else{
-		up=true;
-		nodo->addKey(key);
+        up=true;
+        nodo->addKey(key);
 		Key middle=nodo->getMiddle();
-		addKey(nodo->father, middle);
-		Node* izquierda=nodo->Split();
+
+        Node* izquierda=nodo->Split();
 		izquierda->page=page_count++;
         //
         izquierda->father=nodo->father;
@@ -58,6 +58,7 @@ void Tree::Promote(Node* nodo, Key key){
         nodo->father->children.push_back(izquierda);
         nodo->father->sortChildren();
         //END EDIT
+        addKey(nodo->father, middle);
         izquierda->Print();
 		nodo->Print();
 

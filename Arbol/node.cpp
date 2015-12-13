@@ -95,13 +95,24 @@ Node* Node::Split(){
             middle=(children.size()/2)-1;
         else
             middle=(children.size()/2);
-        vector<Node*> N_derecha(children.begin() + middle, children.end());
-        vector<Node*> N_izquierda(children.begin(), children.begin() + middle);
-    	left->children=N_izquierda;
-    	children=N_derecha;
+        vector<Node*> N_derecha;
+        vector<Node*> N_izquierda;
+        for(int i = 0; i < children.size(); i++){
+            cerr << "CHILDREN" << endl;
+            cerr << children.at(i) << endl;
+            cerr << "CHILDREN" << endl;
+        }
+        for(int i = 0; i < middle + 1; i++){
+            N_izquierda.push_back(children.at(i));
+        }
+        for(int i = middle + 1; i < children.size(); i++){
+            N_derecha.push_back(children.at(i));
+        }
+        left->children=N_izquierda;
+        children=N_derecha;
     }
     for (int i = 0; i < left->children.size(); i++){
-    	left->children[i]->father=left;
+        left->children[i]->father=left;
     }
     return left;
 }
