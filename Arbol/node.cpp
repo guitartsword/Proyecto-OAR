@@ -21,11 +21,28 @@ void Node::addKey(Key key){
 }
 
 void Node::sortKeys(){
-	sort(keys.begin(),keys.end());
+    if(keys.size()>0)
+        sort(keys.begin(),keys.end());
 }
 
 void Node::sortChildren(){
-	sort(children.begin(),children.end());
+    Node* keys[children.size()];
+    int cont=0;
+    for (int i = 0; i < children.size(); i++){
+        for (int j = 0; j < children.size(); j++){
+            if(children.at(i)->keys.at(0).key < children.at(j)->keys.at(0).key){
+                cont++;
+            }
+        }
+        keys[cont]=children.at(i);
+        cont=0;
+    }
+
+    vector<Node*> Children;
+    for (int i = children.size()-1; i >= 0; i--){
+        Children.push_back(keys[i]);
+    }
+    children=Children;
 }
 
 bool Node::hasChildren(){
@@ -54,18 +71,32 @@ Key Node::getMiddle(){
 Node* Node::Split(){
 	int middle;
 	if(keys.size()%2==0)
-		middle=(keys.size()/2)-1;
+        middle=(keys.size()/2)-1;
 	else
 		middle=(keys.size()/2);
-	vector<Key> derecha(keys.begin() + middle + 1, keys.end());
+    vector<Key> derecha(keys.begin() + middle + 1, keys.end());
     vector<Key> izquierda(keys.begin(), keys.begin() + middle);
+    cerr << "Middle = " << middle << endl;
+    for(int i = 0; i < derecha.size(); i++){
+        cerr << derecha[i] << ",";
+    }
+    cerr << endl;
+    for(int i = 0; i < izquierda.size(); i++){
+        cerr << izquierda[i] << ",";
+    }
+    cerr << endl;
     Node* left=new Node();
     left->keys=izquierda;
     keys=derecha;
+
+    cout << "CHILDREN SIZE = " << children.size() << endl;
     if(children.size()>0){
-    	//sortChildren();
-    	vector<Node*> N_derecha(children.begin() + middle + 1, children.end());
-    	vector<Node*> N_izquierda(children.begin(), children.begin() + middle + 1);
+        if(children.size()%2==0)
+            middle=(children.size()/2)-1;
+        else
+            middle=(children.size()/2);
+        vector<Node*> N_derecha(children.begin() + middle, children.end());
+        vector<Node*> N_izquierda(children.begin(), children.begin() + middle);
     	left->children=N_izquierda;
     	children=N_derecha;
     }
@@ -76,7 +107,8 @@ Node* Node::Split(){
 }
 
 bool operator<(const Node &nodo1, const Node &nodo2){
-    if(nodo1.keys[0] < nodo2.keys[0])
+    cout << "LAKSDJASDJLKASDLKLKJSDALKJASDLKJASDLJKLAKJDSLKJADSLKJASDLKLKJWSDA" << endl;
+    if(nodo1.keys.at(0).key < nodo2.keys.at(0).key)
         return true;
     else
         return false;
