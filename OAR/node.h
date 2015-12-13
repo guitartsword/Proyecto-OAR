@@ -21,5 +21,6 @@ public:
 	Key getMiddle();
 	Node* Split();
 	void  Print();
+	friend ofstream& operator<<(ofstream&, const Node&);
 };
 bool operator<(const Node &nodo1, const Node &nodo2);

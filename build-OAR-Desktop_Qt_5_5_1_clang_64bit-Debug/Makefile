@@ -57,7 +57,8 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/campo.cpp \
 		../OAR/nodo.cpp \
 		../OAR/key.cpp \
-		../OAR/btree.cpp moc_mainwindow.cpp \
+		../OAR/btree.cpp \
+		../OAR/node.cpp moc_mainwindow.cpp \
 		moc_dialogcampo.cpp \
 		moc_dialogmodificarcampo.cpp
 OBJECTS       = main.o \
@@ -70,6 +71,7 @@ OBJECTS       = main.o \
 		nodo.o \
 		key.o \
 		btree.o \
+		node.o \
 		moc_mainwindow.o \
 		moc_dialogcampo.o \
 		moc_dialogmodificarcampo.o
@@ -223,7 +225,8 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/campo.h \
 		../OAR/nodo.h \
 		../OAR/key.h \
-		../OAR/btree.h ../OAR/main.cpp \
+		../OAR/btree.h \
+		../OAR/node.h ../OAR/main.cpp \
 		../OAR/mainwindow.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
@@ -232,7 +235,8 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/campo.cpp \
 		../OAR/nodo.cpp \
 		../OAR/key.cpp \
-		../OAR/btree.cpp
+		../OAR/btree.cpp \
+		../OAR/node.cpp
 QMAKE_TARGET  = OAR
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = OAR.app/Contents/MacOS/OAR
@@ -596,8 +600,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -629,6 +633,9 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 moc_mainwindow.cpp: ../OAR/campo.h \
 		../OAR/file.h \
+		../OAR/btree.h \
+		../OAR/node.h \
+		../OAR/key.h \
 		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -688,6 +695,9 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 		../OAR/campo.h \
 		../OAR/file.h \
+		../OAR/btree.h \
+		../OAR/node.h \
+		../OAR/key.h \
 		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -700,6 +710,9 @@ main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../OAR/campo.h \
 		../OAR/file.h \
+		../OAR/btree.h \
+		../OAR/node.h \
+		../OAR/key.h \
 		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
@@ -766,6 +779,9 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 
 file.o: ../OAR/file.cpp ../OAR/file.h \
 		../OAR/campo.h \
+		../OAR/btree.h \
+		../OAR/node.h \
+		../OAR/key.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
@@ -785,9 +801,13 @@ key.o: ../OAR/key.cpp ../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key.o ../OAR/key.cpp
 
 btree.o: ../OAR/btree.cpp ../OAR/btree.h \
-		../OAR/nodo.h \
+		../OAR/node.h \
 		../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o btree.o ../OAR/btree.cpp
+
+node.o: ../OAR/node.cpp ../OAR/node.h \
+		../OAR/key.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../OAR/node.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

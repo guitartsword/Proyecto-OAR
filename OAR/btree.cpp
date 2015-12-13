@@ -1,9 +1,21 @@
 #include "btree.h"
 #include "node.h"
+#include <fstream>
+#include <vector>
+#include <string>
+
+using namespace std;
 
 Tree::Tree(int order):order(order),page_count(0){
 	this->root = new Node();
 	up=false;
+}
+
+Tree::Tree(int order, string nombre):order(order),page_count(0),nombre(nombre){
+    this->root = new Node();
+    up=false;
+    nombre+=".TREE";
+    output.open(nombre.c_str(), ios::out);
 }
 
 void Tree::addKey(Node* nodo, Key key){
@@ -106,6 +118,33 @@ int Tree::findKeyRRN(Node* node, int key){
 
 }
 
+void Tree::saveTree(Node* node){
+	char* buffer;//3+3+(6*(order-1))+(3*order)
+	//Se escribe el numero de pagina
+	buffer = new char[3];
+	buffer[0]=node->page;
+	output.write(buffer,3);
+	//Se escribe la cantidad de keys que tiene
+	buffer = new char[3];
+    buffer[0]=node->keys.size();
+    output.write(buffer, 3);
+    //Se escriben las llaves
+    for (int i = 0; i < node->keys.size(); i++){
+    	buffer = new char[3];
+    	buffer[0]=node->keys[i].key;
+    	output.write(buffer, 3);
+
+    	buffer = new char[3];
+    	buffer[0]=node->keys[i].rrn;
+    	output.write(buffer, 3);
+    }
+    //Se escribe el numero de hijos
+    for(int i = 0; i < node->children.size(); i++){
+    	buffer = new char[3];
+        buffer[0]=node->children[i]->page;
+    	output.write(buffer, 3);
+    }
+}
 
 
 
