@@ -22,11 +22,7 @@ void Record::setCampos(vector<Campo>& campos){
 }
 
 void Record::setData(int campo, char* text){
-    int size;
-    if(campos.at(campo).type != DEC)
-        size = campos.at(campo).size;
-    else
-        size = campos.at(campo).size_dec;
+    int size = campos.at(campo).size;
     if(strlen(text) <= size){
         cout << "CAMPO: = " << campo << endl;
         data->at(campo) = text;

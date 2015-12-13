@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Tabla_Principal->setRowCount(ui->Tabla_Principal->rowCount() + 1);
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
+    ui->searchRecord->setEnabled(false);
     escritura=true;
 }
 
@@ -89,6 +90,7 @@ void MainWindow::on_newFile_triggered()
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
             ui->Tabla_Principal->setEnabled(true);
+            ui->searchRecord->setEnabled(true);
         }
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
@@ -212,7 +214,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
     }else{
         item->setText("");
     }
-
+    //NO PERMITIR CAMBIAR LA LLAVE O SI?
 
 }
 
@@ -322,6 +324,7 @@ void MainWindow::on_closeFile_triggered()
     ui->Tabla_Principal->setRowCount(0);
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
+    ui->searchRecord->setEnabled(false);
 }
 
 void MainWindow::on_exitProgram_triggered()
@@ -392,6 +395,7 @@ void MainWindow::on_importFiles_triggered()
     ui->saveFile->setEnabled(false);
     ui->addField->setEnabled(false);
     ui->delField->setEnabled(false);
+    ui->searchRecord->setEnabled(true);
     ui->updateField->setEnabled(false);
     qDebug() << "Finished on_importFiles_triggered() function";
 }
@@ -401,13 +405,13 @@ void MainWindow::on_updateRecord_triggered()
     QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!tableSelection.isEmpty()){
         QString filename = "";
-        filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a borrar:");
-        long int key = filename.toLong();
+        filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a modificar:");
+        int key = filename.toInt();
         /*for(int i = 0; i < campos.size(); i++){
             if(campos.at(i).key)
                 key = atoi(ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toStdString().c_str());
         }*/
-        long unsigned int rrn = file->searchIndex(key);
+        unsigned int rrn = file->searchIndex(key);
         cout << "RRN = " << rrn << endl;
         cout << "key searched = " << key << endl;
         if(rrn == 0){
@@ -430,5 +434,18 @@ void MainWindow::on_updateRecord_triggered()
         QMessageBox Box;
         Box.setText("¡No selecciono ningun registro para modificar!");
         Box.exec();
+    }
+}
+
+void MainWindow::on_searchRecord_triggered()
+{
+    QString filename = "";
+    filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a modificar:");
+    int key = filename.toInt();
+    char** record = file->getRecord(file->searchIndex(key), true);
+    ui->Tabla_Principal->setColumnCount(campos.size());
+    ui->Tabla_Principal->setRowCount(1);
+    for(int i = 0; i < campos.size(); i++){
+        ui->Tabla_Principal->setItem(0,i,new QTableWidgetItem(record[i]));
     }
 }

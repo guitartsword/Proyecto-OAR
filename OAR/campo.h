@@ -7,7 +7,6 @@ public:
     char name[30];
     FieldType type;
     int size;
-    int size_dec;
     bool key;
 };
 /*

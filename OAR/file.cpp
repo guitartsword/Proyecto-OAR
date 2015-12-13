@@ -76,10 +76,7 @@ void File::saveHeader(vector<Campo> &campos){
         buffer[0] =  campos.at(i).type;
         output.write(buffer, 1);
         //Tamaño del campo
-        if(campos.at(i).type != DEC)
-            buffer[0] =  campos.at(i).size;
-        else
-            buffer[0] =  campos.at(i).size_dec;
+        buffer[0] =  campos.at(i).size;
         output.write(buffer, 1);
         //ES LLAVE PRIMARIA?
         buffer[0] =  campos.at(i).key;
@@ -210,10 +207,7 @@ vector<Campo>& File::getCampos(){
         Campo temp;
         strcpy(temp.name, name);
         temp.type = type;
-        if(temp.type == DEC)
-            temp.size_dec = size;
-        else
-            temp.size = size;
+        temp.size = size;
         temp.key = key;
         campos.push_back(temp);
     }
@@ -252,7 +246,7 @@ char** File::getRecord(int ID, bool RRN){
     //Retornar un arreglo de strings;
     return data;
 }
-long unsigned int File::searchIndex(long int ID){
+unsigned int File::searchIndex(int ID){
     //BUSCA EL RRN EN EL INDICE CON LLAVE = ID
     int recordCount = File::recordCount();
     //REALIZA UNA BUSQUEDA SECUENCIAL

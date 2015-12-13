@@ -57,9 +57,12 @@
     </property>
     <addaction name="importFiles"/>
     <addaction name="separator"/>
+    <addaction name="searchRecord"/>
+    <addaction name="separator"/>
     <addaction name="addRecord"/>
     <addaction name="updateRecord"/>
     <addaction name="delRecord"/>
+    <addaction name="separator"/>
     <addaction name="saveRecord"/>
    </widget>
    <addaction name="menuArchivo"/>
@@ -133,6 +136,14 @@
   <action name="saveRecord">
    <property name="text">
     <string>Guardar</string>
+   </property>
+  </action>
+  <action name="searchRecord">
+   <property name="text">
+    <string>Buscar</string>
+   </property>
+   <property name="toolTip">
+    <string>Buscar Reigistro</string>
    </property>
   </action>
  </widget>

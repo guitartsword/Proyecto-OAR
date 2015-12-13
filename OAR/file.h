@@ -28,6 +28,6 @@ public:
     bool isOpen()const;
     int recordCount();
     char** getRecord(int, bool RRN);//retorna los datos del registro
-    long unsigned int searchIndex(long int);//Retorna el offset del indice del registro
+    unsigned int searchIndex(int);//Retorna el offset del indice del registro
     vector<Campo>& getCampos();
 };

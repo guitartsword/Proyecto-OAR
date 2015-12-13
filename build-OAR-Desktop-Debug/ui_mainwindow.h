@@ -39,6 +39,7 @@ public:
     QAction *updateRecord;
     QAction *delRecord;
     QAction *saveRecord;
+    QAction *searchRecord;
     QWidget *centralWidget;
     QTableWidget *Tabla_Principal;
     QMenuBar *menuBar;
@@ -77,6 +78,8 @@ public:
         delRecord->setObjectName(QStringLiteral("delRecord"));
         saveRecord = new QAction(MainWindow);
         saveRecord->setObjectName(QStringLiteral("saveRecord"));
+        searchRecord = new QAction(MainWindow);
+        searchRecord->setObjectName(QStringLiteral("searchRecord"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         Tabla_Principal = new QTableWidget(centralWidget);
@@ -112,9 +115,12 @@ public:
         menuCampo->addAction(updateField);
         menuRegistros->addAction(importFiles);
         menuRegistros->addSeparator();
+        menuRegistros->addAction(searchRecord);
+        menuRegistros->addSeparator();
         menuRegistros->addAction(addRecord);
         menuRegistros->addAction(updateRecord);
         menuRegistros->addAction(delRecord);
+        menuRegistros->addSeparator();
         menuRegistros->addAction(saveRecord);
 
         retranslateUi(MainWindow);
@@ -137,6 +143,10 @@ public:
         updateRecord->setText(QApplication::translate("MainWindow", "Modificar", 0));
         delRecord->setText(QApplication::translate("MainWindow", "Eliminar", 0));
         saveRecord->setText(QApplication::translate("MainWindow", "Guardar", 0));
+        searchRecord->setText(QApplication::translate("MainWindow", "Buscar", 0));
+#ifndef QT_NO_TOOLTIP
+        searchRecord->setToolTip(QApplication::translate("MainWindow", "Buscar Reigistro", 0));
+#endif // QT_NO_TOOLTIP
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));
         menuRegistros->setTitle(QApplication::translate("MainWindow", "Registros", 0));

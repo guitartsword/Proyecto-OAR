@@ -55,6 +55,8 @@ private slots:
 
     void on_updateRecord_triggered();
 
+    void on_searchRecord_triggered();
+
 private:
     Ui::MainWindow *ui;
     void closeEvent (QCloseEvent *event);
