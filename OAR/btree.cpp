@@ -49,10 +49,9 @@ void BTree::addKey(Nodo &node, Key key){
 
     }else if(node.hasChildren() && !up){// 2-Caso --Nodo existe pero tiene hijos--
         int pos=0;
-        for(int i=0; i<node.getKeysCount(); i++){
-            if(key.key>node.getKey(i).key){
-                pos=i+1;
-            }else{
+        Nodo* tempo=findNode(node.page);
+        for(int i=0; i<tempo->getKeysCount(); i++){
+            if(key.key>tempo->getKey(i).key){
                 pos=i;
             }
         }
