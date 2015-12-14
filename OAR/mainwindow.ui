@@ -40,6 +40,7 @@
     </property>
     <addaction name="newFile"/>
     <addaction name="saveFile"/>
+    <addaction name="exportExcel"/>
     <addaction name="closeFile"/>
     <addaction name="exitProgram"/>
    </widget>
@@ -144,6 +145,14 @@
    </property>
    <property name="toolTip">
     <string>Buscar Reigistro</string>
+   </property>
+  </action>
+  <action name="exportExcel">
+   <property name="text">
+    <string>Exportar Excel</string>
+   </property>
+   <property name="toolTip">
+    <string>Exportar a Excel</string>
    </property>
   </action>
  </widget>
