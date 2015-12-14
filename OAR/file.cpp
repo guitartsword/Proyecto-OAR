@@ -15,7 +15,7 @@ File::File(string filepaths, string nombre, bool openfile):
     nombre(nombre),
     write(write),
     filepath(filepaths),
-    arbol(64)
+    arbol(64,filepaths,openfile)
 {
     if(filepath.length() < 4)
         filepath += ".OAR";
@@ -23,7 +23,6 @@ File::File(string filepaths, string nombre, bool openfile):
         filepath += ".OAR";
     cout<<filepath.c_str()<<endl;
     input.open(filepath.c_str(), ios::in);
-    arbol.input.open(filepath + ".TREE", ios::in);
     if(openfile){
         output.open(filepath.c_str(), ios::out | ios::in);
         output.seekp(0,output.end);
@@ -31,11 +30,10 @@ File::File(string filepaths, string nombre, bool openfile):
         output.seekp(0,output.beg);
         reCalcHeaderSize();
         cout <<"headerSize: "<< header_size<<endl;
-        arbol.output.open(filepath + ".TREE", ios::out | ios::in);
     }else{
-        arbol.output.open(filepath + ".TREE", ios::out);
         output.open(filepath.c_str(), ios::out);
     }
+    cout << "FIN DEL CONTRUCTOR" << endl;
 }
 File::~File(){
     input.close();
@@ -107,6 +105,7 @@ void File::addRecord(int key, string record, int RRN){
     output.write(record.c_str(),record.size());
     //Agregar Indice al ARBOL B
     arbol.addKey(arbol.root,Key(key,RRN));
+    arbol.saveTree(arbol.root,true);
 }
 
 void File::appendRecord(int key, string record){
@@ -118,6 +117,7 @@ void File::appendRecord(int key, string record){
     Key temp(key,recordCount());
     arbol.addKey(arbol.root,temp);
     arbol.PrintNodes(arbol.root);
+    arbol.saveTree(arbol.root,true);
 }
 
 void File::updateFile(){
@@ -206,9 +206,11 @@ vector<Campo>& File::getCampos(){
     input.seekg(offset,input.beg);
     input.read(reinterpret_cast<char*>(&defined_size),1);
     campos.clear();
+
     for(int i = 0; i < defined_size; i++){
-        char* name;
+        char* name = new char[31];
         input.read(name, 30);
+        name[30] = '\0';
         FieldType type;
         input.read(reinterpret_cast<char* >(&type),1);
         int size = 0;
@@ -265,33 +267,6 @@ char** File::getRecord(int ID, bool RRN){
     return data;
 }
 unsigned int File::searchIndex(int ID){
-    //BUSCA EL RRN EN EL INDICE CON LLAVE = ID
-    /*
-    int recordCount = File::recordCount();
-    //REALIZA UNA BUSQUEDA SECUENCIAL
-    for(int rrn = 1; rrn <= recordCount; rrn++){
-        int searchOffset = header_size+((rrn-1)*recordSize());
-        input.seekg(searchOffset, input.beg);
-        char* data;
-        //LEE CADA CAMPO HASTA ENCONTRAR EL CAMPO QUE CONTENGA LA LLAVE
-        for(int i = 0; i < campos.size(); i++){
-            if(campos.at(i).key){
-                input.seekg(searchOffset,input.beg);
-                data = new char[campos.at(i).size +1];
-                input.read(data,campos.at(i).size);
-                data[campos.at(i).size] = '\0';
-                //SI LA LLAVE ES IGUAL AL DEL REGISTRO RETORNA EL RRN
-                if(atol(data)==ID){
-                    delete data;
-                    //Retornar el RRN
-                    return rrn;
-                }
-            }
-            searchOffset+=campos.at(i).size;
-
-        }
-    }
-    */
     int rrn = arbol.findKeyRRN(arbol.root,ID);
     //Si no encuentra la llave en el registro throw error
     if(rrn == -1){

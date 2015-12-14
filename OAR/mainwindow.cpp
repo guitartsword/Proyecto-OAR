@@ -18,6 +18,7 @@
 #include <QCloseEvent>
 #include <fstream>
 #include <string>
+#include <cstring>
 
 
 using namespace std;
@@ -78,9 +79,6 @@ void MainWindow::on_newFile_triggered()
         filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese el nombre del nuevo archivo:");
         string text = filename.toStdString();
         if(filename != ""){
-            if(file == NULL || file->isOpen()){
-                delete file;
-            }
             file = new File(text, text, false);
             ui->addField->setEnabled(true);
             ui->delField->setEnabled(true);
@@ -90,7 +88,6 @@ void MainWindow::on_newFile_triggered()
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
             ui->Tabla_Principal->setEnabled(true);
-
         }
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
@@ -357,8 +354,12 @@ void MainWindow::on_importFiles_triggered()
 
     string text = pathExport.toStdString();
     cout << "Creating file at path: " << text << endl;
-    file = new File(text, text, true);
+    string name = text.substr(0,text.size()-4);
+    cout << "File Name = " << name << endl;
+    file = new File(name, text, true);
+    cout << "Try to get campos..." << endl;
     campos = file->getCampos();
+    cout << "SUCCESS" << endl;
     //Necesario habilitar para poder modificar la tabla
     ui->updateRecord->setEnabled(true);
     ui->Tabla_Principal->setEnabled(true);
@@ -382,7 +383,9 @@ void MainWindow::on_importFiles_triggered()
     for(int i = 1; i <= recordCount; i++){
         char** data;
         try{
+
             data = file->getRecord(i,true);
+
             for(short j = 0; j < campos.size(); j++){
                 QString tabletext =data[j];
                 ui->Tabla_Principal->setItem(tablePos, j, new QTableWidgetItem(tabletext));
