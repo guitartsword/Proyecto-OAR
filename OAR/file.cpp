@@ -114,8 +114,11 @@ void File::appendRecord(int key, string record){
     output.seekp(0,output.end);
     output.write(record.c_str(),record.size());
     //Agregar Indice al ARBOL B
+    cout << "here" << endl;
     Key temp(key,recordCount());
+    cout << "here" << endl;
     arbol.addKey(arbol.root,temp);
+    cout << "here" << endl;
     arbol.PrintNodes(arbol.root);
     arbol.saveTree(arbol.root,true);
 }
