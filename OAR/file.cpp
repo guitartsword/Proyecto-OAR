@@ -119,7 +119,7 @@ void File::appendRecord(int key, string record){
     cout << "here" << endl;
     arbol.addKey(arbol.root,temp);
     cout << "here" << endl;
-    arbol.PrintNodes(arbol.root);
+    //arbol.PrintNodes(arbol.root);
     arbol.saveTree(arbol.root,true);
 }
 

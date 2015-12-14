@@ -20,6 +20,9 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 
 using namespace std;
@@ -42,11 +45,32 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
     escritura=true;
+    srand(time(NULL));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+bool MainWindow::Autollenar(){
+    cerr<<"Autogenerar"<<endl;
+    ifstream names("/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR/names.txt", ios::in);
+    for(int i=0; i < 10000; i++){
+        stringstream ss;
+        int key=i+1;
+        string nombre;
+        getline(names,nombre);
+        nombre=nombre.substr(0,20);
+        int edad=(rand() % 85)+15;
+        int city=(rand() % 99)+1;
+        ss<<left<<setw(6) << key;
+        ss<<left<<setw(20) << nombre;
+        ss<<left<<setw(3) << edad;
+        ss<<left<<setw(2) << city;
+        cout<<ss.str()<<endl;
+        file->appendRecord(key, ss.str());
+    }
 }
 
 bool MainWindow::llaveExist(){
@@ -86,7 +110,7 @@ void MainWindow::on_newFile_triggered()
             ui->importFiles->setEnabled(false);
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
-            ui->Tabla_Principal->setEnabled(true);
+            ui->Tabla_Principal->setEnabled(true); 
         }
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
@@ -247,6 +271,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->updateField->setEnabled(false);
                     ui->Tabla_Principal->removeRow(0);
                     ui->searchRecord->setEnabled(true);
+                    //Autollenar();
                 }
             }
         }
@@ -287,17 +312,6 @@ void MainWindow::on_saveRecord_triggered()
             cout << "FIN DE ESCRITURA" << endl;
             ui->addRecord->setEnabled(true);
             ui->saveRecord->setEnabled(false);
-            /*Actualizar el indice
-
-                ++++++++++++++++++
-                +                +
-                +                +
-                +                +
-                +                +
-                +                +
-                ++++++++++++++++++
-
-            */
         }
     }catch(...){
         qDebug() << "Error al agregar registro" << endl;

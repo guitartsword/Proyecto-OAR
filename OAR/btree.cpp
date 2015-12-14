@@ -163,7 +163,6 @@ void Tree::saveTree(Node* node, bool start){
     }
     output.write(buffer, 4*(order - node->children.size()));
     delete buffer;
-    node->Print();
     for(int i = 0; i < node->children.size(); i++)
         saveTree(node->children.at(i),false);
     output.flush();

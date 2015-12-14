@@ -26,6 +26,8 @@ public:
 
 private slots:
 
+    bool Autollenar();
+
     bool isKeyRepeated(int key);
 
     void on_newFile_triggered();
