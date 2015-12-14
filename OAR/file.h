@@ -16,8 +16,8 @@ class File
     vector<Campo> campos;
     int recordSize();
     void updateAvail(int);
-    Tree arbol;
 public:
+    Tree arbol;
     File(string, string, bool);
     ~File();
     void addRecord(int,string, int);

@@ -4,6 +4,7 @@
 #include "dialogcampo.h"
 #include "dialogmodificarcampo.h"
 #include "file.h"
+#include "btree.h"
 #include <sstream>
 #include <iostream>
 #include <iomanip>
@@ -22,8 +23,6 @@
 
 
 using namespace std;
-
-bool isKeyRepeated(Campo&);
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -194,6 +193,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
             text.resize(campos.at(item->column()).size);
         }
         bool valid;
+
         switch(campos.at(item->column()).type){
         case INTF:
             text.toInt(&valid);
@@ -204,8 +204,15 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
         default:
             valid = true;
         }
+
+        if(campos.at(item->column()).key && valid){
+            if(isKeyRepeated(text.toInt())){
+                valid=false;
+            }
+        }
+
         cout <<"IS VALID? = "<< valid << endl;
-        if(!valid || isKeyRepeated(campos.at(item->column())))
+        if(!valid)
             text = "";
         item->setText(text);
     }else{
@@ -215,21 +222,8 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 
 }
 
-bool isKeyRepeated(Campo &campo){
-    if(!campo.key){
-        return false;
-    }
-    /****************************************
-     *
-     *
-     *
-    //VALIDAR LA REPETICION DE REGISTROS CON EL INDICE1
-     *
-     *
-     *
-     *
-    ****************************************/
-    return false;
+bool MainWindow::isKeyRepeated(int key){
+    return file->arbol.keyExist(file->arbol.root,key);
 }
 
 void MainWindow::on_saveFile_triggered()

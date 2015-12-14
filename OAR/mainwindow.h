@@ -20,10 +20,13 @@ class MainWindow : public QMainWindow
     bool escritura;//Se utiliza para escribir solo una vez el header
     bool llaveExist();//Se utiliza para saber si hay una llave al momento de guardar
 public:
+
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
 private slots:
+
+    bool isKeyRepeated(int key);
 
     void on_newFile_triggered();
 
