@@ -108,6 +108,7 @@ void MainWindow::on_newFile_triggered()
             ui->updateField->setEnabled(true);
             ui->closeFile->setEnabled(true);
             ui->importFiles->setEnabled(false);
+            ui->exportExcel->setEnabled(true);
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
             ui->Tabla_Principal->setEnabled(true); 
@@ -216,11 +217,11 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
         if(text.size() > campos.at(item->column()).size){
             text.resize(campos.at(item->column()).size);
         }
-        bool valid;
-
+        bool valid =true;
         switch(campos.at(item->column()).type){
         case INTF:
             text.toInt(&valid);
+            valid = true;
             break;
         case DEC:
             text.toDouble(&valid);
@@ -229,7 +230,7 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
             valid = true;
         }
 
-        if(campos.at(item->column()).key && valid){
+        if(campos.at(item->column()).key && valid && !ui->importFiles->isEnabled()){
             if(isKeyRepeated(text.toInt())){
                 valid=false;
             }
@@ -325,6 +326,7 @@ void MainWindow::on_closeFile_triggered()
         cout << "dile deleted" << endl;
     }
     ui->importFiles->setEnabled(true);
+    ui->exportExcel->setEnabled(false);
     ui->saveFile->setEnabled(false);
     ui->addField->setEnabled(false);
     ui->addRecord->setEnabled(false);
@@ -395,7 +397,7 @@ void MainWindow::on_importFiles_triggered()
             data = file->getRecord(i,true);
 
             for(short j = 0; j < campos.size(); j++){
-                QString tabletext =data[j];
+                QString tabletext = data[j];
                 ui->Tabla_Principal->setItem(tablePos, j, new QTableWidgetItem(tabletext));
                 delete data[j];
             }
@@ -408,6 +410,7 @@ void MainWindow::on_importFiles_triggered()
     }
     ui->closeFile->setEnabled(true);
     ui->importFiles->setEnabled(false);
+    ui->exportExcel->setEnabled(true);
     ui->newFile->setEnabled(false);
     ui->addRecord->setEnabled(true);
     ui->delRecord->setEnabled(true);
@@ -421,41 +424,52 @@ void MainWindow::on_importFiles_triggered()
 
 void MainWindow::on_updateRecord_triggered()
 {
-    QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
-    if(!tableSelection.isEmpty()){
-        QString filename = "";
-        filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a modificar:");
-        int key = filename.toInt();
-        /*for(int i = 0; i < campos.size(); i++){
-            if(campos.at(i).key)
-                key = atoi(ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toStdString().c_str());
-        }*/
-        unsigned int rrn = file->searchIndex(key);
-        cout << "RRN = " << rrn << endl;
-        cout << "key searched = " << key << endl;
-        if(rrn == 0){
-            QMessageBox Box;
-            Box.setText("¡No se encontro el registro");
-            Box.exec();
-        }else{
-            stringstream ss;
-            int key;
-            for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
-                QString temp;
-                temp=ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text();
-                ss<<left<<setw(campos.at(i).size) << temp.toStdString();
-                if(campos.at(i).key){
-                    key = temp.toInt();
+    try{
+        QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+        if(!tableSelection.isEmpty()){
+            QString filename = "";
+            filename = QInputDialog::getText(this,"Nuevo Archivo","Ingrese la llave del registro a modificar:");
+            int key = filename.toInt();
+            /*for(int i = 0; i < campos.size(); i++){
+                if(campos.at(i).key)
+                    key = atoi(ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toStdString().c_str());
+            }*/
+            unsigned int rrn = file->searchIndex(key);
+            cout << "RRN = " << rrn << endl;
+            cout << "key searched = " << key << endl;
+            if(rrn == 0){
+                QMessageBox Box;
+                Box.setText("¡No se encontro el registro");
+                Box.exec();
+            }else{
+                QMessageBox Box;
+                Box.setText("¡Se modifico el registro correctamente!");
+                try{
+                    stringstream ss;
+                    int key;
+                    for(int i=0;i<ui->Tabla_Principal->columnCount();i++){
+                        QString temp;
+                        temp=ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text();
+                        ss<<left<<setw(campos.at(i).size) << temp.toStdString();
+                        if(campos.at(i).key){
+                            if(key != temp.toInt())
+                                throw "La llave no debe cambiar";
+                        }
+                    }
+                    file->addRecord(key, ss.str(),rrn);
+                }catch(const char* error){
+                    Box.setText(error);
                 }
+                Box.exec();
             }
-            file->addRecord(key, ss.str(),rrn);
+        }else{
             QMessageBox Box;
-            Box.setText("¡Se modifico el registro correctamente!");
+            Box.setText("¡No selecciono ningun registro para modificar!");
             Box.exec();
         }
-    }else{
+    }catch(...){
         QMessageBox Box;
-        Box.setText("¡No selecciono ningun registro para modificar!");
+        Box.setText("¡No se encontro el registro!");
         Box.exec();
     }
 }
@@ -479,5 +493,37 @@ void MainWindow::on_searchRecord_triggered()
         QMessageBox Box;
         Box.setText("No se encontro el registro");
         Box.exec();
+    }
+}
+
+void MainWindow::on_exportExcel_triggered()
+{
+    QFileDialog dialog;
+    QString pathExport = dialog.getSaveFileName(this, tr("Exportar Archivo"),
+                                         "",
+                                         tr("Microsoft Excel (*.xlsm)"));
+    if(!pathExport.endsWith(".xlsm"))
+        pathExport += ".xlsm";
+    ofstream exportFile(pathExport.toStdString().c_str());
+    int recordCount = file->recordCount();
+    int i;
+    for(i = 0; i < campos.size()-1; i++){
+        exportFile << campos.at(i).name << ",";
+    }
+    exportFile << campos.at(i).name << endl;
+    for(i = 1; i <= recordCount; i++){
+        char** data;
+        try{
+            data = file->getRecord(i,true);
+            for(int j = 0; j < campos.size()-1; j++){
+                exportFile << data[j] << ",";
+                delete data[j];
+            }
+            exportFile << data[campos.size()-1] << endl;
+            delete data[campos.size()-1];
+            delete[] data;
+        }catch (const char* exception) {
+            cerr << exception <<endl;
+        }
     }
 }

@@ -62,6 +62,8 @@ private slots:
 
     void on_searchRecord_triggered();
 
+    void on_exportExcel_triggered();
+
 private:
     Ui::MainWindow *ui;
     void closeEvent (QCloseEvent *event);
