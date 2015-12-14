@@ -30,4 +30,5 @@
 #Files created by program and QT and MAC
 *.OAR
 *.user
+*.TREE
 .DS_Store
