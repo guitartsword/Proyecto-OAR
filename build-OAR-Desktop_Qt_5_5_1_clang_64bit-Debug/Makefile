@@ -55,7 +55,6 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
 		../OAR/campo.cpp \
-		../OAR/nodo.cpp \
 		../OAR/key.cpp \
 		../OAR/btree.cpp \
 		../OAR/node.cpp moc_mainwindow.cpp \
@@ -68,7 +67,6 @@ OBJECTS       = main.o \
 		file.o \
 		record.o \
 		campo.o \
-		nodo.o \
 		key.o \
 		btree.o \
 		node.o \
@@ -223,7 +221,7 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/file.h \
 		../OAR/record.h \
 		../OAR/campo.h \
-		../OAR/nodo.h \
+		nodo.h \
 		../OAR/key.h \
 		../OAR/btree.h \
 		../OAR/node.h ../OAR/main.cpp \
@@ -233,7 +231,6 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/file.cpp \
 		../OAR/record.cpp \
 		../OAR/campo.cpp \
-		../OAR/nodo.cpp \
 		../OAR/key.cpp \
 		../OAR/btree.cpp \
 		../OAR/node.cpp
@@ -600,8 +597,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -792,10 +789,6 @@ record.o: ../OAR/record.cpp ../OAR/record.h \
 
 campo.o: ../OAR/campo.cpp ../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
-
-nodo.o: ../OAR/nodo.cpp ../OAR/nodo.h \
-		../OAR/key.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nodo.o ../OAR/nodo.cpp
 
 key.o: ../OAR/key.cpp ../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key.o ../OAR/key.cpp

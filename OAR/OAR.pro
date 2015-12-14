@@ -19,7 +19,6 @@ SOURCES += main.cpp\
     file.cpp \
     record.cpp \
     campo.cpp \
-    nodo.cpp \
     key.cpp \
     btree.cpp \
     node.cpp

@@ -24,4 +24,6 @@ public:
 	int findKeyRRN(Node* node, int key);
     void saveTree(Node*,bool=1);
 	void readTree(Node*,bool=1);
+    void deleteKey(Node* nodo, Key key);
+    Node* findKeyNode(Node* node, int key);
 };

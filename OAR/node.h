@@ -21,6 +21,8 @@ public:
 	Key getMiddle();
 	Node* Split();
 	void  Print();
+    void deleteKey(int pos);
+    bool AvailabletoBorrow(int order);
 	friend ofstream& operator<<(ofstream&, const Node&);
 };
 bool operator<(const Node &nodo1, const Node &nodo2);

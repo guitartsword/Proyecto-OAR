@@ -5,6 +5,7 @@
 #include "dialogmodificarcampo.h"
 #include "file.h"
 #include "btree.h"
+#include "node.h"
 #include <sstream>
 #include <iostream>
 #include <iomanip>

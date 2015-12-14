@@ -40,6 +40,7 @@ public:
     QAction *delRecord;
     QAction *saveRecord;
     QAction *searchRecord;
+    QAction *exportExcel;
     QWidget *centralWidget;
     QTableWidget *Tabla_Principal;
     QMenuBar *menuBar;
@@ -80,6 +81,8 @@ public:
         saveRecord->setObjectName(QStringLiteral("saveRecord"));
         searchRecord = new QAction(MainWindow);
         searchRecord->setObjectName(QStringLiteral("searchRecord"));
+        exportExcel = new QAction(MainWindow);
+        exportExcel->setObjectName(QStringLiteral("exportExcel"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         Tabla_Principal = new QTableWidget(centralWidget);
@@ -108,6 +111,7 @@ public:
         menuBar->addAction(menuRegistros->menuAction());
         menuArchivo->addAction(newFile);
         menuArchivo->addAction(saveFile);
+        menuArchivo->addAction(exportExcel);
         menuArchivo->addAction(closeFile);
         menuArchivo->addAction(exitProgram);
         menuCampo->addAction(addField);
@@ -146,6 +150,10 @@ public:
         searchRecord->setText(QApplication::translate("MainWindow", "Buscar", 0));
 #ifndef QT_NO_TOOLTIP
         searchRecord->setToolTip(QApplication::translate("MainWindow", "Buscar Reigistro", 0));
+#endif // QT_NO_TOOLTIP
+        exportExcel->setText(QApplication::translate("MainWindow", "Exportar Excel", 0));
+#ifndef QT_NO_TOOLTIP
+        exportExcel->setToolTip(QApplication::translate("MainWindow", "Exportar a Excel", 0));
 #endif // QT_NO_TOOLTIP
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));

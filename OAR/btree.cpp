@@ -126,6 +126,24 @@ int Tree::findKeyRRN(Node* node, int key){
 
 }
 
+Node* Tree::findKeyNode(Node* node, int key){
+    Node* temp;
+    for (int i = 0; i < node->keys.size(); ++i){
+        if(node->keys.at(i).key==key){
+            temp=node;
+            break;
+        }
+    }
+    if(temp->page==-1){
+        for(int i = 0; i < node->children.size(); ++i){
+            temp=findKeyNode(node->children.at(i), key);
+            if(temp->page!=-1)
+                break;
+        }
+    }
+
+}
+
 void Tree::saveTree(Node* node, bool start){
     char* buffer;//4bytes + 4bytes de cantidad+(8*(order-1))+(4*order)
     //Se escribe el numero de pagina
@@ -218,4 +236,40 @@ void Tree::readTree(Node* nodo, bool start){
 		cout << "iterator" << iterator << endl;
         readTree(nodo->children.at(i), false);
 	}
+}
+
+void Tree::deleteKey(Node* nodo, Key key){//El nodo que contiene la llave
+    int posicion=0;
+    for(posicion=0; nodo->keys.size();posicion++){
+        if(nodo->keys.at(posicion).key==key.key){
+            break;
+        }
+    }
+    if(!nodo->hasChildren()){//Si no tiene hijos
+        if(nodo->keys.size()>=((order/2)-1)){//Borrado directo
+            nodo->deleteKey(posicion);
+        }else{//Pedir Presatado o Merge(mero Vergeo)
+            //Se agarra la posicion del nodo actual
+            int i=0;
+            for(i=0; nodo->father->children.size();i++){
+                if(nodo->father->children.at(i)->page==nodo->page){
+                    break;
+                }
+            }
+            if(i-1>=0){
+                if(nodo->father->children.at(i-1)->AvailabletoBorrow(order)){
+                    nodo->deleteKey(posicion);
+
+                }
+            }else if(i+1<nodo->father->children.size()){
+                if(nodo->father->children.at(i+1)->AvailabletoBorrow(order)){
+
+                }
+            }
+
+
+        }
+    }else{//Sucesor inmediato luego borrar de la hoja
+
+    }
 }

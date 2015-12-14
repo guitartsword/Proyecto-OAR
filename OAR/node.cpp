@@ -131,3 +131,14 @@ void  Node::Print(){
         cout<<" No tiene "<<endl;
     }
 }
+
+ void Node::deleteKey(int pos){
+    keys.erase(keys.begin()+pos);
+ }
+
+ bool Node::AvailabletoBorrow(int order){
+     if(order%2==0)
+         return keys.size()>((order/2)-1);
+     else
+         return keys.size()>((order/2));
+ }
