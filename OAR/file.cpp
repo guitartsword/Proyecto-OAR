@@ -38,6 +38,7 @@ File::File(string filepaths, string nombre, bool openfile):
 File::~File(){
     input.close();
     output.close();
+    arbol.saveTree(arbol.root);
 }
 void File::saveHeader(vector<Campo> &campos){
     char* buffer;
@@ -127,22 +128,31 @@ void File::updateFile(){
     //Actualizar Registro del disco
 }
 
-void File::deleteRecord(unsigned int rrn){
-    output.flush();
-    //Borrar Registro del archivo
-    unsigned int avail= getRRN();
-    char* buffer=new char[1];
-    buffer[0]='*';
-    //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
-    output.seekp(header_size+((rrn-1)*recordSize()),output.beg);
-    output.write(buffer,1);
-    //Se escribe la nueva head del Avail List
-    output.seekp(header_size+((rrn-1)*recordSize()) + 1, output.beg);
-    output.write(reinterpret_cast<const char*>(&avail), 3);
-    //Se escribe en el Head del Avail List el nuevo rrn
-    output.seekp(header_size-3,output.beg);
-    output.write(reinterpret_cast<const char *>(&rrn),3);
-    output.flush();
+bool File::deleteRecord(int key){
+    if(arbol.keyExist(arbol.root,key)){
+        output.flush();
+        unsigned int rrn = arbol.findKeyRRN(arbol.root, key);
+        //Borrar Registro del archivo
+        unsigned int avail= getRRN();
+        char* buffer=new char[1];
+        buffer[0]='*';
+        //Se marca con asterisco-(rrn del Avail List) en el registro borrado.
+        output.seekp(header_size+((rrn-1)*recordSize()),output.beg);
+        output.write(buffer,1);
+        //Se escribe la nueva head del Avail List
+        output.seekp(header_size+((rrn-1)*recordSize()) + 1, output.beg);
+        output.write(reinterpret_cast<const char*>(&avail), 3);
+        //Se escribe en el Head del Avail List el nuevo rrn
+        output.seekp(header_size-3,output.beg);
+        output.write(reinterpret_cast<const char *>(&rrn),3);
+        output.flush();
+        //Borrar del arbol
+        Key temp(key,rrn);
+        arbol.deleteKey(arbol.findKeyNode(arbol.root,key),temp);
+        arbol.saveTree(arbol.root);
+        return true;
+    }
+    return false;
 }
 
 void File::reCalcHeaderSize(){

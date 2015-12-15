@@ -25,5 +25,7 @@ public:
     void saveTree(Node*,bool=1);
 	void readTree(Node*,bool=1);
     void deleteKey(Node* nodo, Key key);
+    void underflow(Node* nodo, Key key, int posicion);
+    void Merge(Node*, int);
     Node* findKeyNode(Node* node, int key);
 };

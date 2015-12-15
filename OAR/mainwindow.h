@@ -17,7 +17,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     vector<Campo> campos;
     File* file;
-    bool escritura;//Se utiliza para escribir solo una vez el header
+    bool escritura,forceInput;//Se utiliza para escribir solo una vez el header
     bool llaveExist();//Se utiliza para saber si hay una llave al momento de guardar
 public:
 

@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
     escritura=true;
+    forceInput = false;
     srand(time(NULL));
 }
 
@@ -56,7 +57,7 @@ MainWindow::~MainWindow()
 
 bool MainWindow::Autollenar(){
     cerr<<"Autogenerar"<<endl;
-    ifstream names("/Users/Brenda/Organizacion de Archivos/Proyecto-OAR/OAR/names.txt", ios::in);
+    ifstream names("../names.txt", ios::in);
     for(int i=0; i < 10000; i++){
         stringstream ss;
         int key=i+1;
@@ -190,30 +191,29 @@ void MainWindow::on_addRecord_triggered()
 
 void MainWindow::on_delRecord_triggered()
 {
-    int selected;
+    int key;
     QModelIndexList tableSelection = ui->Tabla_Principal->selectionModel()->selectedIndexes();
     if(!tableSelection.isEmpty() && ui->Tabla_Principal->rowCount()>1){
 
         //Obtener el valor de la llave de la tabla
         for(int i = 0; i < campos.size(); i++){
             if(campos.at(i).key){
-                selected = ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toInt();
+                key = ui->Tabla_Principal->item(ui->Tabla_Principal->currentRow(),i)->text().toInt();
                 break;
             }
         }
         //Buscar offset/RRN en el indice
-        unsigned int rrn = file->searchIndex(selected);
         //Marcar como borrado en el Archivo y se Actualiza el Avail List
-        cout << "RRN search and to delete = " << rrn << endl;
-        file->deleteRecord(rrn);
-        ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
+        cout << "KEY search and to delete = " << key << endl;
+        if(file->deleteRecord(key))
+            ui->Tabla_Principal->removeRow(ui->Tabla_Principal->currentRow());
     }
 }
 
 
 void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
 {
-    if(ui->updateRecord->isEnabled()){
+    if(ui->updateRecord->isEnabled() && !forceInput){
         QString text = item->text();
         if(text.size() > campos.at(item->column()).size){
             text.resize(campos.at(item->column()).size);
@@ -236,16 +236,13 @@ void MainWindow::on_Tabla_Principal_itemChanged(QTableWidgetItem *item)
                 valid=false;
             }
         }
-
-        cout <<"IS VALID? = "<< valid << endl;
         if(!valid)
             text = "";
         item->setText(text);
-    }else{
+    }else if(!forceInput){
         item->setText("");
     }
     //NO PERMITIR CAMBIAR LA LLAVE O SI?
-
 }
 
 bool MainWindow::isKeyRepeated(int key){
@@ -368,8 +365,10 @@ void MainWindow::on_importFiles_triggered()
     string text = pathExport.toStdString();
     cout << "Creating file at path: " << text << endl;
     string name = text.substr(0,text.size()-4);
+    name = name.substr(name.rfind("/")+1);
     cout << "File Name = " << name << endl;
     file = new File(name, text, true);
+    ui->L_Nombre->setText(name.c_str());
     cout << "Try to get campos..." << endl;
     campos = file->getCampos();
     cout << "SUCCESS" << endl;
@@ -488,10 +487,12 @@ void MainWindow::on_searchRecord_triggered()
         char** record = file->getRecord(rrn, true);
         ui->Tabla_Principal->setColumnCount(campos.size());
         ui->Tabla_Principal->setRowCount(1);
+        forceInput = true;
         for(int i = 0; i < campos.size(); i++){
             cout << record[i] << endl;
             ui->Tabla_Principal->setItem(0,i,new QTableWidgetItem(record[i]));
         }
+        forceInput = false;
     }catch(...){
         QMessageBox Box;
         Box.setText("No se encontro el registro");

@@ -135,7 +135,9 @@ void  Node::Print(){
  void Node::deleteKey(int pos){
     keys.erase(keys.begin()+pos);
  }
-
+void Node::deleteChildren(int pos){
+     children.erase(children.begin()+pos);
+}
  bool Node::AvailabletoBorrow(int order){
      if(order%2==0)
          return keys.size()>((order/2)-1);
