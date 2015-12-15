@@ -58,19 +58,15 @@ MainWindow::~MainWindow()
 
 bool MainWindow::Autollenar(){
     cerr<<"Autogenerar"<<endl;
-    ifstream names("./names.txt", ios::in);
-    for(int i=0; i < 10000; i++){
+    ifstream names("./city.txt", ios::in);
+    for(int i=0; i < 99; i++){
         stringstream ss;
         int key=i+1;
         string nombre;
         getline(names,nombre);
-        nombre=nombre.substr(0,20);
-        int edad=(rand() % 85)+15;
-        int city=(rand() % 99)+1;
-        ss<<left<<setw(6) << key;
-        ss<<left<<setw(20) << nombre;
-        ss<<left<<setw(3) << edad;
-        ss<<left<<setw(2) << city;
+        nombre=nombre.substr(0,30);
+        ss<<left<<setw(2) << key;
+        ss<<left<<setw(30) << nombre;
         cout<<ss.str()<<endl;
         file->appendRecord(key, ss.str());
     }
@@ -267,7 +263,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->updateField->setEnabled(false);
                     ui->Tabla_Principal->removeRow(0);
                     ui->searchRecord->setEnabled(true);
-                    //Autollenar();
+                    Autollenar();
 
                 }
             }
@@ -331,9 +327,13 @@ void MainWindow::on_closeFile_triggered()
     ui->updateField->setEnabled(false);
     ui->updateRecord->setEnabled(false);
     ui->closeFile->setEnabled(false);
+    //RESTART EVERYTHING
     ui->Tabla_Principal->setColumnCount(0);
     ui->Tabla_Principal->setRowCount(0);
     ui->Tabla_Principal->setDisabled(true);
+    campos.clear();
+    escritura = true;
+    //FINISH
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
     ui->newFile->setEnabled(true);
