@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
+    ui->exportExcel->setEnabled(false);
     escritura=true;
     forceInput = false;
     srand(time(NULL));
@@ -334,6 +335,7 @@ void MainWindow::on_closeFile_triggered()
     ui->updateField->setEnabled(false);
     ui->updateRecord->setEnabled(false);
     ui->closeFile->setEnabled(false);
+    ui->Tabla_Principal->setColumnCount(0);
     ui->Tabla_Principal->setRowCount(0);
     ui->Tabla_Principal->setDisabled(true);
     ui->saveRecord->setEnabled(false);
@@ -367,7 +369,7 @@ void MainWindow::on_importFiles_triggered()
     string name = text.substr(0,text.size()-4);
     name = name.substr(name.rfind("/")+1);
     cout << "File Name = " << name << endl;
-    file = new File(name, text, true);
+    file = new File(text, name, true);
     ui->L_Nombre->setText(name.c_str());
     cout << "Try to get campos..." << endl;
     campos = file->getCampos();

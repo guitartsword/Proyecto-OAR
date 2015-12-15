@@ -16,6 +16,7 @@ Tree::Tree(int order):order(order),page_count(0){
 Tree::Tree(int order, string nombre, bool open):order(order),page_count(0),nombre(nombre){
     this->root = new Node();
     up=false;
+    nombre = nombre.substr(0,nombre.size()-4);
     nombre+=".TREE";
     if(open){
         cout << "TREE directory: " << nombre << endl;
