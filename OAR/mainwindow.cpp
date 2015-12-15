@@ -57,7 +57,7 @@ MainWindow::~MainWindow()
 
 bool MainWindow::Autollenar(){
     cerr<<"Autogenerar"<<endl;
-    ifstream names("../names.txt", ios::in);
+    ifstream names("./names.txt", ios::in);
     for(int i=0; i < 10000; i++){
         stringstream ss;
         int key=i+1;
