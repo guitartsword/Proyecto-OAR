@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 #include "campo.h"
 #include "file.h"
-#include "record.h"
 #include <QMainWindow>
 #include <vector>
 #include <QTableWidget>

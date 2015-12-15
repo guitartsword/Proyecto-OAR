@@ -254,10 +254,6 @@ char** File::getRecord(int ID, bool RRN){
     }
 
     offset+=header_size;
-    cout << ":::::::::::::::::::::" << endl;
-    cout << header_size << endl;
-    cout << offset << endl;
-    cout << ":::::::::::::::::::::" << endl;
 
     input.seekg(offset, input.beg);
     char** data;
