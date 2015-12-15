@@ -29,7 +29,6 @@ HEADERS  += mainwindow.h \
     file.h \
     record.h \
     campo.h \
-    nodo.h \
     key.h \
     btree.h \
     node.h
