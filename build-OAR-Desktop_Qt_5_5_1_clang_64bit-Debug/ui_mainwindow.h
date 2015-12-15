@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -43,6 +44,7 @@ public:
     QAction *exportExcel;
     QWidget *centralWidget;
     QTableWidget *Tabla_Principal;
+    QLabel *L_Nombre;
     QMenuBar *menuBar;
     QMenu *menuArchivo;
     QMenu *menuCampo;
@@ -87,11 +89,17 @@ public:
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         Tabla_Principal = new QTableWidget(centralWidget);
         Tabla_Principal->setObjectName(QStringLiteral("Tabla_Principal"));
-        Tabla_Principal->setGeometry(QRect(10, 60, 821, 491));
+        Tabla_Principal->setGeometry(QRect(10, 50, 821, 491));
+        L_Nombre = new QLabel(centralWidget);
+        L_Nombre->setObjectName(QStringLiteral("L_Nombre"));
+        L_Nombre->setGeometry(QRect(20, 10, 231, 31));
+        QFont font;
+        font.setPointSize(24);
+        L_Nombre->setFont(font);
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 845, 24));
+        menuBar->setGeometry(QRect(0, 0, 845, 22));
         menuArchivo = new QMenu(menuBar);
         menuArchivo->setObjectName(QStringLiteral("menuArchivo"));
         menuCampo = new QMenu(menuBar);
@@ -155,6 +163,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         exportExcel->setToolTip(QApplication::translate("MainWindow", "Exportar a Excel", 0));
 #endif // QT_NO_TOOLTIP
+        L_Nombre->setText(QString());
         menuArchivo->setTitle(QApplication::translate("MainWindow", "Archivo", 0));
         menuCampo->setTitle(QApplication::translate("MainWindow", "Campo", 0));
         menuRegistros->setTitle(QApplication::translate("MainWindow", "Registros", 0));

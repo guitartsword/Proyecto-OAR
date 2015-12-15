@@ -90,7 +90,6 @@ bool MainWindow::llaveExist(){
  *
  *
 */
-
 unsigned int MainWindow::lookIndex(unsigned int key){
     unsigned int rrn=0;
     return rrn;
@@ -113,6 +112,7 @@ void MainWindow::on_newFile_triggered()
             ui->newFile->setEnabled(false);
             ui->Tabla_Principal->setRowCount(1);
             ui->Tabla_Principal->setEnabled(true); 
+            ui->L_Nombre->setText(filename);
         }
     }catch (...) {
         qDebug() << "Error al crear el archivo" << endl;
@@ -274,6 +274,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->Tabla_Principal->removeRow(0);
                     ui->searchRecord->setEnabled(true);
                     //Autollenar();
+
                 }
             }
         }
@@ -341,6 +342,7 @@ void MainWindow::on_closeFile_triggered()
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
     ui->newFile->setEnabled(true);
+    ui->L_Nombre->setText("");
 }
 
 void MainWindow::on_exitProgram_triggered()

@@ -246,7 +246,8 @@ void Tree::deleteKey(Node* nodo, Key key){//El nodo que contiene la llave
         }
     }
     if(!nodo->hasChildren()){//Si no tiene hijos
-        if(nodo->keys.size()>=((order/2)-1)){//Borrado directo
+        if(nodo->keys.size()>=((order/2)-1)){//Se mira si esta en underflow
+            //Borrado directo
             nodo->deleteKey(posicion);
         }else{//Pedir Presatado o Merge(mero Vergeo)
             //Se agarra la posicion del nodo actual
@@ -256,13 +257,33 @@ void Tree::deleteKey(Node* nodo, Key key){//El nodo que contiene la llave
                     break;
                 }
             }
-            if(i-1>=0){
-                if(nodo->father->children.at(i-1)->AvailabletoBorrow(order)){
+            if(i-1>=0){//Borrow Hijo izquierdo
+                Node* brother=nodo->father->children.at(i-1);
+                if(brother->AvailabletoBorrow(order)){
                     nodo->deleteKey(posicion);
+                    Key keyFather=nodo->father->keys.at(i-1);
+                    nodo->addKey(keyFather);
+                    nodo->father->deleteKey(i-1);
 
+                    Key upFather=brother->keys.at(brother->keys.size()-1);
+                    nodo->father->addKey(upFather);
+                    brother->deleteKey(brother->keys.size()-1);
                 }
-            }else if(i+1<nodo->father->children.size()){
+            }else if(i+1<nodo->father->children.size()){//Borrow Hijo izquierdo
+                Node* brother=nodo->father->children.at(i+1);
                 if(nodo->father->children.at(i+1)->AvailabletoBorrow(order)){
+                    nodo->deleteKey(posicion);
+                    Key keyFather=nodo->father->keys.at(i);
+                    nodo->addKey(keyFather);
+                    nodo->father->deleteKey(i);
+
+                    Key upFather=brother->keys.at(0);
+                    nodo->father->addKey(upFather);
+                    brother->deleteKey(0);
+                }
+            }else{//MERGE
+                if(i-1>=0){//MERGE Hijo izquierdo
+                    nodo->deleteKey(posicion);
 
                 }
             }
@@ -273,3 +294,4 @@ void Tree::deleteKey(Node* nodo, Key key){//El nodo que contiene la llave
 
     }
 }
+
