@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 Tree::Tree(int order):order(order),page_count(0){
 	this->root = new Node();
 	up=false;
@@ -127,7 +128,7 @@ int Tree::findKeyRRN(Node* node, int key){
 }
 
 Node* Tree::findKeyNode(Node* node, int key){
-    Node* temp;
+    Node* temp = new Node();
     for (int i = 0; i < node->keys.size(); ++i){
         if(node->keys.at(i).key==key){
             temp=node;
@@ -141,7 +142,7 @@ Node* Tree::findKeyNode(Node* node, int key){
                 break;
         }
     }
-
+    return temp;
 }
 
 void Tree::saveTree(Node* node, bool start){
@@ -240,58 +241,135 @@ void Tree::readTree(Node* nodo, bool start){
 
 void Tree::deleteKey(Node* nodo, Key key){//El nodo que contiene la llave
     int posicion=0;
-    for(posicion=0; nodo->keys.size();posicion++){
+    cout << "antes de la posicion";
+    for(posicion=0; posicion < nodo->keys.size();posicion++){
         if(nodo->keys.at(posicion).key==key.key){
             break;
         }
     }
-    if(!nodo->hasChildren()){//Si no tiene hijos
-        if(nodo->keys.size()>=((order/2)-1)){//Se mira si esta en underflow
+    if(!nodo->hasChildren() || up){//Si no tiene hijos
+        cout << "Si no tiene hijos" << endl;
+        nodo->deleteKey(posicion);
+        if(nodo->keys.size()>((order/2)-1)){//Se mira si esta en underflow
+            cout << "Se mira si esta en underflow, borrado directo" << endl;
             //Borrado directo
-            nodo->deleteKey(posicion);
         }else{//Pedir Presatado o Merge(mero Vergeo)
-            //Se agarra la posicion del nodo actual
-            int i=0;
-            for(i=0; nodo->father->children.size();i++){
-                if(nodo->father->children.at(i)->page==nodo->page){
-                    break;
-                }
-            }
-            if(i-1>=0){//Borrow Hijo izquierdo
-                Node* brother=nodo->father->children.at(i-1);
-                if(brother->AvailabletoBorrow(order)){
-                    nodo->deleteKey(posicion);
-                    Key keyFather=nodo->father->keys.at(i-1);
-                    nodo->addKey(keyFather);
-                    nodo->father->deleteKey(i-1);
+            cout << "Pedir Presatado o Merge(mero Vergeo)"<<endl;
 
-                    Key upFather=brother->keys.at(brother->keys.size()-1);
-                    nodo->father->addKey(upFather);
-                    brother->deleteKey(brother->keys.size()-1);
-                }
-            }else if(i+1<nodo->father->children.size()){//Borrow Hijo izquierdo
-                Node* brother=nodo->father->children.at(i+1);
-                if(nodo->father->children.at(i+1)->AvailabletoBorrow(order)){
-                    nodo->deleteKey(posicion);
-                    Key keyFather=nodo->father->keys.at(i);
-                    nodo->addKey(keyFather);
-                    nodo->father->deleteKey(i);
-
-                    Key upFather=brother->keys.at(0);
-                    nodo->father->addKey(upFather);
-                    brother->deleteKey(0);
-                }
-            }else{//MERGE
-                if(i-1>=0){//MERGE Hijo izquierdo
-                    nodo->deleteKey(posicion);
-
-                }
-            }
-
+            underflow(nodo, key, posicion);
 
         }
+        up = false;
     }else{//Sucesor inmediato luego borrar de la hoja
-
+        Node* sucesor;
+        sucesor = nodo->children.at(0);
+        while(sucesor->hasChildren())
+            sucesor = sucesor->children.at(sucesor->children.size()-1);
+        Key switchKey = nodo->keys.at(posicion);
+        //Se efectua el switch
+        nodo->keys.at(posicion) = sucesor->keys.at(sucesor->keys.size()-1);
+        sucesor->keys.at(sucesor->keys.size()-1) = switchKey;
+        deleteKey(sucesor, key);
     }
 }
 
+void Tree::underflow(Node* nodo, Key key, int posicion/*Posicion de la key en el nodo actual*/){
+    //Se agarra la posicion del nodo actual
+    cout << "DENTRO DEL UNDERFLOW" << endl;
+    if(nodo->father != NULL){
+        cout << "TENGO PAPI :)" << endl;
+        int pos_nodo=0;//Posicion del nodo actual en los hijos del padre del nodo actual
+        for(pos_nodo=0; nodo->father->children.size();pos_nodo++){
+            if(nodo->father->children.at(pos_nodo)->page==nodo->page){
+                break;
+            }
+        }
+        bool pedirPrestado = false;
+        if(pos_nodo-1>=0){//Borrow Hijo izquierdo
+            cout << "Borrow Hijo izquierdo" << endl;
+            Node* brother=nodo->father->children.at(pos_nodo-1);
+            if(brother->AvailabletoBorrow(order)){
+                cout << "Si puede prestar" << endl;
+                Key keyFather=nodo->father->keys.at(pos_nodo-1);
+                nodo->addKey(keyFather);
+                nodo->father->deleteKey(pos_nodo-1);
+
+                Key upFather=brother->keys.at(brother->keys.size()-1);
+                nodo->father->addKey(upFather);
+                brother->deleteKey(brother->keys.size()-1);
+                if(brother->hasChildren()){
+                    nodo->children.push_back(brother->children.at(brother->getChildCount()-1));
+                    brother->children.at(brother->getChildCount()-1)->father = nodo;
+                    brother->deleteChildren(brother->getChildCount()-1);
+                    nodo->sortChildren();
+                }
+                pedirPrestado = true;
+            }
+        }
+        if(pos_nodo+1<nodo->father->children.size() && !pedirPrestado){//Borrow Hijo derecho
+            Node* brother=nodo->father->children.at(pos_nodo+1);
+            cout << "Borrow Hijo derecho" << endl;
+            if(nodo->father->children.at(pos_nodo+1)->AvailabletoBorrow(order)){
+                cout << "Si puede prestar" << endl;
+                Key keyFather=nodo->father->keys.at(pos_nodo);
+                nodo->addKey(keyFather);
+                nodo->father->deleteKey(pos_nodo);
+
+                Key upFather=brother->keys.at(0);
+                nodo->father->addKey(upFather);
+                brother->deleteKey(0);
+                if(brother->hasChildren()){
+                    nodo->children.push_back(brother->children.at(0));
+                    brother->children.at(0)->father = nodo;
+                    brother->deleteChildren(0);
+                    nodo->sortChildren();
+                }
+            }else{
+                //MERGE
+                Merge(nodo, pos_nodo);
+            }
+        }
+    }else{
+        cout << "No tengo papi :c" << endl;
+       if(nodo->keys.empty()){
+           root = nodo->children.at(0);
+           root->father = NULL;
+       }
+    }
+}
+void Tree::Merge(Node* nodo, int pos_nodo){
+    cout << "Pues hago merge" << endl;
+    if(pos_nodo-1>=0){// CON el Hijo izquierdo
+        cout << "CON el Hijo izquierdo" << endl;
+        Node* brother=nodo->father->children.at(pos_nodo-1);
+        for(int i = 0; i < nodo->keys.size(); i++){
+            brother->addKey(nodo->keys.at(i));
+        }
+        for(int i = 0; i < nodo->children.size(); i++){
+            nodo->children.at(i)->father = brother;
+            brother->children.push_back(nodo->children.at(i));
+        }
+        if(brother->children.size()>0)
+            brother->sortChildren();
+        nodo->father->deleteChildren(pos_nodo);
+        brother->addKey(nodo->father->keys.at(pos_nodo-1));
+        up = true; //QUE NO BUSQUE LOS HIJOS
+        deleteKey(nodo->father,nodo->father->keys.at(pos_nodo-1));
+    }else if(pos_nodo+1 < nodo->father->children.size()){// CON el Hijo derecho cuando no se puede con el izquierdo
+        cout << "CON el Hijo derecho cuando no se puede con el izquierdo" << endl;
+        Node* brother=nodo->father->children.at(pos_nodo+1);
+        for(int i = 0; i < nodo->keys.size(); i++){
+            brother->addKey(nodo->keys.at(i));
+        }
+        for(int i = 0; i < nodo->children.size(); i++){
+            nodo->children.at(i)->father = brother;
+            brother->children.push_back(nodo->children.at(i));
+        }
+        if(brother->children.size()>0)
+            brother->sortChildren();
+        nodo->father->deleteChildren(pos_nodo);
+        brother->addKey(nodo->father->keys.at(pos_nodo));
+        up = true; //QUE NO BUSQUE LOS HIJOS
+        deleteKey(nodo->father,nodo->father->keys.at(pos_nodo));
+    }
+}

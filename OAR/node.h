@@ -22,6 +22,7 @@ public:
 	Node* Split();
 	void  Print();
     void deleteKey(int pos);
+    void deleteChildren(int pos);
     bool AvailabletoBorrow(int order);
 	friend ofstream& operator<<(ofstream&, const Node&);
 };

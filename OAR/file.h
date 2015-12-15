@@ -22,7 +22,7 @@ public:
     ~File();
     void addRecord(int,string, int);
     void updateFile();
-    void deleteRecord(unsigned int);
+    bool deleteRecord(int);
     void saveHeader(vector<Campo>&);
     void reCalcHeaderSize();
     void appendRecord(int, string);
