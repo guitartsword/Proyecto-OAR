@@ -193,15 +193,12 @@ void Tree::readTree(Node* nodo, bool start){
 		iterator = 0;
 
 	int page = 0;
-	int offset = (4 + 4 + 4 + 8*(order-1) + 4*(order)) * iterator;
-	cout << "offset " << offset << endl;
+    int offset = (4+12*order) * iterator;
 	input.seekg(offset, input.beg);
-	input.read(reinterpret_cast<char*>(&page),4);
-	cout << "Page " << page << endl;
+    input.read(reinterpret_cast<char*>(&page),4);
 	int keySize = 0;
 	//input.seekg(4, input.beg);
-	input.read(reinterpret_cast<char*>(&keySize),4);
-	cout << "keySize " << keySize << endl;
+    input.read(reinterpret_cast<char*>(&keySize),4);
 	vector<Key> keys;
 	for(int i = 0; i < keySize; i++){
 		int key=0, rrn=0;
@@ -210,32 +207,25 @@ void Tree::readTree(Node* nodo, bool start){
 		//input.seekg(8*(i+1) + 4, input.beg);
 		input.read(reinterpret_cast<char*>(&(rrn)),4);
 		Key temp(key, rrn);
-		keys.push_back(temp);
-		cout << "KEY " << temp << endl;
+        keys.push_back(temp);
 	}
-	input.seekg((8*(order)) + offset, input.beg);
-	cout << "read child size in offset = " << input.tellg() << endl;
+    input.seekg((8*(order)) + offset, input.beg);
 	vector<Node*> children;
 	int childSize = 0;
-	input.read(reinterpret_cast<char*>(&childSize), 4);
-	cout << "childSize " << childSize << endl;
+    input.read(reinterpret_cast<char*>(&childSize), 4);
 	for(int i = 0; i < childSize; i++){
 		int childPage=0;
 		input.read(reinterpret_cast<char*>(&childPage),4);
 		Node* temp = new Node();
 		temp->page = childPage;
 		temp->father = nodo;
-		nodo->children.push_back(temp);
-		cout << "childPage " << childPage << endl;
-		cout << "tempchildPage " << temp->page << endl;
-		cout << "lastchildNOdopage " << nodo->children.at(nodo->children.size()-1)->page << endl;
+        nodo->children.push_back(temp);
 	}
 	if(nodo->father == NULL)
 		nodo->page = page;
 	nodo->keys = keys;
 	for(int i = 0; i < nodo->children.size(); i++){
-		iterator++;
-		cout << "iterator" << iterator << endl;
+        iterator++;
         readTree(nodo->children.at(i), false);
 	}
 }

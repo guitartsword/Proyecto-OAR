@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     dialogcampo.cpp \
     dialogmodificarcampo.cpp \
     file.cpp \
-    record.cpp \
     campo.cpp \
     key.cpp \
     btree.cpp \
@@ -27,7 +26,6 @@ HEADERS  += mainwindow.h \
     dialogcampo.h \
     dialogmodificarcampo.h \
     file.h \
-    record.h \
     campo.h \
     key.h \
     btree.h \
