@@ -63,6 +63,8 @@ private slots:
 
     void on_exportExcel_triggered();
 
+    void on_crossFiles_triggered();
+
 private:
     Ui::MainWindow *ui;
     void closeEvent (QCloseEvent *event);

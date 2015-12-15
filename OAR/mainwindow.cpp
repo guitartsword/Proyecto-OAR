@@ -46,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->saveRecord->setEnabled(false);
     ui->searchRecord->setEnabled(false);
     ui->exportExcel->setEnabled(false);
+    ui->crossFiles->setEnabled(false);
     escritura=true;
     forceInput = false;
     srand(time(NULL));
@@ -263,6 +264,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->updateField->setEnabled(false);
                     ui->Tabla_Principal->removeRow(0);
                     ui->searchRecord->setEnabled(true);
+                    ui->crossFiles->setEnabled(true);
                     Autollenar();
 
                 }
@@ -327,6 +329,7 @@ void MainWindow::on_closeFile_triggered()
     ui->updateField->setEnabled(false);
     ui->updateRecord->setEnabled(false);
     ui->closeFile->setEnabled(false);
+    ui->crossFiles->setEnabled(false);
     //RESTART EVERYTHING
     ui->Tabla_Principal->setColumnCount(0);
     ui->Tabla_Principal->setRowCount(0);
@@ -420,6 +423,7 @@ void MainWindow::on_importFiles_triggered()
         ui->delField->setEnabled(false);
         ui->searchRecord->setEnabled(true);
         ui->updateField->setEnabled(false);
+        ui->crossFiles->setEnabled(true);
         qDebug() << "Finished on_importFiles_triggered() function";
     }
 }
@@ -528,6 +532,60 @@ void MainWindow::on_exportExcel_triggered()
             delete[] data;
         }catch (const char* exception) {
             cerr << exception <<endl;
+        }
+    }
+}
+
+void MainWindow::on_crossFiles_triggered()
+{
+    if(ui->Tabla_Principal->isEnabled()){
+        QModelIndexList selected = ui->Tabla_Principal->selectionModel()->selectedIndexes();
+        if(!selected.isEmpty()){
+            QString pathExport = QFileDialog::getOpenFileName(this, tr("Cargar Archivo"),
+                                                 "",
+                                                 tr("Registros (*.OAR)"));
+
+            string path = pathExport.toStdString();
+            if(!path.empty()){
+                string name = path.substr(0,path.size()-4);
+                name = name.substr(name.rfind("/")+1);
+                File crossFile(path, name, true);
+                if(crossFile.isOpen()){
+                    cout << "create column" << endl;
+                    ui->Tabla_Principal->setColumnCount(ui->Tabla_Principal->columnCount()+1);
+                    ui->Tabla_Principal->setHorizontalHeaderItem(ui->Tabla_Principal->columnCount() - 1,new QTableWidgetItem("Cruzar: Data"));
+                    for(int i = 0; i < ui->Tabla_Principal->rowCount(); i++){
+                        cout << "inset data at = " << i << endl;
+                        int keyToSearch = ui->Tabla_Principal->item(i,ui->Tabla_Principal->currentColumn())->text().toInt();
+                        cout << "key to search " << keyToSearch << endl;
+                        if(crossFile.arbol.keyExist(crossFile.arbol.root, keyToSearch)){
+                            cout << "Searching" << endl;
+                            int RRN = crossFile.arbol.findKeyRRN(crossFile.arbol.root, keyToSearch);
+                            cout << "Getting record with RRN = " << RRN << endl;
+                            crossFile.getCampos();
+                            char** record = crossFile.getRecord(RRN,true);
+                            cout << record[1] << endl;
+                            QString recordName = record[1];
+                            QTableWidgetItem* data = new QTableWidgetItem(recordName);
+                            cout << "row = " << i << endl;
+                            cout << "column = " << ui->Tabla_Principal->columnCount()-1 << endl;
+                            int j = ui->Tabla_Principal->columnCount()-1;
+                            forceInput = true;
+                            ui->Tabla_Principal->setItem(i,j,new QTableWidgetItem(recordName));
+                            cout << "FINISH WRITING DATA" << endl;
+                        }
+                    }
+                    forceInput = false;
+                }else{
+                    QMessageBox Box;
+                    Box.setText("No se pudo abrir el archivo");
+                    Box.exec();
+                }
+            }
+        }else{
+            QMessageBox Box;
+            Box.setText("¡No se ha seleccionado ninguna columna!");
+            Box.exec();
         }
     }
 }

@@ -81,6 +81,7 @@
     <addaction name="addRecord"/>
     <addaction name="updateRecord"/>
     <addaction name="delRecord"/>
+    <addaction name="crossFiles"/>
     <addaction name="separator"/>
     <addaction name="saveRecord"/>
    </widget>
@@ -171,6 +172,11 @@
    </property>
    <property name="toolTip">
     <string>Exportar a Excel</string>
+   </property>
+  </action>
+  <action name="crossFiles">
+   <property name="text">
+    <string>Cruzar</string>
    </property>
   </action>
  </widget>

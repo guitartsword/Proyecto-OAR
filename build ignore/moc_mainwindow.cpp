@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[24];
-    char stringdata[470];
+    QByteArrayData data[23];
+    char stringdata[446];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -51,8 +51,7 @@ QT_MOC_LITERAL(18, 318, 24),
 QT_MOC_LITERAL(19, 343, 24),
 QT_MOC_LITERAL(20, 368, 25),
 QT_MOC_LITERAL(21, 394, 25),
-QT_MOC_LITERAL(22, 420, 24),
-QT_MOC_LITERAL(23, 445, 23)
+QT_MOC_LITERAL(22, 420, 24)
     },
     "MainWindow\0Autollenar\0\0isKeyRepeated\0"
     "key\0on_newFile_triggered\0Availability\0"
@@ -67,7 +66,6 @@ QT_MOC_LITERAL(23, 445, 23)
     "on_updateRecord_triggered\0"
     "on_searchRecord_triggered\0"
     "on_exportExcel_triggered\0"
-    "on_crossFiles_triggered\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -77,7 +75,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      20,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -85,26 +83,25 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,  114,    2, 0x08,
-       3,    1,  115,    2, 0x08,
-       5,    0,  118,    2, 0x08,
-       6,    0,  119,    2, 0x08,
-       7,    1,  120,    2, 0x08,
-       8,    0,  123,    2, 0x08,
-       9,    0,  124,    2, 0x08,
-      10,    0,  125,    2, 0x08,
-      11,    0,  126,    2, 0x08,
-      12,    1,  127,    2, 0x08,
-      14,    0,  130,    2, 0x08,
-      15,    0,  131,    2, 0x08,
-      16,    0,  132,    2, 0x08,
-      17,    0,  133,    2, 0x08,
-      18,    0,  134,    2, 0x08,
-      19,    0,  135,    2, 0x08,
-      20,    0,  136,    2, 0x08,
-      21,    0,  137,    2, 0x08,
-      22,    0,  138,    2, 0x08,
-      23,    0,  139,    2, 0x08,
+       1,    0,  109,    2, 0x08,
+       3,    1,  110,    2, 0x08,
+       5,    0,  113,    2, 0x08,
+       6,    0,  114,    2, 0x08,
+       7,    1,  115,    2, 0x08,
+       8,    0,  118,    2, 0x08,
+       9,    0,  119,    2, 0x08,
+      10,    0,  120,    2, 0x08,
+      11,    0,  121,    2, 0x08,
+      12,    1,  122,    2, 0x08,
+      14,    0,  125,    2, 0x08,
+      15,    0,  126,    2, 0x08,
+      16,    0,  127,    2, 0x08,
+      17,    0,  128,    2, 0x08,
+      18,    0,  129,    2, 0x08,
+      19,    0,  130,    2, 0x08,
+      20,    0,  131,    2, 0x08,
+      21,    0,  132,    2, 0x08,
+      22,    0,  133,    2, 0x08,
 
  // slots: parameters
     QMetaType::Bool,
@@ -117,7 +114,6 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, 0x80000000 | 13,    2,
-    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -159,7 +155,6 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 16: _t->on_updateRecord_triggered(); break;
         case 17: _t->on_searchRecord_triggered(); break;
         case 18: _t->on_exportExcel_triggered(); break;
-        case 19: _t->on_crossFiles_triggered(); break;
         default: ;
         }
     }
@@ -190,13 +185,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 20)
+        if (_id < 19)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 20;
+        _id -= 19;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 20)
+        if (_id < 19)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 20;
+        _id -= 19;
     }
     return _id;
 }

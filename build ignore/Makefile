@@ -50,7 +50,9 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
+		../OAR/record.cpp \
 		../OAR/campo.cpp \
+		../OAR/nodo.cpp \
 		../OAR/key.cpp \
 		../OAR/btree.cpp \
 		../OAR/node.cpp moc_mainwindow.cpp \
@@ -61,7 +63,9 @@ OBJECTS       = main.o \
 		dialogcampo.o \
 		dialogmodificarcampo.o \
 		file.o \
+		record.o \
 		campo.o \
+		nodo.o \
 		key.o \
 		btree.o \
 		node.o \
@@ -356,7 +360,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/OAR1.0.0 || mkdir -p .tmp/OAR1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/campo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/campo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h ../OAR/nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/nodo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp .tmp/OAR1.0.0/ && $(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui .tmp/OAR1.0.0/ && (cd `dirname .tmp/OAR1.0.0` && $(TAR) OAR1.0.0.tar OAR1.0.0 && $(COMPRESS) OAR1.0.0.tar) && $(MOVE) `dirname .tmp/OAR1.0.0`/OAR1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/OAR1.0.0
 
 
 clean:compiler_clean 
@@ -384,9 +388,7 @@ compiler_moc_header_clean:
 	-$(DEL_FILE) moc_mainwindow.cpp moc_dialogcampo.cpp moc_dialogmodificarcampo.cpp
 moc_mainwindow.cpp: ../OAR/campo.h \
 		../OAR/file.h \
-		../OAR/btree.h \
-		../OAR/node.h \
-		../OAR/key.h \
+		../OAR/record.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -817,9 +819,7 @@ compiler_clean: compiler_moc_header_clean compiler_uic_clean
 main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 		../OAR/campo.h \
 		../OAR/file.h \
-		../OAR/btree.h \
-		../OAR/node.h \
-		../OAR/key.h \
+		../OAR/record.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -961,9 +961,7 @@ main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../OAR/campo.h \
 		../OAR/file.h \
-		../OAR/btree.h \
-		../OAR/node.h \
-		../OAR/key.h \
+		../OAR/record.h \
 		/usr/include/qt5/QtWidgets/QMainWindow \
 		/usr/include/qt5/QtWidgets/qmainwindow.h \
 		/usr/include/qt5/QtWidgets/qwidget.h \
@@ -1094,13 +1092,35 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		/usr/include/qt5/QtWidgets/qtabbar.h \
 		/usr/include/qt5/QtWidgets/qrubberband.h \
 		ui_mainwindow.h \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QHeaderView \
+		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/QMenu \
+		/usr/include/qt5/QtWidgets/qmenu.h \
+		/usr/include/qt5/QtWidgets/QMenuBar \
+		/usr/include/qt5/QtWidgets/qmenubar.h \
+		/usr/include/qt5/QtWidgets/QStatusBar \
+		/usr/include/qt5/QtWidgets/qstatusbar.h \
+		/usr/include/qt5/QtWidgets/QToolBar \
+		/usr/include/qt5/QtWidgets/qtoolbar.h \
+		/usr/include/qt5/QtWidgets/QWidget \
 		../OAR/dialogcampo.h \
 		/usr/include/qt5/QtWidgets/QDialog \
 		/usr/include/qt5/QtWidgets/qdialog.h \
 		../OAR/dialogmodificarcampo.h \
 		/usr/include/qt5/QtCore/QString \
-		/usr/include/qt5/QtWidgets/QHeaderView \
-		/usr/include/qt5/QtWidgets/qheaderview.h \
 		/usr/include/qt5/QtWidgets/QMessageBox \
 		/usr/include/qt5/QtWidgets/qmessagebox.h \
 		/usr/include/qt5/QtCore/QFile \
@@ -1252,9 +1272,39 @@ dialogcampo.o: ../OAR/dialogcampo.cpp ../OAR/dialogcampo.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtWidgets/qrubberband.h \
 		ui_dialogcampo.h \
-		/usr/include/qt5/QtCore/QString \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QComboBox \
+		/usr/include/qt5/QtWidgets/qcombobox.h \
 		/usr/include/qt5/QtWidgets/QHeaderView \
 		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/QLabel \
+		/usr/include/qt5/QtWidgets/qlabel.h \
+		/usr/include/qt5/QtWidgets/QLineEdit \
+		/usr/include/qt5/QtWidgets/qlineedit.h \
+		/usr/include/qt5/QtGui/qtextcursor.h \
+		/usr/include/qt5/QtGui/qtextformat.h \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/qtextoption.h \
+		/usr/include/qt5/QtWidgets/QPushButton \
+		/usr/include/qt5/QtWidgets/qpushbutton.h \
+		/usr/include/qt5/QtWidgets/qabstractbutton.h \
+		/usr/include/qt5/QtWidgets/QRadioButton \
+		/usr/include/qt5/QtWidgets/qradiobutton.h \
+		/usr/include/qt5/QtWidgets/QSpinBox \
+		/usr/include/qt5/QtWidgets/qspinbox.h \
+		/usr/include/qt5/QtCore/QString \
 		/usr/include/qt5/QtWidgets/QMessageBox \
 		/usr/include/qt5/QtWidgets/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogcampo.o ../OAR/dialogcampo.cpp
@@ -1396,15 +1446,42 @@ dialogmodificarcampo.o: ../OAR/dialogmodificarcampo.cpp ../OAR/dialogmodificarca
 		/usr/include/qt5/QtWidgets/QMessageBox \
 		/usr/include/qt5/QtWidgets/qmessagebox.h \
 		ui_dialogmodificarcampo.h \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QComboBox \
+		/usr/include/qt5/QtWidgets/qcombobox.h \
+		/usr/include/qt5/QtWidgets/QLabel \
+		/usr/include/qt5/QtWidgets/qlabel.h \
+		/usr/include/qt5/QtWidgets/QLineEdit \
+		/usr/include/qt5/QtWidgets/qlineedit.h \
+		/usr/include/qt5/QtGui/qtextcursor.h \
+		/usr/include/qt5/QtGui/qtextformat.h \
+		/usr/include/qt5/QtGui/qpen.h \
+		/usr/include/qt5/QtGui/qtextoption.h \
+		/usr/include/qt5/QtWidgets/QPushButton \
+		/usr/include/qt5/QtWidgets/qpushbutton.h \
+		/usr/include/qt5/QtWidgets/qabstractbutton.h \
+		/usr/include/qt5/QtWidgets/QRadioButton \
+		/usr/include/qt5/QtWidgets/qradiobutton.h \
+		/usr/include/qt5/QtWidgets/QSpinBox \
+		/usr/include/qt5/QtWidgets/qspinbox.h \
 		/usr/include/qt5/QtCore/QAbstractItemModel \
 		/usr/include/qt5/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o dialogmodificarcampo.o ../OAR/dialogmodificarcampo.cpp
 
 file.o: ../OAR/file.cpp ../OAR/file.h \
 		../OAR/campo.h \
-		../OAR/btree.h \
-		../OAR/node.h \
-		../OAR/key.h \
 		/usr/include/qt5/QtCore/QDebug \
 		/usr/include/qt5/QtCore/qdebug.h \
 		/usr/include/qt5/QtCore/qalgorithms.h \
@@ -1481,8 +1558,16 @@ file.o: ../OAR/file.cpp ../OAR/file.h \
 		/usr/include/qt5/QtCore/qcontiguouscache.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
 
+record.o: ../OAR/record.cpp ../OAR/record.h \
+		../OAR/campo.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o record.o ../OAR/record.cpp
+
 campo.o: ../OAR/campo.cpp ../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
+
+nodo.o: ../OAR/nodo.cpp ../OAR/nodo.h \
+		../OAR/key.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o nodo.o ../OAR/nodo.cpp
 
 key.o: ../OAR/key.cpp ../OAR/key.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o key.o ../OAR/key.cpp

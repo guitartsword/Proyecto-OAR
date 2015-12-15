@@ -254,15 +254,18 @@ char** File::getRecord(int ID, bool RRN){
     }
 
     offset+=header_size;
-
+    cout << "offset = " << offset << endl;
     input.seekg(offset, input.beg);
     char** data;
     data = new char*[campos.size()];
+    cout << "campos.size = " << campos.size() << endl;
     //Hace la busqueda en el archivo
     for(int i = 0; i < campos.size(); i++){
         input.seekg(offset,input.beg);
         data[i] = new char[campos.at(i).size +1];
+
         input.read(data[i],campos.at(i).size);
+
         if(data[0][0] == '*'){
             for(int j= 0; j < i; j++)
                 delete data[j];
