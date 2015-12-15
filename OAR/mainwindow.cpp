@@ -361,65 +361,67 @@ void MainWindow::on_importFiles_triggered()
                                          tr("Registros (*.OAR)"));
 
     string text = pathExport.toStdString();
-    cout << "Creating file at path: " << text << endl;
-    string name = text.substr(0,text.size()-4);
-    name = name.substr(name.rfind("/")+1);
-    cout << "File Name = " << name << endl;
-    file = new File(text, name, true);
-    ui->L_Nombre->setText(name.c_str());
-    cout << "Try to get campos..." << endl;
-    campos = file->getCampos();
-    cout << "SUCCESS" << endl;
-    //Necesario habilitar para poder modificar la tabla
-    ui->updateRecord->setEnabled(true);
-    ui->Tabla_Principal->setEnabled(true);
+    if(!text.empty()){
+        cout << "Creating file at path: " << text << endl;
+        string name = text.substr(0,text.size()-4);
+        name = name.substr(name.rfind("/")+1);
+        cout << "File Name = " << name << endl;
+        file = new File(text, name, true);
+        ui->L_Nombre->setText(name.c_str());
+        cout << "Try to get campos..." << endl;
+        campos = file->getCampos();
+        cout << "SUCCESS" << endl;
+        //Necesario habilitar para poder modificar la tabla
+        ui->updateRecord->setEnabled(true);
+        ui->Tabla_Principal->setEnabled(true);
 
-    //Asigna la cantidad de columnas y le pone su nombre respectivo
-    ui->Tabla_Principal->setColumnCount(campos.size());
-    for(int i = 0; i < campos.size(); i++){
-        QString nombre = campos.at(i).name;
-        if(campos.at(i).key){
-            ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre+" (Llave) "));
-        }else{
-            ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre));
-        }
-    }
-
-    //Asigna la cantidad de registros en la fila
-    int recordCount = file->recordCount();
-    ui->Tabla_Principal->setRowCount(recordCount);
-    //Escribe el registro en la tabla
-    int tablePos=0;
-    for(int i = 1; i <= recordCount; i++){
-        char** data;
-        try{
-
-            data = file->getRecord(i,true);
-
-            for(short j = 0; j < campos.size(); j++){
-                QString tabletext = data[j];
-                ui->Tabla_Principal->setItem(tablePos, j, new QTableWidgetItem(tabletext));
-                delete data[j];
+        //Asigna la cantidad de columnas y le pone su nombre respectivo
+        ui->Tabla_Principal->setColumnCount(campos.size());
+        for(int i = 0; i < campos.size(); i++){
+            QString nombre = campos.at(i).name;
+            if(campos.at(i).key){
+                ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre+" (Llave) "));
+            }else{
+                ui->Tabla_Principal->setHorizontalHeaderItem(i,new QTableWidgetItem(nombre));
             }
-            delete[] data;
-            tablePos++;
-        }catch (const char* exception) {
-            cerr << exception <<endl;
-            ui->Tabla_Principal->removeRow(i-1);
         }
+
+        //Asigna la cantidad de registros en la fila
+        int recordCount = file->recordCount();
+        ui->Tabla_Principal->setRowCount(recordCount);
+        //Escribe el registro en la tabla
+        int tablePos=0;
+        for(int i = 1; i <= recordCount; i++){
+            char** data;
+            try{
+
+                data = file->getRecord(i,true);
+
+                for(short j = 0; j < campos.size(); j++){
+                    QString tabletext = data[j];
+                    ui->Tabla_Principal->setItem(tablePos, j, new QTableWidgetItem(tabletext));
+                    delete data[j];
+                }
+                delete[] data;
+                tablePos++;
+            }catch (const char* exception) {
+                cerr << exception <<endl;
+                ui->Tabla_Principal->removeRow(i-1);
+            }
+        }
+        ui->closeFile->setEnabled(true);
+        ui->importFiles->setEnabled(false);
+        ui->exportExcel->setEnabled(true);
+        ui->newFile->setEnabled(false);
+        ui->addRecord->setEnabled(true);
+        ui->delRecord->setEnabled(true);
+        ui->saveFile->setEnabled(false);
+        ui->addField->setEnabled(false);
+        ui->delField->setEnabled(false);
+        ui->searchRecord->setEnabled(true);
+        ui->updateField->setEnabled(false);
+        qDebug() << "Finished on_importFiles_triggered() function";
     }
-    ui->closeFile->setEnabled(true);
-    ui->importFiles->setEnabled(false);
-    ui->exportExcel->setEnabled(true);
-    ui->newFile->setEnabled(false);
-    ui->addRecord->setEnabled(true);
-    ui->delRecord->setEnabled(true);
-    ui->saveFile->setEnabled(false);
-    ui->addField->setEnabled(false);
-    ui->delField->setEnabled(false);
-    ui->searchRecord->setEnabled(true);
-    ui->updateField->setEnabled(false);
-    qDebug() << "Finished on_importFiles_triggered() function";
 }
 
 void MainWindow::on_updateRecord_triggered()
