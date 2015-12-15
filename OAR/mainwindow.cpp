@@ -178,10 +178,6 @@ void MainWindow::on_addRecord_triggered()
         QMessageBox Box;
         Box.setText("¡Se necesita al menos un campo!");
         Box.exec();
-    }else if(ui->Tabla_Principal->rowCount()>15){
-        QMessageBox Box;
-        Box.setText("¡Solo puede ver 15 registros por pagina");
-        Box.exec();
     }else{
         ui->Tabla_Principal->setRowCount(ui->Tabla_Principal->rowCount()+1);
         ui->addRecord->setEnabled(false);

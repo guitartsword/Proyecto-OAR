@@ -53,7 +53,6 @@ SOURCES       = ../OAR/main.cpp \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
-		../OAR/record.cpp \
 		../OAR/campo.cpp \
 		../OAR/key.cpp \
 		../OAR/btree.cpp \
@@ -65,7 +64,6 @@ OBJECTS       = main.o \
 		dialogcampo.o \
 		dialogmodificarcampo.o \
 		file.o \
-		record.o \
 		campo.o \
 		key.o \
 		btree.o \
@@ -219,9 +217,7 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/dialogcampo.h \
 		../OAR/dialogmodificarcampo.h \
 		../OAR/file.h \
-		../OAR/record.h \
 		../OAR/campo.h \
-		nodo.h \
 		../OAR/key.h \
 		../OAR/btree.h \
 		../OAR/node.h ../OAR/main.cpp \
@@ -229,7 +225,6 @@ DIST          = ../../../Qt/5.5/clang_64/mkspecs/features/spec_pre.prf \
 		../OAR/dialogcampo.cpp \
 		../OAR/dialogmodificarcampo.cpp \
 		../OAR/file.cpp \
-		../OAR/record.cpp \
 		../OAR/campo.cpp \
 		../OAR/key.cpp \
 		../OAR/btree.cpp \
@@ -597,8 +592,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/record.h ../OAR/campo.h nodo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/record.cpp ../OAR/campo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/mainwindow.h ../OAR/dialogcampo.h ../OAR/dialogmodificarcampo.h ../OAR/file.h ../OAR/campo.h ../OAR/key.h ../OAR/btree.h ../OAR/node.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../OAR/main.cpp ../OAR/mainwindow.cpp ../OAR/dialogcampo.cpp ../OAR/dialogmodificarcampo.cpp ../OAR/file.cpp ../OAR/campo.cpp ../OAR/key.cpp ../OAR/btree.cpp ../OAR/node.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../OAR/mainwindow.ui ../OAR/dialogcampo.ui ../OAR/dialogmodificarcampo.ui $(DISTDIR)/
 
 
@@ -633,7 +628,6 @@ moc_mainwindow.cpp: ../OAR/campo.h \
 		../OAR/btree.h \
 		../OAR/node.h \
 		../OAR/key.h \
-		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -695,7 +689,6 @@ main.o: ../OAR/main.cpp ../OAR/mainwindow.h \
 		../OAR/btree.h \
 		../OAR/node.h \
 		../OAR/key.h \
-		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -710,7 +703,6 @@ mainwindow.o: ../OAR/mainwindow.cpp ../OAR/mainwindow.h \
 		../OAR/btree.h \
 		../OAR/node.h \
 		../OAR/key.h \
-		../OAR/record.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QMainWindow \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/qmainwindow.h \
 		../../../Qt/5.5/clang_64/lib/QtWidgets.framework/Headers/QTableWidget \
@@ -782,10 +774,6 @@ file.o: ../OAR/file.cpp ../OAR/file.h \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/QDebug \
 		../../../Qt/5.5/clang_64/lib/QtCore.framework/Headers/qdebug.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o file.o ../OAR/file.cpp
-
-record.o: ../OAR/record.cpp ../OAR/record.h \
-		../OAR/campo.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o record.o ../OAR/record.cpp
 
 campo.o: ../OAR/campo.cpp ../OAR/campo.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o campo.o ../OAR/campo.cpp
