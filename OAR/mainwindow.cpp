@@ -265,7 +265,7 @@ void MainWindow::on_saveFile_triggered()
                     ui->Tabla_Principal->removeRow(0);
                     ui->searchRecord->setEnabled(true);
                     ui->crossFiles->setEnabled(true);
-                    Autollenar();
+                    //Autollenar();
 
                 }
             }
